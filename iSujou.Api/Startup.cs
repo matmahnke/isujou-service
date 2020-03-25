@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using iSujou.Api.Registers;
 using iSujou.Infra;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.Swagger;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Security.Claims;
+using System.Text;
 
 namespace iSujou.Api
 {
@@ -36,6 +31,14 @@ namespace iSujou.Api
 
             services.AddOptions();
 
+            services
+                .AddHealthChecks()
+                .AddDbContextCheck<DbContext>();
+
+            services
+                .RegisterServices()
+                .RegisterRepositories();
+
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<iSujouContext>(x =>
@@ -43,6 +46,7 @@ namespace iSujou.Api
             op => op.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null)));
 
 
+            services.AddSingleton(Configuration);
 
             var jwtSection = Configuration.GetSection("JwtConfiguration");
             var jwtConfig = jwtSection.Get<JwtConfiguration>();
@@ -57,6 +61,7 @@ namespace iSujou.Api
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
+                x.ClaimsIssuer = "iSujou.Api";
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -66,10 +71,15 @@ namespace iSujou.Api
                 };
             });
 
+            services.AddAuthorization(authopt =>
+            {
+                authopt.AddPolicy("MustHaveEmail", polBuilder => polBuilder.RequireClaim(ClaimTypes.Role));
+            });
+
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "iSujou API",
@@ -100,10 +110,13 @@ namespace iSujou.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
         }
