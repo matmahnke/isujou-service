@@ -6,6 +6,7 @@ namespace iSujou.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class LoginController : ControllerBase
     {
         private readonly ILoginService _service;
@@ -16,6 +17,7 @@ namespace iSujou.Api.Controllers
         }
 
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public ActionResult<string> Authenticate(LoginCommand command)
         {
             var response = _service.Authenticate(command);

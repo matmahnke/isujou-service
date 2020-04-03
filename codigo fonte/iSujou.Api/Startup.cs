@@ -3,6 +3,8 @@ using iSujou.Infra;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +78,19 @@ namespace iSujou.Api
                 authopt.AddPolicy("MustHaveEmail", polBuilder => polBuilder.RequireClaim(ClaimTypes.Role));
             });
 
+            services.AddApiVersioning(p =>
+            {
+                p.DefaultApiVersion = new ApiVersion(1, 0);
+                p.ReportApiVersions = true;
+                p.AssumeDefaultVersionWhenUnspecified = true;
+            });
+
+            services.AddVersionedApiExplorer(p =>
+            {
+                p.DefaultApiVersion = new ApiVersion(1, 0);
+                p.AssumeDefaultVersionWhenUnspecified = true;
+                p.ApiVersionParameterSource = new UrlSegmentApiVersionReader();
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -105,6 +120,8 @@ namespace iSujou.Api
             {
                 app.UseHsts();
             }
+
+            app.UseApiVersioning();
 
             app.UseHttpsRedirection();
 

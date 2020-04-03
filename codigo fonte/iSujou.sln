@@ -9,13 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSujou.Domain", "iSujou.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSujou.Infra", "iSujou.Infra\iSujou.Infra.csproj", "{E4A91FB0-1697-43AC-A328-B1C55979622C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSujou.Globalization", "iSujou.Globalization\iSujou.Globalization.csproj", "{D27BE557-5052-4115-B70C-56BED9BF927E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSujou.Infra.Tests", "iSujou.Infra.Tests\iSujou.Infra.Tests.csproj", "{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSujou.Integration.Tests", "iSujou.Integration.Tests\iSujou.Integration.Tests.csproj", "{DFB9A6FD-7D97-4423-8A66-23440409C677}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSujou.CrossCutting", "iSujou.CrossCutting\iSujou.CrossCutting.csproj", "{A44C1356-09FB-4187-A366-420C0F9B8368}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iSujou.CrossCutting", "iSujou.CrossCutting\iSujou.CrossCutting.csproj", "{A44C1356-09FB-4187-A366-420C0F9B8368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,30 +59,6 @@ Global
 		{E4A91FB0-1697-43AC-A328-B1C55979622C}.Release|x64.Build.0 = Release|Any CPU
 		{E4A91FB0-1697-43AC-A328-B1C55979622C}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4A91FB0-1697-43AC-A328-B1C55979622C}.Release|x86.Build.0 = Release|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Debug|x64.Build.0 = Debug|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Debug|x86.Build.0 = Debug|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Release|x64.ActiveCfg = Release|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Release|x64.Build.0 = Release|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Release|x86.ActiveCfg = Release|Any CPU
-		{D27BE557-5052-4115-B70C-56BED9BF927E}.Release|x86.Build.0 = Release|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Debug|x64.Build.0 = Debug|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Debug|x86.Build.0 = Debug|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Release|x64.ActiveCfg = Release|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Release|x64.Build.0 = Release|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Release|x86.ActiveCfg = Release|Any CPU
-		{73EA4BFF-3FE2-41FF-A7C6-E277375FA283}.Release|x86.Build.0 = Release|Any CPU
 		{DFB9A6FD-7D97-4423-8A66-23440409C677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFB9A6FD-7D97-4423-8A66-23440409C677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB9A6FD-7D97-4423-8A66-23440409C677}.Debug|x64.ActiveCfg = Debug|Any CPU
