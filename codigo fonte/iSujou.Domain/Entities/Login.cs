@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,5 +20,7 @@ namespace iSujou.Domain.Entities
         public string Password { get; set; }
 
         public string Token { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
     }
 }

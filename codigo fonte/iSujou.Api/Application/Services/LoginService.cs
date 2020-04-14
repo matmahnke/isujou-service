@@ -23,21 +23,14 @@ namespace iSujou.Api.Application.Services
         }
         public string Authenticate(LoginCommand command)
         {
-
             var result = _loginRepository.GetAll().FirstOrDefault(x => x.Username == command.Username
             && x.Password == command.Password);
 
-            // return null if user not found
             if (result == null)
                 return null;
 
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-
-            var jwtSection = _configuration.GetSection("JwtConfiguration");
-            var jwtConfig = jwtSection.Get<JwtConfiguration>();
-            var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
+            var secret = _configuration.GetSection("JwtConfiguration:Secret").Value;
+            var key = Encoding.ASCII.GetBytes(secret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -49,6 +42,8 @@ namespace iSujou.Api.Application.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
 
             };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 

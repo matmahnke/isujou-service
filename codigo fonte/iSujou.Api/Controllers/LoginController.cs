@@ -1,5 +1,6 @@
 ﻿using iSujou.Api.Application.Commands;
 using iSujou.Api.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace iSujou.Api.Controllers
@@ -18,6 +19,7 @@ namespace iSujou.Api.Controllers
 
         [HttpPost]
         [MapToApiVersion("1.0")]
+        [AllowAnonymous]
         public ActionResult<string> Authenticate(LoginCommand command)
         {
             var response = _service.Authenticate(command);
