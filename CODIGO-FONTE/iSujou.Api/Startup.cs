@@ -1,22 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using iSujou.Api.Registers;
 using iSujou.Infra;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.Swagger;
 
 namespace iSujou.Api
 {
@@ -31,61 +21,45 @@ namespace iSujou.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtKey = Configuration.GetSection("JwtConfiguration:Secret").Value;
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddControllers()
                 .AddNewtonsoftJson();
 
             services.AddOptions();
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services
+                .RegisterServices()
+                .RegisterRepositories();
 
-            services.AddDbContext<iSujouContext>(x =>
-            x.UseSqlServer(connectionString,
-            op => op.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null)));
+            services.AddSingleton(Configuration);
+
+            services
+                .AddDbServices(connectionString)
+                .AddAuthenticationService(jwtKey)
+                .AddAuthorization()
+                .AddSwaggerServices();
 
 
-
-            var jwtSection = Configuration.GetSection("JwtConfiguration");
-            var jwtConfig = jwtSection.Get<JwtConfiguration>();
-            var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
-
-            services.AddAuthentication(x =>
+            services.AddApiVersioning(p =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+                p.DefaultApiVersion = new ApiVersion(1, 0);
+                p.ReportApiVersions = true;
+                p.AssumeDefaultVersionWhenUnspecified = true;
             });
 
-
-            services.AddSwaggerGen(c =>
+            services.AddVersionedApiExplorer(p =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "iSujou API",
-                    Description = "API feita em .NET Core 3.0"
-                });
+                p.DefaultApiVersion = new ApiVersion(1, 0);
+                p.AssumeDefaultVersionWhenUnspecified = true;
+                p.ApiVersionParameterSource = new UrlSegmentApiVersionReader();
             });
 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-
-            var context = serviceScope.ServiceProvider.GetRequiredService<iSujouContext>();
-
-            context.Database.Migrate();
 
             if (env.IsDevelopment())
             {
@@ -96,14 +70,21 @@ namespace iSujou.Api
                 app.UseHsts();
             }
 
+            app.UseApiVersioning();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app
+                .UseDbServices()
+                //.UseAuthenticationService()
+                //.UseAuthorizationService()
+                .UseSwaggerServices();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
         }
