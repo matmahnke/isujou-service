@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { isAuthenticated } from './../services/auth.js';
-import NotFound from './../components/NotFound';
+import NotFound from './../components/NotFound/NotFound';
 
 import Login from './../pages/login';
 import Register from './../pages/register';
