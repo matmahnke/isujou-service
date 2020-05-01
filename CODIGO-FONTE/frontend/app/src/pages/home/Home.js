@@ -8,7 +8,6 @@ import {
   Card,
   CardBody,
   CardImg,
-  UncontrolledTooltip,
   Container,
   Row,
   Col
@@ -26,7 +25,7 @@ class Home extends React.Component {
         <main ref="main">
           <div className="position-relative">
             <section className="section section-lg section-shaped pb-250">
-              <div className="shape shape-style-1 shape-dark">
+              <div className="shape shape-style-1 bg-gradient-default">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -169,7 +168,7 @@ class Home extends React.Component {
                           />
                         </svg>
                         <h4 className="display-3 font-weight-bold text-white">
-                          Casa na capital
+                          Casa no centro
                         </h4>
                         <p className="lead text-italic text-white">
                           Casa com três quartos, dois banheiros e uma área de festa.
