@@ -68,6 +68,18 @@
     .mb--300 {
         margin-bottom: -300px !important;
     }
+    .mt--400 {
+        margin-top: -400px !important;
+    }
+    .mb--400 {
+        margin-bottom: -400px !important;
+    }
+    .mt--500 {
+        margin-top: -500px !important;
+    }
+    .mb--500 {
+        margin-bottom: -500px !important;
+    }
 
 
     // Large margins in pixels
@@ -101,5 +113,14 @@
     }
     .pb-300 {
         padding-bottom: 300px!important;
+    }
+}
+
+@media(max-width: 992px) {
+    .mt--500 {
+        margin-top: -350px !important;
+    }
+    .mb--500 {
+        margin-bottom: -350px !important;
     }
 }
