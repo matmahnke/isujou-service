@@ -54,14 +54,17 @@ const Login = () => {
 				</div>
 
 				<Container className="pt-lg-2">
-					<a href="/">
-						<img
-							alt="..."
-							className="img-center img-fluid mb-2"
-							src={require("../../assets/img/brand/logo-2-branco.png")}
-							style={{ width: "170px" }}
-						/>
-					</a>
+					<Row className="mb-5 justify-content-center">
+						<a href="/">
+							<img
+								alt="..."
+								className="img-fluid"
+								src={require("../../assets/img/brand/logo-2-branco.png")}
+								style={{ width: "170px" }}
+							/>
+						</a>
+						<h2 className="text-white mt-2 ml-3">Login</h2>
+					</Row>
 					<Row className="justify-content-center">
 						<Col lg="5">
 							<Card className="bg-secondary shadow border-0">
@@ -101,6 +104,7 @@ const Login = () => {
 												</InputGroupAddon>
 												<Input placeholder="E-mail"
 													type="email"
+													id="email"
 													required />
 											</InputGroup>
 										</FormGroup>
@@ -115,6 +119,7 @@ const Login = () => {
 													placeholder="Senha"
 													type="password"
 													autoComplete="off"
+													id="password"
 													required
 												/>
 											</InputGroup>
@@ -138,7 +143,7 @@ const Login = () => {
 												color="primary"
 												type="submit"
 											>
-												Sign in
+												Entrar
                       </Button>
 										</div>
 									</Form>
