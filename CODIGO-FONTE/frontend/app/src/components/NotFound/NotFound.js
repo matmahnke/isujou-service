@@ -7,8 +7,11 @@ import './NotFound.css';
 const NotFound = () => 
   <>
     <div className="centralizado">
+      <span className="rounded-circle img-center"/>
       <h1>404</h1>
-      <h3>Ah não! Página não encontrada.</h3>
+      <br/>
+      <br/>
+      <h3>Página não encontrada.</h3>
       <br/>
       <Button color="default" type="button" href="/">
         Início

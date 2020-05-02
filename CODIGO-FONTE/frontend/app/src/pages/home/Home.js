@@ -50,7 +50,7 @@ class Home extends React.Component {
                       <Button
                         className="mb-3 mb-sm-0"
                         color="primary"
-                        href="/anuncios"
+                        href="/adverts"
                       >
                         Conferir anúncios
                       </Button>
@@ -198,7 +198,7 @@ class Home extends React.Component {
                       </p>
                       <a
                         className="font-weight-bold text-success mt-5"
-                        href="/regras"
+                        href="/rules"
                       >
                         Entenda mais sobre o processo
                       </a>

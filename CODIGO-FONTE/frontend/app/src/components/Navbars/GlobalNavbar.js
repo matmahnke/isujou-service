@@ -92,10 +92,10 @@ class GlobalNavbar extends React.Component {
 
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                   <NavItem>
-                    <NavLink href="/anuncios">Anúncios</NavLink>
+                    <NavLink href="/adverts">Anúncios</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href="/regras">Regras</NavLink>
+                    <NavLink href="/rules">Regras</NavLink>
                   </NavItem>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto">
