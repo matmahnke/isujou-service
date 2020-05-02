@@ -1,6 +1,5 @@
 import React from 'react';
 import * as yup from 'yup';
-import './Login.css';
 import axios from 'axios';
 import { History } from '../../components/History';
 

@@ -18,8 +18,6 @@ import {
 } from "reactstrap";
 
 import SimpleFooter from '../../components/Footers/SimpleFooter';
-import DatePicker from '../../components/DateTimePicker/DatePicker';
-
 const Register = () => {
 	const handleSubmit = values => {
 		alert('Ainda não :(')
@@ -170,7 +168,21 @@ const Register = () => {
 										</Row>
 										<Row>
 											<Col md={6}>
-												<DatePicker required placeholder="Data de nascimento" id="personBirthDay" />
+												<FormGroup>
+													<InputGroup className="input-group-alternative">
+														<InputGroupAddon addonType="prepend">
+															<InputGroupText>
+																<i className="fa fa-calendar" />
+															</InputGroupText>
+														</InputGroupAddon>
+														<Input
+															placeholder="Data de nascimento"
+															type="date"
+															id="personBirthDay"
+															required
+														/>
+													</InputGroup>
+												</FormGroup>
 											</Col>
 											<Col md={6}>
 												<FormGroup>
