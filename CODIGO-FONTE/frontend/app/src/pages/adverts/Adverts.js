@@ -15,7 +15,10 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
+  Pagination,
+  PaginationItem,
+  PaginationLink
 } from "reactstrap";
 
 class Adverts extends React.Component {
@@ -188,6 +191,45 @@ class Adverts extends React.Component {
                 </Row>
               </Container>
             </section>
+
+            <Container>
+              <Pagination className="mb-6 float-right">
+                <PaginationItem>
+                  <PaginationLink
+                    aria-label="Previous"
+                    onClick={e => e.preventDefault()}
+                    disabled
+                  >
+                    <i className="fa fa-angle-left" />
+                    <span className="sr-only">Previous</span>
+                  </PaginationLink>
+                </PaginationItem>
+                <PaginationItem className="active">
+                  <PaginationLink onClick={e => e.preventDefault()}>
+                    1
+              </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink onClick={e => e.preventDefault()}>
+                    2
+              </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink onClick={e => e.preventDefault()}>
+                    3
+              </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink
+                    aria-label="Next"
+                    onClick={e => e.preventDefault()}
+                  >
+                    <i className="fa fa-angle-right" />
+                    <span className="sr-only">Next</span>
+                  </PaginationLink>
+                </PaginationItem>
+              </Pagination>
+            </Container>
           </div>
         </main>
         <SimpleFooter />
