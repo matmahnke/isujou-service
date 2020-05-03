@@ -81,8 +81,18 @@ class Adverts extends React.Component {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section pt-4">
               <Container>
+                <Row className="mb-5">
+                  <Col>
+                    <Button
+                      color="primary"
+                      href="/advert/new"
+                    >
+                      Criar um anúncio
+                    </Button>
+                  </Col>
+                </Row>
                 <Row className="mb-5">
                   <Col lg="4">
                     <Card className="shadow border-0">
@@ -97,7 +107,7 @@ class Adverts extends React.Component {
                         </p>
                         <Button
                           color="primary"
-                          href="/advert/1"
+                          href="/advert/view/1"
                         >
                           Detalhes
                         </Button>
@@ -117,7 +127,7 @@ class Adverts extends React.Component {
                         </p>
                         <Button
                           color="primary"
-                          href="/advert/1"
+                          href="/advert/view/1"
                         >
                           Detalhes
                         </Button>
@@ -137,7 +147,7 @@ class Adverts extends React.Component {
                         </p>
                         <Button
                           color="primary"
-                          href="/advert/1"
+                          href="/advert/view/1"
                         >
                           Detalhes
                         </Button>
@@ -159,7 +169,7 @@ class Adverts extends React.Component {
                         </p>
                         <Button
                           color="primary"
-                          href="/advert/1"
+                          href="/advert/view/1"
                         >
                           Detalhes
                         </Button>
@@ -179,7 +189,7 @@ class Adverts extends React.Component {
                         </p>
                         <Button
                           color="primary"
-                          href="/advert/1"
+                          href="/advert/view/1"
                         >
                           Detalhes
                         </Button>
@@ -199,7 +209,7 @@ class Adverts extends React.Component {
                         </p>
                         <Button
                           color="primary"
-                          href="/advert/1"
+                          href="/advert/view/1"
                         >
                           Detalhes
                         </Button>

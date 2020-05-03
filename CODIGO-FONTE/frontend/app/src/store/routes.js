@@ -8,6 +8,7 @@ import Login from './../pages/login';
 import Register from './../pages/register';
 import Adverts from './../pages/adverts';
 import Advert from './../pages/advert';
+import NewAdvert from './../pages/newAdvert';
 import Properties from './../pages/properties';
 import Property from './../pages/property';
 import Profile from './../pages/profile';
@@ -33,11 +34,12 @@ const Routes = () => (
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/adverts' component={Adverts} />
-            <Route exact path='/advert/:id' component={Advert} />
+            <Route exact path='/advert/new' component={NewAdvert} />
+            <Route exact path='/advert/view/:id' component={Advert} />
             <Route exact path='/properties' component={Properties} />
-            <Route exact path='/property/new' component={() => <Property type="new"></Property>} />
-            <Route exact path='/property/view/:id' component={() => <Property type="view"></Property>} />
-            <Route exact path='/property/edit/:id' component={() => <Property type="edit"></Property>} />
+            <Route exact path='/property/new' component={() => <Property type="new"/>} />
+            <Route exact path='/property/view/:id' component={() => <Property type="view"/>} />
+            <Route exact path='/property/edit/:id' component={() => <Property type="edit"/>} />
             <Route exact path='/profile/:id' component={Profile} />
             <Route component={NotFound} />
             <PrivateRoute exact path='/privateRouteExample' component={() => <h1>this page is private</h1>} />

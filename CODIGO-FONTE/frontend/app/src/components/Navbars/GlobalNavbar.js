@@ -10,7 +10,6 @@ import {
   DropdownItem,
   DropdownToggle,
   UncontrolledDropdown,
-  Media,
   NavbarBrand,
   Navbar,
   NavItem,
@@ -18,8 +17,7 @@ import {
   Nav,
   Container,
   Row,
-  Col,
-  UncontrolledTooltip
+  Col
 } from "reactstrap";
 
 class GlobalNavbar extends React.Component {
@@ -97,6 +95,19 @@ class GlobalNavbar extends React.Component {
                   <NavItem>
                     <NavLink href="/rules">Regras</NavLink>
                   </NavItem>
+                  <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>
+                      Gerenciar
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem href="/properties">
+                        Imóveis
+                      </DropdownItem>
+                      <DropdownItem href="/my-adverts">
+                        Anúncios
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto">
                   <NavItem className="d-none d-lg-block ml-lg-4">
