@@ -65,7 +65,10 @@ class Advert extends React.Component {
                         <p>
                           <h2>
                             Casa no centro
-                      </h2>
+                          </h2>
+                          <p>
+                            <i className="fa fa-calendar"></i> 01/05/2020
+                          </p>
                       Casa com três quartos, dois banheiros e uma área de festa.
                     </p>
                       </Row>

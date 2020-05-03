@@ -89,6 +89,9 @@ class Adverts extends React.Component {
                       <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
                       <CardHeader>Casa no centro</CardHeader>
                       <CardBody>
+                        <p>
+                          <i className="fa fa-calendar"></i> 01/05/2020
+                        </p>
                         <p className="description">
                           Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
                         </p>
@@ -106,6 +109,9 @@ class Adverts extends React.Component {
                       <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
                       <CardHeader>Casa no centro</CardHeader>
                       <CardBody>
+                        <p>
+                          <i className="fa fa-calendar"></i> 01/05/2020
+                        </p>
                         <p className="description">
                           Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
                         </p>
@@ -123,6 +129,9 @@ class Adverts extends React.Component {
                       <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
                       <CardHeader>Casa no centro</CardHeader>
                       <CardBody>
+                        <p>
+                          <i className="fa fa-calendar"></i> 01/05/2020
+                        </p>
                         <p className="description">
                           Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
                         </p>
@@ -142,6 +151,9 @@ class Adverts extends React.Component {
                       <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
                       <CardHeader>Casa no centro</CardHeader>
                       <CardBody>
+                        <p>
+                          <i className="fa fa-calendar"></i> 01/05/2020
+                        </p>
                         <p className="description">
                           Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
                         </p>
@@ -159,6 +171,9 @@ class Adverts extends React.Component {
                       <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
                       <CardHeader>Casa no centro</CardHeader>
                       <CardBody>
+                        <p>
+                          <i className="fa fa-calendar"></i> 01/05/2020
+                        </p>
                         <p className="description">
                           Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
                         </p>
@@ -176,6 +191,9 @@ class Adverts extends React.Component {
                       <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
                       <CardHeader>Casa no centro</CardHeader>
                       <CardBody>
+                        <p>
+                          <i className="fa fa-calendar"></i> 01/05/2020
+                        </p>
                         <p className="description">
                           Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
                         </p>
