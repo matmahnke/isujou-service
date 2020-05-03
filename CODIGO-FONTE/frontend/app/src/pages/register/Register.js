@@ -13,8 +13,7 @@ import {
 	InputGroup,
 	Container,
 	Row,
-	Col,
-	Label
+	Col
 } from "reactstrap";
 
 import SimpleFooter from '../../components/Footers/SimpleFooter';
