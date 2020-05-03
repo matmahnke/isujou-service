@@ -29,7 +29,7 @@ class Properties extends React.Component {
           </section>
 
           <section className="section">
-            <Container>
+            <Container className="card shadow p-4">
               <Row>
                 <h2>Seus imóveis</h2>
               </Row>
