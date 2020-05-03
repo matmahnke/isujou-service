@@ -35,10 +35,10 @@ class Properties extends React.Component {
 
           <section className="section">
             <Container className="card shadow px-4 pt-3">
-              <Row>
+              <Row className="pl-2">
                 <h2>Seus imóveis</h2>
               </Row>
-              <Row className="mt-2">
+              <Row className="pl-2 mt-2">
                 <Button color="primary" href="/property/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
