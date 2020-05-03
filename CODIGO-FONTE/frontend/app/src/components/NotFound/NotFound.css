@@ -1,0 +1,16 @@
+h1 {
+    font-size: 500% !important;
+}
+
+.centralizado {
+    margin-top: 20vh;
+    text-align: center;
+}
+
+.centralizado span {
+    display: block;
+    background: #eee;
+    width: 200px;
+    height: 200px;
+    margin-bottom: -155px;
+}
