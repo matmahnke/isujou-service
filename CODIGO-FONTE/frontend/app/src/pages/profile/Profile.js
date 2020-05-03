@@ -12,7 +12,7 @@ import {
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 
-class Profile extends React.Component {
+export default class Profile extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -176,5 +176,3 @@ class Profile extends React.Component {
     );
   }
 }
-
-export default Profile;

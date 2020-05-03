@@ -10,7 +10,7 @@ import {
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 
-class Properties extends React.Component {
+export default class Properties extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -36,7 +36,7 @@ class Properties extends React.Component {
           <section className="section">
             <Container className="card shadow px-4 pt-3">
               <Row className="pl-2">
-                <h2>Seus imóveis</h2>
+                <h2>Imóveis</h2>
               </Row>
               <Row className="pl-2 mt-2">
                 <Button color="primary" href="/property/new">Cadastrar</Button>
@@ -46,53 +46,76 @@ class Properties extends React.Component {
                   <thead>
                     <tr>
                       <th>Ações</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
-                      <th>Table heading</th>
+                      <th>Título</th>
+                      <th>Estado</th>
+                      <th>Cidade</th>
+                      <th>Bairro</th>
+                      <th>Ativo</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>
-                        <Button color="success" size="sm" title="Visualizar" href="/property/view/1"><i className="fa fa-eye"></i></Button>
                         <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
                         <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
                       </td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
+                      <td>Casa na praia</td>
+                      <td>Santa Catarina</td>
+                      <td>Itajaí</td>
+                      <td>Meia Praia</td>
+                      <td>
+                        <div className="custom-control custom-checkbox">
+                          <input
+                            className="custom-control-input"
+                            checked
+                            disabled
+                            type="checkbox"
+                          />
+                          <label className="custom-control-label" htmlFor="customCheck2" />
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <td>
-                        <Button color="success" size="sm" title="Visualizar" href="/property/view/1"><i className="fa fa-eye"></i></Button>
                         <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
                         <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
                       </td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
+                      <td>Apartamento</td>
+                      <td>Santa Catarina</td>
+                      <td>Blumenau</td>
+                      <td>Victor Konder</td>
+                      <td>
+                        <div className="custom-control custom-checkbox">
+                          <input
+                            className="custom-control-input"
+                            checked
+                            disabled
+                            type="checkbox"
+                          />
+                          <label className="custom-control-label" htmlFor="customCheck2" />
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <td>
-                        <Button color="success" size="sm" title="Visualizar" href="/property/view/1"><i className="fa fa-eye"></i></Button>
                         <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
                         <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
                       </td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
+                      <td>Chacrá</td>
+                      <td>Santa Catarina</td>
+                      <td>Blumenau</td>
+                      <td>Vila Itoupava</td>
+                      <td>
+                        <div className="custom-control custom-checkbox">
+                          <input
+                            className="custom-control-input"
+                            checked
+                            disabled
+                            type="checkbox"
+                          />
+                          <label className="custom-control-label" htmlFor="customCheck2" />
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </Table>
@@ -105,5 +128,3 @@ class Properties extends React.Component {
     );
   }
 }
-
-export default Properties;

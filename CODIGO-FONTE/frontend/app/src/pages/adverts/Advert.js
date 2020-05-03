@@ -18,10 +18,22 @@ import {
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 
-class Property extends React.Component {
+export default class Advert extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+  }
+  obterTitulo() {
+    var nome = this.props.type ?? "Anúncio";
+
+    if (nome == 'new')
+      nome = 'Novo anúncio'
+    else if (nome == 'edit')
+      nome = 'Editar'
+    else if (nome == 'view')
+      nome = 'Anúncio'
+
+    return nome
   }
   render() {
     return (
@@ -44,12 +56,12 @@ class Property extends React.Component {
             <Container>
               <Card className="shadow border-0">
                 <CardHeader>
-                  <h2>Novo anúncio</h2>
+                  <h2>{this.obterTitulo()}</h2>
                 </CardHeader>
                 <CardBody>
                   <Form role="form">
                     <Row>
-                      <Col md={6}>
+                      <Col md={4}>
                         <FormGroup>
                           <Label for="advertProperty">Imóvel</Label>
                           <InputGroup>
@@ -89,6 +101,17 @@ class Property extends React.Component {
                           </InputGroup>
                         </FormGroup>
                       </Col>
+                      <Col md={2}>
+                        <FormGroup>
+                          <Label for="advertActive">Ativo</Label>
+                          <InputGroup>
+                            <label className="custom-toggle mt-1">
+                              <input type="checkbox" id="advertActive" />
+                              <span className="custom-toggle-slider rounded-circle" />
+                            </label>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
                     </Row>
                     <Row>
                       <Col md={12}>
@@ -106,5 +129,3 @@ class Property extends React.Component {
     );
   }
 }
-
-export default Property;

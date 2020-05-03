@@ -18,13 +18,9 @@ import {
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 
-class Property extends React.Component {
+export default class Property extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      habilitarCampos: false
-    }
   }
   componentDidMount() {
     document.documentElement.scrollTop = 0;
@@ -33,17 +29,10 @@ class Property extends React.Component {
   obterTitulo() {
     var nome = this.props.type;
 
-    if (nome == 'new') {
+    if (nome == 'new')
       nome = 'Novo imóvel'
-      this.state.habilitarCampos = true
-    }
-    else if (nome == 'edit') {
+    else if (nome == 'edit')
       nome = 'Editar'
-      this.state.habilitarCampos = true
-    } else if (nome == 'view') {
-      nome = 'Imóvel'
-      this.state.habilitarCampos = false
-    }
 
     return nome
   }
@@ -82,7 +71,6 @@ class Property extends React.Component {
                               type="text"
                               id="propertyTitle"
                               required
-                              disabled={!this.state.habilitarCampos}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -98,7 +86,6 @@ class Property extends React.Component {
                               rows="3"
                               id="propertyDescription"
                               required
-                              disabled={!this.state.habilitarCampos}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -120,7 +107,6 @@ class Property extends React.Component {
                                   type="select"
                                   name="select"
                                   id="propertyState"
-                                  disabled={!this.state.habilitarCampos}
                                 >
                                   <option>1</option>
                                   <option>2</option>
@@ -139,7 +125,6 @@ class Property extends React.Component {
                                   type="text"
                                   id="propertyCity"
                                   required
-                                  disabled={!this.state.habilitarCampos}
                                 />
                               </InputGroup>
                             </FormGroup>
@@ -152,7 +137,6 @@ class Property extends React.Component {
                                   type="text"
                                   id="propertyNeightborhood"
                                   required
-                                  disabled={!this.state.habilitarCampos}
                                 />
                               </InputGroup>
                             </FormGroup>
@@ -167,7 +151,6 @@ class Property extends React.Component {
                                   type="text"
                                   id="propertyStreet"
                                   required
-                                  disabled={!this.state.habilitarCampos}
                                 />
                               </InputGroup>
                             </FormGroup>
@@ -180,7 +163,6 @@ class Property extends React.Component {
                                   type="number"
                                   id="propertyNumber"
                                   required
-                                  disabled={!this.state.habilitarCampos}
                                 />
                               </InputGroup>
                             </FormGroup>
@@ -193,7 +175,6 @@ class Property extends React.Component {
                                   type="text"
                                   id="propertyCep"
                                   required
-                                  disabled={!this.state.habilitarCampos}
                                 />
                               </InputGroup>
                             </FormGroup>
@@ -208,7 +189,6 @@ class Property extends React.Component {
                                   type="textarea"
                                   rows="3"
                                   id="propertyComplement"
-                                  disabled={!this.state.habilitarCampos}
                                 />
                               </InputGroup>
                             </FormGroup>
@@ -216,13 +196,11 @@ class Property extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    { this.state.habilitarCampos && 
-                      <Row>
-                        <Col md={12}>
-                          <Button color="success">Salvar</Button>
-                        </Col>
-                      </Row>
-                    }
+                    <Row>
+                      <Col md={12}>
+                        <Button color="success">Salvar</Button>
+                      </Col>
+                    </Row>
                   </Form>
                 </CardBody>
               </Card>
@@ -234,5 +212,3 @@ class Property extends React.Component {
     );
   }
 }
-
-export default Property;

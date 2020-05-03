@@ -103,7 +103,7 @@ class GlobalNavbar extends React.Component {
                       <DropdownItem href="/properties">
                         Imóveis
                       </DropdownItem>
-                      <DropdownItem href="/my-adverts">
+                      <DropdownItem href="/adverts/mine">
                         Anúncios
                       </DropdownItem>
                     </DropdownMenu>

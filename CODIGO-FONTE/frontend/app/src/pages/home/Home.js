@@ -13,7 +13,7 @@ import {
   Col
 } from "reactstrap";
 
-class Home extends React.Component {
+export default class Home extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -301,5 +301,3 @@ class Home extends React.Component {
     );
   }
 }
-
-export default Home;

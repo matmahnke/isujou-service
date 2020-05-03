@@ -9,8 +9,8 @@ import {
   UncontrolledCarousel
 } from "reactstrap";
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import GlobalNavbar from "../../../components/Navbars/GlobalNavbar.js";
+import SimpleFooter from "../../../components/Footers/SimpleFooter.js";
 
 import './Advert.css';
 
@@ -89,7 +89,7 @@ class Advert extends React.Component {
                           alt="..."
                           width="150px"
                           className="rounded-circle"
-                          src={require("../../assets/img/icons/1.jpg")}
+                          src={require("../../../assets/img/icons/1.jpg")}
                         />
                       </Row>
                       <Row className="justify-content-center mt-2">

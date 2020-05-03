@@ -15,5 +15,6 @@ namespace iSujou.Domain.Entities
         public string Cep { get; set; }
         public string Number { get; set; }
         public string Complement { get; set; }
+        public bool Active { get; set; }
     }
 }

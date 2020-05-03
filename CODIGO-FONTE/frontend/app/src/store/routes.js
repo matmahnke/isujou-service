@@ -3,16 +3,21 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { isAuthenticated } from './../services/auth.js';
 import NotFound from './../components/NotFound/NotFound';
 
-import Home from './../pages/home';
-import Login from './../pages/login';
-import Register from './../pages/register';
-import Adverts from './../pages/adverts';
-import Advert from './../pages/advert';
-import NewAdvert from './../pages/newAdvert';
-import Properties from './../pages/properties';
-import Property from './../pages/property';
-import Profile from './../pages/profile';
 import Auth from '../pages/auth/auth.js';
+import Home from './../pages/home/Home';
+import Login from './../pages/login/Login';
+import Register from './../pages/register/Register';
+import Profile from './../pages/profile/Profile';
+
+// Anúncios
+import Portfolio from './../pages/adverts/portfolio/Portfolio';
+import PortfolioAdvert from './../pages/adverts/portfolio/Advert';
+import Adverts from './../pages/adverts/Adverts';
+import Advert from './../pages/adverts/Advert';
+
+// Imóveis
+import Properties from './../pages/properties/Properties';
+import Property from './../pages/properties/Property';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest}
@@ -33,14 +38,15 @@ const Routes = () => (
             <Route exact path='/auth' component={Auth} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
-            <Route exact path='/adverts' component={Adverts} />
-            <Route exact path='/advert/new' component={NewAdvert} />
-            <Route exact path='/advert/view/:id' component={Advert} />
+            <Route exact path='/profile/:id' component={Profile} />
+            <Route exact path='/adverts' component={Portfolio} />
+            <Route exact path='/adverts/mine' component={Adverts} />
+            <Route exact path='/advert/view/:id' component={PortfolioAdvert} />
+            <Route exact path='/advert/new' component={() => <Advert type="new"/>} />
+            <Route exact path='/advert/edit/:id' component={() => <Advert type="edit"/>} />
             <Route exact path='/properties' component={Properties} />
             <Route exact path='/property/new' component={() => <Property type="new"/>} />
-            <Route exact path='/property/view/:id' component={() => <Property type="view"/>} />
             <Route exact path='/property/edit/:id' component={() => <Property type="edit"/>} />
-            <Route exact path='/profile/:id' component={Profile} />
             <Route component={NotFound} />
             <PrivateRoute exact path='/privateRouteExample' component={() => <h1>this page is private</h1>} />
         </Switch>
