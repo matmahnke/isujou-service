@@ -1,6 +1,11 @@
 import React from "react";
 
-import { Button, Card, Container, Row, Col, Table } from "reactstrap";
+import {
+  Button,
+  Container,
+  Row,
+  Table
+} from "reactstrap";
 
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
@@ -29,12 +34,12 @@ class Properties extends React.Component {
           </section>
 
           <section className="section">
-            <Container className="card shadow p-4">
+            <Container className="card shadow px-4 pt-3">
               <Row>
                 <h2>Seus imóveis</h2>
               </Row>
               <Row className="mt-2">
-                <Button color="primary">Cadastrar</Button>
+                <Button color="primary" href="/property/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
                 <Table responsive>

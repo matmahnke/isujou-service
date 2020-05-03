@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Button, Card, Container, Row, Col, Table, UncontrolledCarousel } from "reactstrap";
+import {
+  Button,
+  Card,
+  Container,
+  Row,
+  Col,
+  UncontrolledCarousel
+} from "reactstrap";
 
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";

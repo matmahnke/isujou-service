@@ -9,6 +9,7 @@ import Register from './../pages/register';
 import Adverts from './../pages/adverts';
 import Advert from './../pages/advert';
 import Properties from './../pages/properties';
+import Property from './../pages/property';
 import Profile from './../pages/profile';
 import Auth from '../pages/auth/auth.js';
 
@@ -34,6 +35,9 @@ const Routes = () => (
             <Route exact path='/adverts' component={Adverts} />
             <Route exact path='/advert/:id' component={Advert} />
             <Route exact path='/properties' component={Properties} />
+            <Route exact path='/property/new' component={() => <Property type="new"></Property>} />
+            <Route exact path='/property/view/:id' component={() => <Property type="view"></Property>} />
+            <Route exact path='/property/edit/:id' component={() => <Property type="edit"></Property>} />
             <Route exact path='/profile/:id' component={Profile} />
             <Route component={NotFound} />
             <PrivateRoute exact path='/privateRouteExample' component={() => <h1>this page is private</h1>} />
