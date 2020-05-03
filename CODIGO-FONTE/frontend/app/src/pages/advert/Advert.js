@@ -31,7 +31,7 @@ class Advert extends React.Component {
     return (
       <>
         <GlobalNavbar />
-        <main className="profile-page" ref="main">
+        <main ref="main">
           <section className="section-profile-cover section-shaped my-0">
             {/* Circles background */}
             <div className="shape shape-style-1 bg-gradient-default">
