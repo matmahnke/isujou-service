@@ -1,12 +1,10 @@
 ﻿using iSujou.Infra.Mappings;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace iSujou.Infra
 {
-    public class iSujouContext : DbContext
+    public class iSujouContext : IdentityDbContext
     {
         public iSujouContext(DbContextOptions<iSujouContext> options)
             : base(options)
@@ -19,7 +17,12 @@ namespace iSujou.Infra
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new LoginMapping());
+            modelBuilder = modelBuilder.ApplyConfiguration(new UserMapping())
+            .ApplyConfiguration(new PropertyMapping())
+            .ApplyConfiguration(new ProposalMapping())
+            .ApplyConfiguration(new ContractMapping())
+            .ApplyConfiguration(new AdvertMapping())
+            .ApplyConfiguration(new AdvertTaskMapping());
             base.OnModelCreating(modelBuilder);
         }
     }

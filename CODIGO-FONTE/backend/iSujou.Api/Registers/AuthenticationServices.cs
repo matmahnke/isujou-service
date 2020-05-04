@@ -14,30 +14,16 @@ namespace iSujou.Api.Registers
     {
         public static IServiceCollection AddAuthenticationService(this IServiceCollection services, string jwtKey)
         {
-            //services.AddIdentityServer()
-            //    .AddInMemoryApiResources()
-            //    .AddInMemoryClients()
-            //    .AddDeveloperSigningCredential();
-            //services.AddDefaultIdentity<IdentityUser>()
-            //    .AddEntityFrameworkStores<iSujouContext>();
 
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    options.Password.RequireDigit = true;
-            //    options.Password.RequireLowercase = true;
-            //    options.Password.RequireNonAlphanumeric = true;
-            //    options.Password.RequireUppercase = true;
-            //    options.Password.RequiredLength = 6;
-            //    options.Password.RequiredUniqueChars = 1;
-
-            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            //    options.Lockout.MaxFailedAccessAttempts = 15;
-            //    options.Lockout.AllowedForNewUsers = true;
-
-            //    options.User.AllowedUserNameCharacters =
-            //    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._!@#$%¨&*()+";
-            //    options.User.RequireUniqueEmail = false;
-            //});
+            //services.AddIdentity<IdentityUser, IdentityRole>(config => {
+            //    config.Password.RequiredLength = 4;
+            //    config.Password.RequireDigit = false;
+            //    config.Password.RequireNonAlphanumeric = false;
+            //    config.Password.RequireUppercase = false;
+            //    config.SignIn.RequireConfirmedEmail = true;
+            //})
+            //.AddEntityFrameworkStores<iSujouContext>()
+            //.AddDefaultTokenProviders();
 
             services.AddAuthentication(x =>
             {
@@ -65,12 +51,13 @@ namespace iSujou.Api.Registers
                     ValidateAudience = false
                 };
             });
+
             return services;
         }
 
         public static IApplicationBuilder UseAuthenticationServic(this IApplicationBuilder app)
         {
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             app.UseAuthentication();
             return app;
         }
