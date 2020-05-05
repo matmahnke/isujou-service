@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
 	Button,
 	Card,
@@ -15,11 +14,39 @@ import {
 	Row,
 	Col
 } from "reactstrap";
-
+import { ToastContainer, toast } from 'react-toastify';
 import SimpleFooter from '../../components/Footers/SimpleFooter';
+import api from '../../services/api';
+import { Redirect } from 'react-router-dom'
+
 const Register = () => {
 	const handleSubmit = values => {
-		alert('Ainda não :(')
+		var name = document.getElementById('personName').value;
+		var lastname = document.getElementById('personLastName').value;
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		var cpf = document.getElementById('personCpf').value;
+		var birth = document.getElementById('personBirthDay').value;
+		var model = {
+			name: name,
+			username: email,
+			lastName: lastname,
+			password: password,
+			cpf: cpf,
+			birthDate: birth
+		}
+		api.post('auth/register/', model)
+			.then((res) => {
+				const { data } = res;
+				if (data) {
+					localStorage.setItem('Authorization', data.accessToken)
+					History.pushState('/')
+				}
+				return <Redirect to='/home' />
+			})
+			.catch((ex) => {
+				toast(ex);
+			})
 	}
 
 	return (
@@ -37,6 +64,7 @@ const Register = () => {
 				</div>
 
 				<Container className="pt-lg-2">
+					<ToastContainer />
 					<Row className="mb-5 justify-content-center">
 						<a href="/">
 							<img

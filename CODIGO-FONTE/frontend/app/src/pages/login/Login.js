@@ -20,14 +20,20 @@ import {
 } from "reactstrap";
 
 import SimpleFooter from '../../components/Footers/SimpleFooter';
+import api from '../../services/api';
 
 const Login = () => {
 	const handleSubmit = values => {
-		axios.post('http://localhost:8080/v1/api/auth', values)
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		api.post('auth', {
+			username: email,
+			password: password
+		})
 			.then(resp => {
 				const { data } = resp;
 				if (data) {
-					localStorage.setItem('Authorization', data)
+					localStorage.setItem('Authorization', data.accessToken)
 					History.pushState('/')
 				}
 			})

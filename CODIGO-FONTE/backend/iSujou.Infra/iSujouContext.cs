@@ -1,10 +1,11 @@
-﻿using iSujou.Infra.Mappings;
+﻿using iSujou.Domain.Entities;
+using iSujou.Infra.Mappings;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace iSujou.Infra
 {
-    public class iSujouContext : IdentityDbContext
+    public class iSujouContext : IdentityDbContext<User>
     {
         public iSujouContext(DbContextOptions<iSujouContext> options)
             : base(options)
@@ -17,7 +18,8 @@ namespace iSujou.Infra
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder = modelBuilder.ApplyConfiguration(new UserMapping())
+            modelBuilder = modelBuilder.ApplyConfiguration(new UserInfoMapping())
+                .ApplyConfiguration(new UserMapping())
             .ApplyConfiguration(new PropertyMapping())
             .ApplyConfiguration(new ProposalMapping())
             .ApplyConfiguration(new ContractMapping())

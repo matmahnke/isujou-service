@@ -8,8 +8,8 @@ namespace iSujou.Domain.Entities
     {
         public long? ProposalId { get; set; }
         public virtual Proposal Proposal { get; set; }
-        public long? OwnerId { get; set; }
-        public virtual User Owner { get; set; }
+        //public long? OwnerId { get; set; }
+        //public virtual User Owner { get; set; }
         public DateTime? OwnerSignatureDate { get; set; }
         public bool OwnerPersonSigned => OwnerSignatureDate.HasValue;
         //public long? HiredId { get; set; }

@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.5.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.3.1" />
@@ -41,10 +42,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\iSujou.Infra\iSujou.Infra.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Enums\" />
   </ItemGroup>
 
 </Project>

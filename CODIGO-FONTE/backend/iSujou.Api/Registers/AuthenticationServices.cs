@@ -1,61 +1,77 @@
+using iSujou.Api.Application.Configurations;
+using iSujou.Domain.Entities;
 using iSujou.Infra;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 using System;
-using System.Text;
 
 namespace iSujou.Api.Registers
 {
     public static class AuthenticationService
     {
-        public static IServiceCollection AddAuthenticationService(this IServiceCollection services, string jwtKey)
+        public static IServiceCollection AddAuthenticationService(this IServiceCollection services, IConfigurationSection tokenConfigurationsSesction)
         {
 
-            //services.AddIdentity<IdentityUser, IdentityRole>(config => {
-            //    config.Password.RequiredLength = 4;
-            //    config.Password.RequireDigit = false;
-            //    config.Password.RequireNonAlphanumeric = false;
-            //    config.Password.RequireUppercase = false;
-            //    config.SignIn.RequireConfirmedEmail = true;
-            //})
-            //.AddEntityFrameworkStores<iSujouContext>()
-            //.AddDefaultTokenProviders();
-
-            services.AddAuthentication(x =>
+            services.AddIdentity<User, IdentityRole>(config =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddGoogle(options =>
-            {
-                var configuration = (IConfiguration)services.BuildServiceProvider().GetService(typeof(IConfiguration));
-                IConfigurationSection googleAuthNSection =
-                    configuration.GetSection("Authentication:Google");
+                config.Password.RequiredLength = 4;
+                config.Password.RequireDigit = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
 
-                options.ClientId = googleAuthNSection["ClientId"];
-                options.ClientSecret = googleAuthNSection["ClientSecret"];
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                config.Lockout.MaxFailedAccessAttempts = 20;
+                config.Lockout.AllowedForNewUsers = true;
+
+                config.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                config.User.RequireUniqueEmail = false;
             })
-            .AddJwtBearer(x =>
+            .AddEntityFrameworkStores<iSujouContext>()
+            .AddDefaultTokenProviders();
+
+            var signingConfigurations = new SigningConfigurations();
+            services.AddSingleton(signingConfigurations);
+
+
+            var tokenConfigurations = new TokenConfigurations();
+            new ConfigureFromConfigurationOptions<TokenConfigurations>(
+                tokenConfigurationsSesction
+                )
+                    .Configure(tokenConfigurations);
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(authOptions =>
             {
-                x.Audience = "iSujou default api";
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.ClaimsIssuer = "iSujou.Api";
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                var paramsValidation = bearerOptions.TokenValidationParameters;
+                paramsValidation.IssuerSigningKey = signingConfigurations.Key;
+                paramsValidation.ValidAudience = tokenConfigurations.Audience;
+                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
+
+                // Valida a assinatura de um token recebido
+                paramsValidation.ValidateIssuerSigningKey = true;
+
+                // Verifica se um token recebido ainda é válido
+                paramsValidation.ValidateLifetime = true;
+
+                // Tempo de tolerância para a expiração de um token (utilizado
+                // caso haja problemas de sincronismo de horário entre diferentes
+                // computadores envolvidos no processo de comunicação)
+                paramsValidation.ClockSkew = TimeSpan.Zero;
             });
 
             return services;
         }
 
-        public static IApplicationBuilder UseAuthenticationServic(this IApplicationBuilder app)
+        public static IApplicationBuilder UseAuthenticationServices(this IApplicationBuilder app)
         {
             //app.UseIdentityServer();
             app.UseAuthentication();
