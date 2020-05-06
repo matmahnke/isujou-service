@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 import {
   Button,
@@ -17,6 +18,7 @@ import {
 
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import api from '../../services/api';
 
 export default class Property extends React.Component {
   constructor(props) {
@@ -36,9 +38,46 @@ export default class Property extends React.Component {
 
     return nome
   }
+
+  handleSubmit(event) {
+    var title = document.getElementById('propertyTitle').value;
+    var description = document.getElementById('propertyDescription').value;
+    var state = document.getElementById('propertyState').value;
+    var city = document.getElementById('propertyCity').value;
+    var neighborhood = document.getElementById('propertyNeightborhood').value;
+    var street = document.getElementById('propertyStreet').value;
+    var number = document.getElementById('propertyNumber').value;
+    var cep = document.getElementById('propertyCep').value;
+    var complement = document.getElementById('propertyComplement').value;
+    var model = {
+      title,
+      description,
+      state,
+      city,
+      neighborhood,
+      street,
+      cep,
+      number,
+      complement,
+      active: true
+    }
+
+    api.post('/property', model)
+      .then(() => {
+        toast('sucesso')
+        window.location.href = '/properties';
+      })
+      .catch((ex) => {
+        toast(ex)
+      })
+
+    event.preventDefault();
+  }
+
   render() {
     return (
       <>
+        <ToastContainer />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">
@@ -60,7 +99,7 @@ export default class Property extends React.Component {
                   <h2>{this.obterTitulo()}</h2>
                 </CardHeader>
                 <CardBody>
-                  <Form role="form">
+                  <Form role="form" onSubmit={e => this.handleSubmit(e)}>
                     <Row>
                       <Col md={12}>
                         <h4>Informações básicas</h4>
@@ -108,11 +147,11 @@ export default class Property extends React.Component {
                                   name="select"
                                   id="propertyState"
                                 >
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
                                 </Input>
                               </InputGroup>
                             </FormGroup>

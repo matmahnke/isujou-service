@@ -1,4 +1,5 @@
 using iSujou.Api.Application.Commands;
+using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace iSujou.Api.Controllers
     public class AdvertController : ControllerBase
     {
         private readonly IAdvertRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AdvertController(IAdvertRepository repository)
+        public AdvertController(IAdvertRepository repository, IUnitOfWork unitOfWork)
         {
-            this._repository = repository;
+            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -26,6 +29,7 @@ namespace iSujou.Api.Controllers
                 Date = command.Date,
                 PropertyId = command.PropertyId
             });
+            await _unitOfWork.Commit();
             return Ok();
         }
     }

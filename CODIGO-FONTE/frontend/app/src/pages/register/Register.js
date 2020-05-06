@@ -37,16 +37,20 @@ const Register = () => {
 		}
 		api.post('auth/register/', model)
 			.then((res) => {
+				console.info('success')
+				console.log(res)
 				const { data } = res;
 				if (data) {
 					localStorage.setItem('Authorization', data.accessToken)
-					History.pushState('/')
+					window.location.href = '/home';
 				}
-				return <Redirect to='/home' />
 			})
 			.catch((ex) => {
+				console.error('error')
+				console.log(ex)
 				toast(ex);
 			})
+		values.preventDefault();
 	}
 
 	return (
@@ -104,7 +108,7 @@ const Register = () => {
 										<small>Cirar uma conta com suas credenciais</small>
 									</div>
 									<Form role="form"
-										onSubmit={handleSubmit}
+										onSubmit={e => handleSubmit(e)}
 									>
 										<Row>
 											<Col md={6}>

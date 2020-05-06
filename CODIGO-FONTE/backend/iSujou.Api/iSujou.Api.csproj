@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\iSujou.CrossCutting\iSujou.CrossCutting.csproj" />
     <ProjectReference Include="..\iSujou.Infra\iSujou.Infra.csproj" />
   </ItemGroup>
 

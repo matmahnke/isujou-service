@@ -2,6 +2,8 @@ import React from 'react';
 import * as yup from 'yup';
 import axios from 'axios';
 import { History } from '../../components/History';
+import { ToastContainer, toast } from 'react-toastify';
+import { Redirect } from 'react-router-dom'
 
 import {
 	Button,
@@ -31,12 +33,20 @@ const Login = () => {
 			password: password
 		})
 			.then(resp => {
+				console.info('success')
+				console.log(resp)
 				const { data } = resp;
 				if (data) {
 					localStorage.setItem('Authorization', data.accessToken)
-					History.pushState('/')
+					window.location.href = '/home';
 				}
 			})
+			.catch((ex) => {
+				console.error('error')
+				console.log(ex)
+				toast(ex);
+			})
+			values.preventDefault();
 	}
 
 	const validations = yup.object().shape({
@@ -97,8 +107,7 @@ const Login = () => {
 									<div className="text-center text-muted mb-4">
 										<small>Logue com suas credenciais</small>
 									</div>
-									<Form role="form"
-										onSubmit={handleSubmit}
+									<Form role="form" onSubmit={e => handleSubmit(e)}
 									>
 										<FormGroup className="mb-3">
 											<InputGroup className="input-group-alternative">
