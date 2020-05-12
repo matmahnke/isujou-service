@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
 	Button,
 	Card,
@@ -15,11 +14,43 @@ import {
 	Row,
 	Col
 } from "reactstrap";
-
+import { ToastContainer, toast } from 'react-toastify';
 import SimpleFooter from '../../components/Footers/SimpleFooter';
+import api from '../../services/api';
+import { Redirect } from 'react-router-dom'
+
 const Register = () => {
 	const handleSubmit = values => {
-		alert('Ainda não :(')
+		var name = document.getElementById('personName').value;
+		var lastname = document.getElementById('personLastName').value;
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		var cpf = document.getElementById('personCpf').value;
+		var birth = document.getElementById('personBirthDay').value;
+		var model = {
+			name: name,
+			username: email,
+			lastName: lastname,
+			password: password,
+			cpf: cpf,
+			birthDate: birth
+		}
+		api.post('auth/register/', model)
+			.then((res) => {
+				console.info('success')
+				console.log(res)
+				const { data } = res;
+				if (data) {
+					localStorage.setItem('Authorization', data.accessToken)
+					window.location.href = '/home';
+				}
+			})
+			.catch((ex) => {
+				console.error('error')
+				console.log(ex)
+				toast(ex);
+			})
+		values.preventDefault();
 	}
 
 	return (
@@ -37,6 +68,7 @@ const Register = () => {
 				</div>
 
 				<Container className="pt-lg-2">
+					<ToastContainer />
 					<Row className="mb-5 justify-content-center">
 						<a href="/">
 							<img
@@ -76,7 +108,7 @@ const Register = () => {
 										<small>Cirar uma conta com suas credenciais</small>
 									</div>
 									<Form role="form"
-										onSubmit={handleSubmit}
+										onSubmit={e => handleSubmit(e)}
 									>
 										<Row>
 											<Col md={6}>

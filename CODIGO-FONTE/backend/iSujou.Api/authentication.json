@@ -2,10 +2,9 @@
   "JwtConfiguration": {
     "Secret": "eqowieuqalsfohvcxofisfslsfhgieiagbndrdnlugfleqowieuqalsfohvcxofisfslsfhgieiagbndrdnlugfleqowieuqalsfohvcxofisfslsfhgieiagbndrdnlugfl"
   },
-  "Authentication": {
-    "Google": {
-      "ClientId": "386103420603-fstlmql8pk3lq5jtn18kvisi2ncm7v7l.apps.googleusercontent.com",
-      "ClientSecret": "hI7xvYMGROGfsNMCqRfGklkQ"
-    }
+  "TokenConfigurations": {
+    "Audience": "ExemploAudience",
+    "Issuer": "ExemploIssuer",
+    "Seconds": 120
   }
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import * as yup from 'yup';
 import axios from 'axios';
 import { History } from '../../components/History';
+import { ToastContainer, toast } from 'react-toastify';
+import { Redirect } from 'react-router-dom'
 
 import {
 	Button,
@@ -20,17 +22,31 @@ import {
 } from "reactstrap";
 
 import SimpleFooter from '../../components/Footers/SimpleFooter';
+import api from '../../services/api';
 
 const Login = () => {
 	const handleSubmit = values => {
-		axios.post('http://localhost:8080/v1/api/auth', values)
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		api.post('auth', {
+			username: email,
+			password: password
+		})
 			.then(resp => {
+				console.info('success')
+				console.log(resp)
 				const { data } = resp;
 				if (data) {
-					localStorage.setItem('Authorization', data)
-					History.pushState('/')
+					localStorage.setItem('Authorization', data.accessToken)
+					window.location.href = '/home';
 				}
 			})
+			.catch((ex) => {
+				console.error('error')
+				console.log(ex)
+				toast(ex);
+			})
+			values.preventDefault();
 	}
 
 	const validations = yup.object().shape({
@@ -91,8 +107,7 @@ const Login = () => {
 									<div className="text-center text-muted mb-4">
 										<small>Logue com suas credenciais</small>
 									</div>
-									<Form role="form"
-										onSubmit={handleSubmit}
+									<Form role="form" onSubmit={e => handleSubmit(e)}
 									>
 										<FormGroup className="mb-3">
 											<InputGroup className="input-group-alternative">

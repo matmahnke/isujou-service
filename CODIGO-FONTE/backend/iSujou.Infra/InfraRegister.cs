@@ -11,6 +11,8 @@ namespace iSujou.Infra
         {
             service.AddScoped<DbContext, iSujouContext>();
             service.AddScoped<ILoginRepository, LoginRepository>();
+            service.AddScoped<IAdvertRepository, AdvertRepository>();
+            service.AddScoped<IPropertyRepository, PropertyRepository>();
             return service;
         }
     }

@@ -23,5 +23,6 @@ namespace iSujou.Domain.Repositories
         void Remove(params long[] ids);
         Task RemoveAsync(params long[] ids);
         void Remove(Expression<Func<TEntity, bool>> criteria);
+        Task<int> SaveChangesAsync();
     }
 }
