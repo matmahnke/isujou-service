@@ -19,7 +19,6 @@ import {
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
 import SimpleFooter from "../../components/Footers/SimpleFooter.js"
 import api from '../../services/api'
-import $ from 'jquery'
 
 export default class Property extends React.Component {
   componentDidMount() {

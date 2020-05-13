@@ -67,7 +67,7 @@ export default class Properties extends React.Component {
                           </thead>
                           <tbody>
                             {data.data.map((property, index) => {
-                              const { active, cep, city, complement, description, id, neighborhood, number, state, street, title } = property
+                              const { active, city, id, neighborhood, state, title } = property
                               return (
                                 <tr key={id}>
                                   <td>
