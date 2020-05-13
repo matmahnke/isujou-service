@@ -9,6 +9,12 @@ import {
 
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import api from '../../services/api';
+import Async from 'react-async';
+import { toast } from 'react-toastify';
+
+const getProperties = () =>
+  api.get('/property')
 
 export default class Properties extends React.Component {
   componentDidMount() {
@@ -42,83 +48,57 @@ export default class Properties extends React.Component {
                 <Button color="primary" href="/property/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
-                <Table responsive>
-                  <thead>
-                    <tr>
-                      <th>Ações</th>
-                      <th>Título</th>
-                      <th>Estado</th>
-                      <th>Cidade</th>
-                      <th>Bairro</th>
-                      <th>Ativo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Casa na praia</td>
-                      <td>Santa Catarina</td>
-                      <td>Itajaí</td>
-                      <td>Meia Praia</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Apartamento</td>
-                      <td>Santa Catarina</td>
-                      <td>Blumenau</td>
-                      <td>Victor Konder</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Chacrá</td>
-                      <td>Santa Catarina</td>
-                      <td>Blumenau</td>
-                      <td>Vila Itoupava</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <Async promiseFn={getProperties}>
+                  {({ data, err, isLoading }) => {
+                    if (isLoading) return "Carregando..."
+                    if (err) return toast.error(err.message)
+                    if (data)
+                      return (
+                        <Table responsive>
+                          <thead>
+                            <tr>
+                              <th>Ações</th>
+                              <th>Título</th>
+                              <th>Estado</th>
+                              <th>Cidade</th>
+                              <th>Bairro</th>
+                              <th>Ativo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.data.map((property, index) => {
+                              const { active, cep, city, complement, description, id, neighborhood, number, state, street, title } = property
+                              return (
+                                <tr key={id}>
+                                  <td>
+                                    <Button color="primary" size="sm" title="Editar"
+                                      href={"/property/edit/" + id}
+                                    ><i className="fa fa-pencil"></i></Button>
+                                    <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
+                                  </td>
+                                  <td>{title}</td>
+                                  <td>{state}</td>
+                                  <td>{city}</td>
+                                  <td>{neighborhood}</td>
+                                  <td>
+                                    <div className="custom-control custom-checkbox">
+                                      <input
+                                        className="custom-control-input"
+                                        checked={active}
+                                        disabled
+                                        type="checkbox"
+                                      />
+                                      <label className="custom-control-label" htmlFor="customCheck2" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            })}
+                          </tbody>
+                        </Table>
+                      )
+                  }}
+                </Async>
               </Row>
             </Container>
           </section>

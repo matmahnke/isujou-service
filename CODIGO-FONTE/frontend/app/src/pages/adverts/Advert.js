@@ -26,11 +26,11 @@ export default class Advert extends React.Component {
   obterTitulo() {
     var nome = this.props.type ?? "Anúncio";
 
-    if (nome == 'new')
+    if (nome === 'new')
       nome = 'Novo anúncio'
-    else if (nome == 'edit')
+    else if (nome === 'edit')
       nome = 'Editar'
-    else if (nome == 'view')
+    else if (nome === 'view')
       nome = 'Anúncio'
 
     return nome

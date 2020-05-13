@@ -1,10 +1,8 @@
 using iSujou.Api.Application.Commands;
 using iSujou.CrossCutting.Data.Interfaces;
-using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
-using iSujou.Infra;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
+using System;
 using System.Threading.Tasks;
 
 namespace iSujou.Api.Controllers
@@ -23,7 +21,6 @@ namespace iSujou.Api.Controllers
             _uow = uow;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -35,21 +32,30 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-
                 await _repository.AddAsync(command.ToEntity());
                 await _uow.Commit();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
+                return BadRequest(ex);
             }
+
             return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] PropertyCommand command)
         {
-            await _repository.UpdateAsync(command.ToEntity());
-            await _uow.Commit();
+            try
+            {
+                await _repository.UpdateAsync(command.ToEntity());
+                await _uow.Commit();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
             return Ok();
         }
     }
