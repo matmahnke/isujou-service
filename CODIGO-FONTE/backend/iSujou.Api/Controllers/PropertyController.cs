@@ -51,5 +51,20 @@ namespace iSujou.Api.Controllers
 
             return Ok();
         }
+
+        public async  Task<IActionResult> Delete([FromQuery] int id)
+        {
+            try
+            {
+                await _repository.RemoveAsync(id);
+                await _uow.Commit();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            return Ok();
+        }
     }
 }

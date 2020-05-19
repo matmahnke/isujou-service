@@ -23,14 +23,21 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]ProposalCommand command)
         {
-            await _repository.AddAsync(new Domain.Entities.Proposal
+            try
             {
-                AdvertId = command.AdvertId,
-                Status = command.Status,
-                Value = command.Value,
-                CandidateId = command.CandidateId
-            });
-            await _unitOfWork.Commit();
+                await _repository.AddAsync(new Domain.Entities.Proposal
+                {
+                    AdvertId = command.AdvertId,
+                    Status = command.Status,
+                    Value = command.Value,
+                    CandidateId = command.CandidateId
+                });
+                await _unitOfWork.Commit();
+            }
+            catch (System.Exception)
+            {
+                return BadRequest();
+            }
             return Ok();
         }
 
