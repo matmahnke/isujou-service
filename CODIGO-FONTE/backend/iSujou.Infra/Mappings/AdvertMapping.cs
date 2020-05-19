@@ -13,6 +13,9 @@ namespace iSujou.Infra.Mappings
             builder.HasOne(x => x.Property)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.Items)
+                .WithOne(x => x.Advert);
         }
     }
 }
