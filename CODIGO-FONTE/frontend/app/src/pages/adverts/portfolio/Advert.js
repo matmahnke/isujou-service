@@ -111,7 +111,7 @@ class Advert extends React.Component {
                   <Row className="justify-content-center">
                     <Button
                       color="default"
-                      href="/porposal/new/1"
+                      href="/proposal/new/1"
                     >
                       Fazer proposta
                     </Button>

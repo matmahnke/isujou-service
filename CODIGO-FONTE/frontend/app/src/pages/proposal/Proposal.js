@@ -19,7 +19,7 @@ import SimpleFooter from "../../components/Footers/SimpleFooter.js"
 
 import CurrencyInput from "../../components/Inputs/CurrencyInput.js"
 
-export default class Porposal extends React.Component {
+export default class Proposal extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
