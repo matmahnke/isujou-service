@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { isAuthenticated } from './../services/auth.js';
-import NotFound from './../components/NotFound/NotFound';
+import React from 'react'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { isAuthenticated } from './../services/auth.js'
+import NotFound from './../components/NotFound/NotFound'
 
-import Auth from '../pages/auth/auth.js';
-import Home from './../pages/home/Home';
-import Login from './../pages/login/Login';
-import Register from './../pages/register/Register';
-import Profile from './../pages/profile/Profile';
+import Auth from '../pages/auth/auth.js'
+import Home from './../pages/home/Home'
+import Login from './../pages/login/Login'
+import Register from './../pages/register/Register'
+import Profile from './../pages/profile/Profile'
 
 // Anúncios
-import Portfolio from './../pages/adverts/portfolio/Portfolio';
-import PortfolioAdvert from './../pages/adverts/portfolio/Advert';
-import Adverts from './../pages/adverts/Adverts';
-import Advert from './../pages/adverts/Advert';
+import Portfolio from './../pages/adverts/portfolio/Portfolio'
+import PortfolioAdvert from './../pages/adverts/portfolio/Advert'
+import Adverts from './../pages/adverts/Adverts'
+import Advert from './../pages/adverts/Advert'
 
 // Imóveis
-import Properties from './../pages/properties/Properties';
-import Property from './../pages/properties/Property';
+import Properties from './../pages/properties/Properties'
+import Property from './../pages/properties/Property'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest}
