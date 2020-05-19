@@ -33,15 +33,9 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PropertyCommand command)
         {
-            try
-            {
 
-                await _repository.AddAsync(command.ToEntity());
-                await _uow.Commit();
-            }
-            catch (System.Exception ex)
-            {
-            }
+            await _repository.AddAsync(command.ToEntity());
+            await _uow.Commit();
             return Ok();
         }
 
