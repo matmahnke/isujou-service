@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
 	Button,
 	Card,
@@ -13,11 +13,11 @@ import {
 	Container,
 	Row,
 	Col
-} from "reactstrap";
-import { ToastContainer, toast } from 'react-toastify';
-import SimpleFooter from '../../components/Footers/SimpleFooter';
-import api from '../../services/api';
-import { Redirect } from 'react-router-dom'
+} from 'reactstrap'
+
+import { ToastContainer, toast } from 'react-toastify'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
+import api from '../../services/api'
 
 const Register = () => {
 	const handleSubmit = values => {

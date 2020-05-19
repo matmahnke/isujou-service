@@ -1,9 +1,6 @@
-import React from 'react';
-import * as yup from 'yup';
-import axios from 'axios';
-import { History } from '../../components/History';
-import { ToastContainer, toast } from 'react-toastify';
-import { Redirect } from 'react-router-dom'
+import React from 'react'
+
+import { toast } from 'react-toastify'
 
 import {
 	Button,
@@ -48,11 +45,6 @@ const Login = () => {
 			})
 			values.preventDefault();
 	}
-
-	const validations = yup.object().shape({
-		email: yup.string().email().required(),
-		password: yup.string().min(8).required()
-	})
 
 	return (
 		<>

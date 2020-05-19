@@ -1,5 +1,5 @@
-import React from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import React from "react"
+import { ToastContainer, toast } from 'react-toastify'
 
 import {
   Button,
@@ -14,16 +14,13 @@ import {
   Row,
   Col,
   Label
-} from "reactstrap";
+} from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
-import api from '../../services/api';
+import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
+import SimpleFooter from "../../components/Footers/SimpleFooter.js"
+import api from '../../services/api'
 
 export default class Property extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -31,9 +28,9 @@ export default class Property extends React.Component {
   obterTitulo() {
     var nome = this.props.type;
 
-    if (nome == 'new')
+    if (nome === 'new')
       nome = 'Novo imóvel'
-    else if (nome == 'edit')
+    else if (nome === 'edit')
       nome = 'Editar'
 
     return nome
@@ -49,6 +46,7 @@ export default class Property extends React.Component {
     var number = document.getElementById('propertyNumber').value;
     var cep = document.getElementById('propertyCep').value;
     var complement = document.getElementById('propertyComplement').value;
+    var active = document.getElementById('propertyActive').value;
     var model = {
       title,
       description,
@@ -59,7 +57,7 @@ export default class Property extends React.Component {
       cep,
       number,
       complement,
-      active: true
+      active: active === "on"
     }
 
     api.post('/property', model)
@@ -103,6 +101,10 @@ export default class Property extends React.Component {
                     <Row>
                       <Col md={12}>
                         <h4>Informações básicas</h4>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={10}>
                         <FormGroup>
                           <Label for="propertyTitle">Título</Label>
                           <InputGroup>
@@ -113,6 +115,15 @@ export default class Property extends React.Component {
                             />
                           </InputGroup>
                         </FormGroup>
+                      </Col>
+                      <Col md={2}>
+                        <Label for="propertyActive">Ativo</Label>
+                        <InputGroup>
+                          <label className="custom-toggle mt-1">
+                            <input type="checkbox" id="propertyActive" defaultChecked />
+                            <span className="custom-toggle-slider rounded-circle" />
+                          </label>
+                        </InputGroup>
                       </Col>
                     </Row>
                     <Row>
