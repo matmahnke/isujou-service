@@ -8,7 +8,7 @@ import Home from './../pages/home/Home'
 import Login from './../pages/login/Login'
 import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
-import Porpouse from './../pages/porpouse/Porpouse'
+import Porposal from './../pages/porposal/Porposal'
 
 // Anúncios
 import Portfolio from './../pages/adverts/portfolio/Portfolio'
@@ -48,7 +48,7 @@ const Routes = () => (
             <Route exact path='/properties' component={Properties} />
             <Route exact path='/property/new' component={() => <Property type="new"/>} />
             <Route exact path='/property/edit/:id' component={() => <Property type="edit"/>} />
-            <Route exact path='/porpouse/new/:id' component={Porpouse} />
+            <Route exact path='/porposal/new/:id' component={Porposal} />
             <Route component={NotFound} />
             <PrivateRoute exact path='/privateRouteExample' component={() => <h1>this page is private</h1>} />
         </Switch>
