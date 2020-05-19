@@ -30,9 +30,18 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PropertyCommand command)
         {
+
+            await _repository.AddAsync(command.ToEntity());
+            await _uow.Commit();
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] PropertyCommand command)
+        {
             try
             {
-                await _repository.AddAsync(command.ToEntity());
+                await _repository.UpdateAsync(command.ToEntity());
                 await _uow.Commit();
             }
             catch (Exception ex)
@@ -43,12 +52,11 @@ namespace iSujou.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] PropertyCommand command)
+        public async  Task<IActionResult> Delete([FromQuery] int id)
         {
             try
             {
-                await _repository.UpdateAsync(command.ToEntity());
+                await _repository.RemoveAsync(id);
                 await _uow.Commit();
             }
             catch (Exception ex)
