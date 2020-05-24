@@ -7,11 +7,11 @@ import {
   Table
 } from "reactstrap";
 
+import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 import api from '../../services/api';
 import Async from 'react-async';
-import { toast } from 'react-toastify';
 
 const getProperties = () =>
   api.get('/property')
@@ -21,6 +21,7 @@ export default class Properties extends React.Component {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
   render() {
     return (
       <>
@@ -51,7 +52,10 @@ export default class Properties extends React.Component {
                 <Async promiseFn={getProperties}>
                   {({ data, err, isLoading }) => {
                     if (isLoading) return "Carregando..."
-                    if (err) return toast.error(err.message)
+                    if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+                                                          appearance: 'error',
+                                                          autoDismiss: true,
+                                                        })
                     if (data)
                       return (
                         <Table responsive>

@@ -1,5 +1,4 @@
 import React from "react"
-import { ToastContainer, toast } from 'react-toastify'
 
 import {
   Button,
@@ -16,6 +15,7 @@ import {
   Label
 } from 'reactstrap'
 
+import { AddToast } from 'react-toast-notifications'
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
 import SimpleFooter from "../../components/Footers/SimpleFooter.js"
 import api from '../../services/api'
@@ -62,11 +62,13 @@ export default class Property extends React.Component {
 
     api.post('/property', model)
       .then(() => {
-        toast('sucesso')
         window.location.href = '/properties';
       })
       .catch((ex) => {
-        toast(ex)
+        AddToast(ex.response.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       })
 
     event.preventDefault();
@@ -75,7 +77,6 @@ export default class Property extends React.Component {
   render() {
     return (
       <>
-        <ToastContainer />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">

@@ -15,11 +15,13 @@ import {
 	Col
 } from 'reactstrap'
 
-import { ToastContainer, toast } from 'react-toastify'
+import { useToasts } from 'react-toast-notifications'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
 
 const Register = () => {
+	const { addToast } = useToasts()
+
 	const handleSubmit = values => {
 		var name = document.getElementById('personName').value;
 		var lastname = document.getElementById('personLastName').value;
@@ -27,28 +29,34 @@ const Register = () => {
 		var password = document.getElementById('password').value;
 		var cpf = document.getElementById('personCpf').value;
 		var birth = document.getElementById('personBirthDay').value;
+		var gender = document.querySelector('input[name="gender-group"]:checked').value;
 		var model = {
 			name: name,
 			username: email,
 			lastName: lastname,
 			password: password,
 			cpf: cpf,
-			birthDate: birth
+			birthDate: birth,
+			gender: gender
 		}
+		debugger
 		api.post('auth/register/', model)
 			.then((res) => {
-				console.info('success')
-				console.log(res)
 				const { data } = res;
 				if (data) {
 					localStorage.setItem('Authorization', data.accessToken)
-					window.location.href = '/home';
+					addToast('Usuário cadastrado com sucesso', {
+						appearance: 'success',
+						autoDismiss: true,
+					})
+					window.location.href = '/home'
 				}
 			})
 			.catch((ex) => {
-				console.error('error')
-				console.log(ex)
-				toast(ex);
+				addToast(ex.response.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+					appearance: 'error',
+					autoDismiss: true,
+				})
 			})
 		values.preventDefault();
 	}
@@ -68,7 +76,6 @@ const Register = () => {
 				</div>
 
 				<Container className="pt-lg-2">
-					<ToastContainer />
 					<Row className="mb-5 justify-content-center">
 						<a href="/">
 							<img
@@ -83,7 +90,7 @@ const Register = () => {
 					<Row className="justify-content-center">
 						<Col lg="8">
 							<Card className="bg-secondary shadow border-0">
-								<CardHeader className="bg-white pb-5">
+								<CardHeader className="bg-white pb-5" hidden={true}>
 									<div className="text-muted text-center mb-3">
 										<small>Criar sua conta com</small>
 									</div>
@@ -173,6 +180,7 @@ const Register = () => {
 															type="password"
 															autoComplete="off"
 															id="password"
+															minLength="4"
 															required
 														/>
 													</InputGroup>
@@ -190,6 +198,7 @@ const Register = () => {
 															placeholder="Confirmar senha"
 															type="password"
 															autoComplete="off"
+															minLength="4"
 															id="confirmPassword"
 															required
 														/>

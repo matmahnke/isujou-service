@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -107,7 +108,7 @@ namespace iSujou.Api.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new { message = "Usuário e senha inválidos." });
             }
         }
 
@@ -123,7 +124,8 @@ namespace iSujou.Api.Controllers
                     Name = command.Name,
                     LastName = command.LastName,
                     Cpf = command.Cpf,
-                    BirthDate = command.BirthDate
+                    BirthDate = command.BirthDate,
+                    Gender = (Gender)command.Gender
                 }
             };
 
@@ -168,21 +170,8 @@ namespace iSujou.Api.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new { message = string.Join(Environment.NewLine, result.Errors.Select(erro => erro.Description)) });
             }
-        }
-
-        [HttpGet("private")]
-        [Authorize("Bearer")]
-        public string PrivateAction()
-        {
-            return "this message is secret";
-        }
-
-        [HttpGet("public")]
-        public string PublicAction()
-        {
-            return "this message is public";
         }
     }
 }

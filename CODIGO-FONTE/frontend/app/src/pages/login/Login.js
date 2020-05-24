@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { toast } from 'react-toastify'
-
 import {
 	Button,
 	Card,
@@ -18,10 +16,13 @@ import {
 	Col
 } from "reactstrap";
 
+import { useToasts } from 'react-toast-notifications'
 import SimpleFooter from '../../components/Footers/SimpleFooter';
 import api from '../../services/api';
 
 const Login = () => {
+	const { addToast } = useToasts()
+
 	const handleSubmit = values => {
 		var email = document.getElementById('email').value;
 		var password = document.getElementById('password').value;
@@ -35,13 +36,18 @@ const Login = () => {
 				const { data } = resp;
 				if (data) {
 					localStorage.setItem('Authorization', data.accessToken)
+					addToast('Login realizado com sucesso.', {
+						appearance: 'success',
+						autoDismiss: true,
+					})
 					window.location.href = '/home';
 				}
 			})
 			.catch((ex) => {
-				console.error('error')
-				console.log(ex)
-				toast(ex);
+				addToast(ex.response.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+					appearance: 'error',
+					autoDismiss: true,
+				})
 			})
 			values.preventDefault();
 	}
@@ -75,7 +81,7 @@ const Login = () => {
 					<Row className="justify-content-center">
 						<Col lg="5">
 							<Card className="bg-secondary shadow border-0">
-								<CardHeader className="bg-white pb-5">
+								<CardHeader className="bg-white pb-5" hidden={true}>
 									<div className="text-muted text-center mb-3">
 										<small>Logue com</small>
 									</div>
