@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {
-  UncontrolledAlert, Alert,
+  Alert,
   Button,
   Card,
   CardHeader,
@@ -15,7 +15,6 @@ import {
   Label
 } from 'reactstrap'
 
-import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
 import SimpleFooter from '../../components/Footers/SimpleFooter.js'
 import ItemList from '../../components/ItemList/ItemList.js'
@@ -116,11 +115,11 @@ export default class Advert extends React.Component {
       validationErrors: items
     });
 
-    return this.state.validationErrors.length != 0;
+    return this.state.validationErrors.length !== 0;
   }
 
   mostrarErros() {
-    return (<Alert color="danger" isOpen={this.state.validationErrors.length != 0} toggle={() => this.setState({ validationErrors: [] })}>
+    return (<Alert color="danger" isOpen={this.state.validationErrors.length !== 0} toggle={() => this.setState({ validationErrors: [] })}>
       <h4 className="text-white">Foram encontrados os seguintes erros:</h4>
       <ul id="validationList" className="pl-3">
         {this.state.validationErrors.map(item =>

@@ -4,7 +4,6 @@ import {
   Button,
   FormGroup,
   FormFeedback,
-  FormText,
   Input,
   ListGroup,
   ListGroupItem,
@@ -30,7 +29,7 @@ export default class Advert extends Component {
   addItem() {
     const { item, items } = this.state;
 
-    if (!this.props.allowDuplicatedItems && items.indexOf(item) != -1)
+    if (!this.props.allowDuplicatedItems && items.indexOf(item) !== -1)
       this.setState({ erroMesasge: 'Não são permitidos itens duplicados.' })
     else
       this.setState({
@@ -68,13 +67,13 @@ export default class Advert extends Component {
                 placeholder="Nome da atividade"
                 onChange={this.handleChange}
                 value={this.state.item}
-                invalid={this.state.erroMesasge != ""}
+                invalid={this.state.erroMesasge !== ""}
               />
-              <FormFeedback hidden={this.state.erroMesasge == ""}>{this.state.erroMesasge}</FormFeedback>
+              <FormFeedback hidden={this.state.erroMesasge === ""}>{this.state.erroMesasge}</FormFeedback>
             </FormGroup>
           </Col>
           <Col md={1}>
-            <Button onClick={this.addItem} disabled={this.state.item.length < this.props.minLengthForItems || this.state.erroMesasge != ""} color="primary">
+            <Button onClick={this.addItem} disabled={this.state.item.length < this.props.minLengthForItems || this.state.erroMesasge !== ""} color="primary">
               <i className="fa fa-plus"></i>
             </Button>
           </Col>

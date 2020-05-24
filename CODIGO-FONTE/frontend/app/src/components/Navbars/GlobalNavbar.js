@@ -110,14 +110,19 @@ class GlobalNavbar extends React.Component {
                   <NavItem>
                     <NavLink href="/rules">Regras</NavLink>
                   </NavItem>
-                  <UncontrolledDropdown nav inNavbar>
-                    <DropdownToggle nav caret hidden={!isAuthenticated()}>
-                      Gerenciar
+                  <UncontrolledDropdown nav inNavbar hidden={!isAuthenticated()}>
+                    <DropdownToggle nav caret>
+                      Minha Conta
                     </DropdownToggle>
-                    <DropdownMenu right>
+                    <DropdownMenu>
                       <DropdownItem href="/profile/1">
                         Meu perfil
                       </DropdownItem>
+                      <DropdownItem href="/settings">
+                        Configuracoes
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      <span className="small text-uppercase pl-3 text-black"><strong>Gerenciar</strong></span>
                       <DropdownItem href="/properties">
                         Imóveis
                       </DropdownItem>
@@ -126,6 +131,10 @@ class GlobalNavbar extends React.Component {
                       </DropdownItem>
                       <DropdownItem href="/proposals/mine">
                         Propostas
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem href="/logoff">
+                        Desconectar
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
