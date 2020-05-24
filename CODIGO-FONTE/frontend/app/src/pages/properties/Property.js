@@ -24,7 +24,18 @@ export default class Property extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+
+    if (this.isCreating()) {
+      var checkBoxActive = document.getElementById('propertyActive')
+      checkBoxActive.checked = true
+      checkBoxActive.setAttribute("disabled", true)
+    }
   }
+
+  isCreating() {
+    return this.props.type === 'new'
+  }
+
   obterTitulo() {
     var nome = this.props.type;
 
@@ -46,7 +57,7 @@ export default class Property extends React.Component {
     var number = document.getElementById('propertyNumber').value;
     var cep = document.getElementById('propertyCep').value;
     var complement = document.getElementById('propertyComplement').value;
-    var active = document.getElementById('propertyActive').value;
+    var active = document.getElementById('propertyActive').checked;
     var model = {
       title,
       description,
@@ -57,7 +68,7 @@ export default class Property extends React.Component {
       cep,
       number,
       complement,
-      active: active === "on"
+      active
     }
 
     api.post('/property', model)
@@ -121,7 +132,7 @@ export default class Property extends React.Component {
                         <Label for="propertyActive">Ativo</Label>
                         <InputGroup>
                           <label className="custom-toggle mt-1">
-                            <input type="checkbox" id="propertyActive" defaultChecked />
+                            <input type="checkbox" id="propertyActive" />
                             <span className="custom-toggle-slider rounded-circle" />
                           </label>
                         </InputGroup>
