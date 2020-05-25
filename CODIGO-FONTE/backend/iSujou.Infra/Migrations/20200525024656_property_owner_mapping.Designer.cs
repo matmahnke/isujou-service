@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iSujou.Infra;
 
 namespace iSujou.Infra.Migrations
 {
     [DbContext(typeof(iSujouContext))]
-    partial class iSujouContextModelSnapshot : ModelSnapshot
+    [Migration("20200525024656_property_owner_mapping")]
+    partial class property_owner_mapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,57 +162,18 @@ namespace iSujou.Infra.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CreatorId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EditionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("EditorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("EditorId1")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("PropertyId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId1");
-
-                    b.HasIndex("EditorId1");
-
                     b.HasIndex("PropertyId")
                         .IsUnique();
 
                     b.ToTable("Advert");
-                });
-
-            modelBuilder.Entity("iSujou.Domain.Entities.AdvertItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("AdvertId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdvertId");
-
-                    b.ToTable("AdvertItem");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.AdvertTask", b =>
@@ -247,41 +210,11 @@ namespace iSujou.Infra.Migrations
                     b.Property<decimal>("AgreedValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CreatorId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("EditionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("EditorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("EditorId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("EndTerm")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("HiredId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("HiredId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("HiredSignatureDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("OwnerId1")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("OwnerSignatureDate")
                         .HasColumnType("datetime2");
@@ -296,14 +229,6 @@ namespace iSujou.Infra.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId1");
-
-                    b.HasIndex("EditorId1");
-
-                    b.HasIndex("HiredId1");
-
-                    b.HasIndex("OwnerId1");
 
                     b.HasIndex("ProposalId")
                         .IsUnique()
@@ -382,10 +307,6 @@ namespace iSujou.Infra.Migrations
                     b.Property<long?>("CandidateId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CandidateId1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -395,8 +316,6 @@ namespace iSujou.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertId");
-
-                    b.HasIndex("CandidateId1");
 
                     b.ToTable("Proposal");
                 });
@@ -554,26 +473,9 @@ namespace iSujou.Infra.Migrations
 
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
-                    b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId1");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Editor")
-                        .WithMany()
-                        .HasForeignKey("EditorId1");
-
                     b.HasOne("iSujou.Domain.Entities.Property", "Property")
                         .WithOne()
                         .HasForeignKey("iSujou.Domain.Entities.Advert", "PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("iSujou.Domain.Entities.AdvertItem", b =>
-                {
-                    b.HasOne("iSujou.Domain.Entities.Advert", "Advert")
-                        .WithMany("Items")
-                        .HasForeignKey("AdvertId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -589,22 +491,6 @@ namespace iSujou.Infra.Migrations
 
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>
                 {
-                    b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId1");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Editor")
-                        .WithMany()
-                        .HasForeignKey("EditorId1");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Hired")
-                        .WithMany()
-                        .HasForeignKey("HiredId1");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId1");
-
                     b.HasOne("iSujou.Domain.Entities.Proposal", "Proposal")
                         .WithOne()
                         .HasForeignKey("iSujou.Domain.Entities.Contract", "ProposalId")
@@ -624,12 +510,6 @@ namespace iSujou.Infra.Migrations
                         .WithMany()
                         .HasForeignKey("AdvertId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Candidate")
-                        .WithMany()
-                        .HasForeignKey("CandidateId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.User", b =>

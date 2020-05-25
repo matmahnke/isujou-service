@@ -8,12 +8,12 @@ namespace iSujou.Domain.Entities
     {
         public long? ProposalId { get; set; }
         public virtual Proposal Proposal { get; set; }
-        //public long? OwnerId { get; set; }
-        //public virtual User Owner { get; set; }
+        public long OwnerId { get; set; }
+        public virtual User Owner { get; set; }
         public DateTime? OwnerSignatureDate { get; set; }
         public bool OwnerPersonSigned => OwnerSignatureDate.HasValue;
-        //public long? HiredId { get; set; }
-        //public virtual User Hired { get; set; }
+        public long HiredId { get; set; }
+        public virtual User Hired { get; set; }
         public DateTime? HiredSignatureDate { get; set; }
         public bool HiredPersonSigned => HiredSignatureDate.HasValue;
         public DateTime StartTerm { get; set; }

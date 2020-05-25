@@ -173,5 +173,25 @@ namespace iSujou.Api.Controllers
                 return BadRequest(new { message = string.Join(Environment.NewLine, result.Errors.Select(erro => erro.Description)) });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
+
+        [HttpGet("private")]
+        [Authorize("Bearer")]
+        public string PrivateAction()
+        {
+            return "this message is secret";
+        }
+
+        [HttpGet("public")]
+        public string PublicAction()
+        {
+            return "this message is public";
+        }
     }
 }

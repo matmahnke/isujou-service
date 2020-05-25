@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iSujou.Infra;
 
 namespace iSujou.Infra.Migrations
 {
     [DbContext(typeof(iSujouContext))]
-    partial class iSujouContextModelSnapshot : ModelSnapshot
+    [Migration("20200525032234_edit_auditorship")]
+    partial class edit_auditorship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,23 +196,6 @@ namespace iSujou.Infra.Migrations
                         .IsUnique();
 
                     b.ToTable("Advert");
-                });
-
-            modelBuilder.Entity("iSujou.Domain.Entities.AdvertItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("AdvertId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdvertId");
-
-                    b.ToTable("AdvertItem");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.AdvertTask", b =>
@@ -565,15 +550,6 @@ namespace iSujou.Infra.Migrations
                     b.HasOne("iSujou.Domain.Entities.Property", "Property")
                         .WithOne()
                         .HasForeignKey("iSujou.Domain.Entities.Advert", "PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("iSujou.Domain.Entities.AdvertItem", b =>
-                {
-                    b.HasOne("iSujou.Domain.Entities.Advert", "Advert")
-                        .WithMany("Items")
-                        .HasForeignKey("AdvertId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
