@@ -11,8 +11,8 @@ namespace iSujou.Infra.Mappings
     {
         public void Configure(EntityTypeBuilder<Property> builder)
         {
-            //builder.HasOne(x => x.Owner)
-            //    .WithOne();
+            builder.HasOne(x => x.Owner)
+                .WithMany();
 
             builder.Property(x => x.Title)
                 .IsRequired();

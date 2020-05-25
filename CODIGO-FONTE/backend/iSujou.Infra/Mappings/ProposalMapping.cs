@@ -16,9 +16,9 @@ namespace iSujou.Infra.Mappings
                 .HasForeignKey(x => x.AdvertId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            //builder.HasOne(x => x.Candidate)
-            //    .WithOne()
-            //    .IsRequired();
+            builder.HasOne(x => x.Candidate)
+                .WithMany()
+                .IsRequired();
 
             builder.Property(x => x.Value)
                 .IsRequired();

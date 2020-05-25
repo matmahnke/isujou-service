@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iSujou.Infra;
 
 namespace iSujou.Infra.Migrations
 {
     [DbContext(typeof(iSujouContext))]
-    partial class iSujouContextModelSnapshot : ModelSnapshot
+    [Migration("20200525032039_edit_proposal_mapping")]
+    partial class edit_proposal_mapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,35 +162,13 @@ namespace iSujou.Infra.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CreatorId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EditionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("EditorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("EditorId1")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("PropertyId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId1");
-
-                    b.HasIndex("EditorId1");
 
                     b.HasIndex("PropertyId")
                         .IsUnique();
@@ -230,24 +210,6 @@ namespace iSujou.Infra.Migrations
                     b.Property<decimal>("AgreedValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CreatorId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("EditionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("EditorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("EditorId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("EndTerm")
                         .HasColumnType("datetime2");
 
@@ -279,10 +241,6 @@ namespace iSujou.Infra.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId1");
-
-                    b.HasIndex("EditorId1");
 
                     b.HasIndex("HiredId1");
 
@@ -537,14 +495,6 @@ namespace iSujou.Infra.Migrations
 
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
-                    b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId1");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Editor")
-                        .WithMany()
-                        .HasForeignKey("EditorId1");
-
                     b.HasOne("iSujou.Domain.Entities.Property", "Property")
                         .WithOne()
                         .HasForeignKey("iSujou.Domain.Entities.Advert", "PropertyId")
@@ -563,14 +513,6 @@ namespace iSujou.Infra.Migrations
 
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>
                 {
-                    b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId1");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Editor")
-                        .WithMany()
-                        .HasForeignKey("EditorId1");
-
                     b.HasOne("iSujou.Domain.Entities.User", "Hired")
                         .WithMany()
                         .HasForeignKey("HiredId1");

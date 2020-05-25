@@ -9,15 +9,11 @@ namespace iSujou.Infra.Mappings
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            //builder.HasOne(x => x.Creator)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.CreatorId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.Creator)
+                .WithMany();
 
-            //builder.HasOne(x => x.Editor)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.EditorId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.Editor)
+                .WithMany();
         }
     }
 }

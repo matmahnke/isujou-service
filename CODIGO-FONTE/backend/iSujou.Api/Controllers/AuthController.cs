@@ -172,6 +172,13 @@ namespace iSujou.Api.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
+
         [HttpGet("private")]
         [Authorize("Bearer")]
         public string PrivateAction()
