@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {
-  Alert,
   Button,
   Card,
   CardHeader,
@@ -18,6 +17,7 @@ import {
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
 import SimpleFooter from '../../components/Footers/SimpleFooter.js'
 import ItemList from '../../components/ItemList/ItemList.js'
+import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
 
 export default class Advert extends React.Component {
   constructor(props) {
@@ -118,15 +118,10 @@ export default class Advert extends React.Component {
     return this.state.validationErrors.length !== 0;
   }
 
-  mostrarErros() {
-    return (<Alert color="danger" isOpen={this.state.validationErrors.length !== 0} toggle={() => this.setState({ validationErrors: [] })}>
-      <h4 className="text-white">Foram encontrados os seguintes erros:</h4>
-      <ul id="validationList" className="pl-3">
-        {this.state.validationErrors.map(item =>
-          <li color="danger" key={item}>{item}</li>)
-        }
-      </ul>
-    </Alert  >)
+  montarListaErros() {
+    return (<ul id="validationList" className="pl-3">
+      {this.state.validationErrors.map(item => <li color="danger" key={item}>{item}</li>)}
+    </ul>)
   }
 
   render() {
@@ -148,7 +143,11 @@ export default class Advert extends React.Component {
           </section>
           <section className="section">
             <Container>
-              {this.mostrarErros()}
+              <ErrorAlert
+                isOpen={this.state.validationErrors.length !== 0}
+                toggle={() => this.setState({ validationErrors: [] })}
+                message={this.montarListaErros()}
+              />
               <Card className="shadow border-0">
                 <CardHeader>
                   <h2>{this.obterTitulo()}</h2>

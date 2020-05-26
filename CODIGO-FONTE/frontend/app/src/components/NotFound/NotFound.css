@@ -12,5 +12,12 @@ h1 {
     background: #eee;
     width: 200px;
     height: 200px;
-    margin-bottom: -155px;
+    margin-bottom: -145px;
+}
+
+.shrug {
+    color: gray;
+    font-size: large;
+    margin-bottom: -70px;
+    opacity: 0.5;
 }
