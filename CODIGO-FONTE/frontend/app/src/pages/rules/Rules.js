@@ -1,9 +1,8 @@
 import React from 'react'
 
 import {
+  Button,
   Card,
-  CardHeader,
-  CardBody,
   Table,
   Container,
   Row,
@@ -186,6 +185,10 @@ export default class Rules extends React.Component {
                       </tr>
                     </tbody>
                   </Table>
+                </Row>
+                <Row className="m-0">
+                  <Button color="default" href="/adverts">Anúncios</Button>
+                  <Button color="default" href="/">Início</Button>
                 </Row>
               </Card>
             </Col>
