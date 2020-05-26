@@ -15,7 +15,6 @@ import {
   Label
 } from 'reactstrap'
 
-import { AddToast } from 'react-toast-notifications'
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
 import SimpleFooter from "../../components/Footers/SimpleFooter.js"
 import api from '../../services/api'
@@ -76,10 +75,7 @@ export default class Property extends React.Component {
         window.location.href = '/properties';
       })
       .catch((ex) => {
-        AddToast(ex.response.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
-          appearance: 'error',
-          autoDismiss: true,
-        })
+        console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
       })
 
     event.preventDefault();
