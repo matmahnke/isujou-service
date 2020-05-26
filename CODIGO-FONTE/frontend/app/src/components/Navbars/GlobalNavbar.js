@@ -133,7 +133,7 @@ class GlobalNavbar extends React.Component {
                         Propostas
                       </DropdownItem>
                       <DropdownItem divider />
-                      <DropdownItem href="/logoff">
+                      <DropdownItem href="/logout">
                         Desconectar
                       </DropdownItem>
                     </DropdownMenu>

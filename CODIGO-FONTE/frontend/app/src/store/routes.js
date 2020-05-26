@@ -6,6 +6,7 @@ import NotFound from './../components/NotFound/NotFound'
 import Auth from '../pages/auth/auth.js'
 import Home from './../pages/home/Home'
 import Login from './../pages/login/Login'
+import Logout from './../pages/logout/Logout'
 import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
 import Proposal from './../pages/proposal/Proposal'
@@ -39,6 +40,7 @@ const Routes = () => (
             <Route exact path='/home' component={Home} />
             <Route exact path='/auth' component={Auth} />
             <Route exact path='/login' component={Login} />
+            <Route exact path='/logout' component={Logout} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/profile/:id' component={Profile} />
             <Route exact path='/adverts' component={Portfolio} />

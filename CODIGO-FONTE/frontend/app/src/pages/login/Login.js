@@ -44,7 +44,7 @@ const Login = () => {
 				}
 			})
 			.catch((ex) => {
-				addToast(ex.response.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+				addToast(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
 					appearance: 'error',
 					autoDismiss: true,
 				})
@@ -136,7 +136,7 @@ const Login = () => {
 												/>
 											</InputGroup>
 										</FormGroup>
-										<div className="custom-control custom-control-alternative custom-checkbox">
+										<div className="custom-control custom-control-alternative custom-checkbox" hidden>
 											<input
 												className="custom-control-input"
 												id=" customCheckLogin"

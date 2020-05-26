@@ -54,7 +54,7 @@ export default class Home extends React.Component {
                       >
                         Conferir anúncios
                       </Button>
-                      <br/>
+                      <br />
                     </div>
                   </Col>
                 </Row>
@@ -150,7 +150,7 @@ export default class Home extends React.Component {
                         src={require("../../assets/img/casa.jpg")}
                         top
                       />
-                      <blockquote className="card-blockquote">
+                      <blockquote className="card-blockquote text-white">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="svg-bg"
@@ -170,14 +170,14 @@ export default class Home extends React.Component {
                         <h4 className="display-3 font-weight-bold text-white">
                           Casa no centro
                         </h4>
-                        <p className="lead text-italic text-white">
+                        <p className="lead text-italic">
                           Casa com três quartos, dois banheiros e uma área de festa.
-                          <ul>
-                            <li>Arrumar as camas</li>
-                            <li>Varrer o chão</li>
-                            <li>Limpar as janelas</li>
-                          </ul>
                         </p>
+                        <ul className="pl-3">
+                          <li>Arrumar as camas</li>
+                          <li>Varrer o chão</li>
+                          <li>Limpar as janelas</li>
+                        </ul>
                       </blockquote>
                     </Card>
                   </Col>
