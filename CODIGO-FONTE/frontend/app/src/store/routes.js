@@ -28,7 +28,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
             isAuthenticated() ? (
                 <Component {...props} />
             ) : (
-                    <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+                    <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
                 )
         )} />
 );
@@ -44,17 +44,16 @@ const Routes = () => (
             <Route exact path='/register' component={Register} />
             <Route exact path='/profile/:id' component={Profile} />
             <Route exact path='/adverts' component={Portfolio} />
-            <Route exact path='/adverts/mine' component={Adverts} />
             <Route exact path='/advert/view/:id' component={PortfolioAdvert} />
-            <Route exact path='/advert/new' component={() => <Advert type="new"/>} />
-            <Route exact path='/advert/edit/:id' component={() => <Advert type="edit"/>} />
-            <Route exact path='/properties' component={Properties} />
-            <Route exact path='/property/new' component={() => <Property type="new"/>} />
-            <Route exact path='/property/edit/:id' component={() => <Property type="edit"/>} />
-            <Route exact path='/proposal/new/:id' component={Proposal} />
-            <Route exact path='/proposals/mine' component={Proposals} />
+            <PrivateRoute exact path='/adverts/mine' component={Adverts} />
+            <PrivateRoute exact path='/advert/new' component={() => <Advert type="new"/>} />
+            <PrivateRoute exact path='/advert/edit/:id' component={() => <Advert type="edit"/>} />
+            <PrivateRoute exact path='/properties' component={Properties} />
+            <PrivateRoute exact path='/property/new' component={() => <Property type="new"/>} />
+            <PrivateRoute exact path='/property/edit/:id' component={() => <Property type="edit"/>} />
+            <PrivateRoute exact path='/proposal/new/:id' component={Proposal} />
+            <PrivateRoute exact path='/proposals/mine' component={Proposals} />
             <Route component={NotFound} />
-            <PrivateRoute exact path='/privateRouteExample' component={() => <h1>this page is private</h1>} />
         </Switch>
     </BrowserRouter>
 );
