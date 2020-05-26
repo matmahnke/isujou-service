@@ -3,9 +3,12 @@ import React from "react";
 import {
   Button,
   Card,
-  Container,
-  Row,
+  CardBody,
   Col,
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Row,
   UncontrolledCarousel
 } from "reactstrap";
 
@@ -59,55 +62,60 @@ class Advert extends React.Component {
                   <Row>
                     <UncontrolledCarousel items={items} />
                   </Row>
-                  <Row className="mt-4">
-                    <Col md={8}>
-                      <Row>
-                        <p>
+                  <CardBody>
+                    <Row className="mt-4">
+                      <Col md={8}>
+                        <Row>
                           <h2>
                             Casa no centro
-                          </h2>
-                          <p>
-                            <i className="fa fa-calendar"></i> 01/05/2020
-                          </p>
-                      Casa com três quartos, dois banheiros e uma área de festa.
-                    </p>
+                        </h2>
+                        </Row>
+                        <Row className="my-2">
+                          <Button size="sm" color="default" className="fa fa-calendar mr-2" /> <span>01/05/2020</span>
+                        </Row>
+                        <Row>
+                          Casa com três quartos, dois banheiros e uma área de festa.
                       </Row>
-                      <Row>
-                        <p>
+                        <hr className="ml--3"/>
+                        <Row>
                           <h4>Objetivos</h4>
-                          <ul>
-                            <li>Arrumar as camas</li>
-                            <li>Varrer o chão</li>
-                            <li>Limpar as janelas</li>
-                          </ul>
-                        </p>
-                      </Row>
-                    </Col>
-                    <Col md={4} className="border-left">
-                      <Row className="justify-content-center">
-                        <img
-                          alt="..."
-                          width="150px"
-                          className="rounded-circle"
-                          src={require("../../../assets/img/icons/1.jpg")}
-                        />
-                      </Row>
-                      <Row className="justify-content-center mt-2">
-                        <h3>
-                          Calvin Harris
+                        </Row>
+                        <Row>
+                          <Col className="ml--3">
+                            <ListGroup>
+                              <ListGroupItem>Arrumar as camas</ListGroupItem>
+                              <ListGroupItem>Varrer o chão</ListGroupItem>
+                              <ListGroupItem>Limpar as janelas</ListGroupItem>
+                            </ListGroup>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col md={4} className="border-left-when-big">
+                        <Row className="justify-content-center">
+                          <img
+                            alt="..."
+                            width="150px"
+                            className="rounded-circle"
+                            src={require("../../../assets/img/icons/1.jpg")}
+                          />
+                        </Row>
+                        <Row className="justify-content-center mt-2">
+                          <h3>
+                            Calvin Harris
                         </h3>
-                      </Row>
-                      <Row className="justify-content-center">
-                        <Button
-                          color="default"
-                          size="sm"
-                          href="/profile/1"
-                        >
-                          Ver perfil
+                        </Row>
+                        <Row className="justify-content-center">
+                          <Button
+                            color="default"
+                            size="sm"
+                            href="/profile/1"
+                          >
+                            Ver perfil
                         </Button>
-                      </Row>
-                    </Col>
-                  </Row>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </CardBody>
                   <Row className="justify-content-center">
                     <Button
                       color="default"

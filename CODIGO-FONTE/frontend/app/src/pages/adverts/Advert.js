@@ -120,8 +120,6 @@ export default class Advert extends React.Component {
   validarAnuncio(advert) {
     var items = [];
 
-    console.log(advert)
-
     if (advert.propertyId < 0)
       items.push('É necessário selecionar um imóvel.')
 
