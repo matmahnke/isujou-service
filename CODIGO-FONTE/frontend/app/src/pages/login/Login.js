@@ -14,11 +14,11 @@ import {
   Container,
   Row,
   Col
-} from "reactstrap";
+} from 'reactstrap'
 
 import { useToasts } from 'react-toast-notifications'
-import SimpleFooter from '../../components/Footers/SimpleFooter';
-import api from '../../services/api';
+import SimpleFooter from '../../components/Footers/SimpleFooter'
+import api from '../../services/api'
 
 const Login = (props) => {
   const { addToast } = useToasts()

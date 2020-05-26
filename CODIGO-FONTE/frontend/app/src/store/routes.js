@@ -9,8 +9,7 @@ import Login from './../pages/login/Login'
 import Logout from './../pages/logout/Logout'
 import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
-import Proposal from './../pages/proposal/Proposal'
-import Proposals from './../pages/proposal/Proposals'
+import Rules from '../pages/rules/Rules.js'
 
 // Anúncios
 import Portfolio from './../pages/adverts/portfolio/Portfolio'
@@ -21,6 +20,10 @@ import Advert from './../pages/adverts/Advert'
 // Imóveis
 import Properties from './../pages/properties/Properties'
 import Property from './../pages/properties/Property'
+
+// Propostas
+import Proposal from './../pages/proposal/Proposal'
+import Proposals from './../pages/proposal/Proposals'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest}
@@ -38,6 +41,7 @@ const Routes = () => (
         <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/home' component={Home} />
+            <Route exact path='/rules' component={Rules} />
             <Route exact path='/auth' component={Auth} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/logout' component={Logout} />
