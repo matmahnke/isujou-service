@@ -374,6 +374,7 @@ export default class Property extends React.Component {
                       </Row>
                     </Col>
                   </Row>
+                  <hr />
                   <Row>
                     <Col md={12}>
                       <Button color="success" onClick={() => this.save()}>Salvar</Button>

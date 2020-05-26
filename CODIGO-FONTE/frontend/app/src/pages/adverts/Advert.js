@@ -19,12 +19,26 @@ import SimpleFooter from '../../components/Footers/SimpleFooter.js'
 import ItemList from '../../components/ItemList/ItemList.js'
 import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
 
+const properties = [
+  { id: -1, description: "Nenhum" },
+  { id: 1, description: "Teste" }
+]
+
 export default class Advert extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      validationErrors: []
+      validationErrors: [],
+      property: -1,
+      dayMonth: new Date(),
+      hour: new Date(),
+      active: true
     }
+
+    this.property_onChange = this.property_onChange.bind(this)
+    this.active_onChange = this.active_onChange.bind(this)
+    this.dayMonth_onChange = this.dayMonth_onChange.bind(this)
+    this.hour_onChange = this.hour_onChange.bind(this)
   }
 
   componentDidMount() {
@@ -32,11 +46,28 @@ export default class Advert extends React.Component {
     document.scrollingElement.scrollTop = 0;
 
     if (this.isCreating()) {
-      var checkBoxActive = document.getElementById('advertActive')
-      checkBoxActive.checked = true
-      checkBoxActive.setAttribute("disabled", true)
+      this.setState({ active: true });
+      document.getElementById('advertActive').setAttribute("disabled", true)
     }
   }
+
+  //#region OnChange
+  property_onChange(event) {
+    this.setState({ property: event.target.value })
+  }
+
+  active_onChange(event) {
+    this.setState({ active: event.target.checked })
+  }
+
+  dayMonth_onChange(event) {
+    this.setState({ dayMonth: event.target.value })
+  }
+
+  hour_onChange(event) {
+    this.setState({ hour: event.target.value })
+  }
+  //#endregion
 
   isCreating() {
     return this.props.type === 'new'
@@ -56,20 +87,13 @@ export default class Advert extends React.Component {
   }
 
   save() {
-    var propertyId = document.getElementById('advertProperty').value;
-    var dayMonth = document.getElementById('advertDate').value;
-    var hour = document.getElementById('advertTime').value;
-    var date = this.obterData(dayMonth, hour);
-    var active = document.getElementById('advertActive').checked;
-    var items = this.obterItens();
+    const { property, dayMonth, hour, active } = this.state
 
     var model = {
-      propertyId,
-      dayMonth,
-      hour,
-      date,
+      propertyId: property,
+      date: this.obterData(dayMonth, hour),
       active,
-      items
+      items: this.obterItens()
     }
 
     if (!this.validarAnuncio(model))
@@ -83,9 +107,8 @@ export default class Advert extends React.Component {
 
     let list = document.querySelector('#itemList').children;
 
-    for (var i = 0; i < list.length; i++) {
+    for (var i = 0; i < list.length; i++)
       items.push(list[i].getAttribute("data-value"))
-    }
 
     return items;
   }
@@ -96,6 +119,11 @@ export default class Advert extends React.Component {
 
   validarAnuncio(advert) {
     var items = [];
+
+    console.log(advert)
+
+    if (advert.propertyId < 0)
+      items.push('É necessário selecionar um imóvel.')
 
     if (!advert.dayMonth)
       items.push('O dia informado é inválido.')
@@ -161,12 +189,10 @@ export default class Advert extends React.Component {
                           <Input
                             type="select"
                             id="advertProperty"
+                            onChange={this.property_onChange}
+                            value={this.state.property}
                           >
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            {properties.map(property => <option key={property.id} value={property.id}>{property.description}</option>)}
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -178,6 +204,8 @@ export default class Advert extends React.Component {
                           <Input
                             type="date"
                             id="advertDate"
+                            onChange={this.dayMonth_onChange}
+                            value={this.dayMonth}
                             required
                           />
                         </InputGroup>
@@ -190,6 +218,8 @@ export default class Advert extends React.Component {
                           <Input
                             type="time"
                             id="advertTime"
+                            onChange={this.hour_onChange}
+                            value={this.state.hour}
                             required
                           />
                         </InputGroup>
@@ -198,12 +228,18 @@ export default class Advert extends React.Component {
                     <Col md={2}>
                       <FormGroup>
                         <Label for="advertActive">Ativo</Label>
-                        <InputGroup>
-                          <label className="custom-toggle mt-1">
-                            <input type="checkbox" id="advertActive" />
-                            <span className="custom-toggle-slider rounded-circle" />
+                        <div className="custom-control custom-checkbox mt-2 mb-3">
+                          <input
+                            className="custom-control-input"
+                            id="advertActive"
+                            onChange={this.active_onChange}
+                            checked={this.state.active}
+                            type="checkbox"
+                          />
+                          <label className="custom-control-label" htmlFor="advertActive">
+                            {this.state.active ? 'Sim' : 'Não'}
                           </label>
-                        </InputGroup>
+                        </div>
                       </FormGroup>
                     </Col>
                   </Row>
