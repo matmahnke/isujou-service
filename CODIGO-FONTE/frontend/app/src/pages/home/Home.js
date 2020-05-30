@@ -286,7 +286,7 @@ export default class Home extends React.Component {
                           <span className="d-block mb-1">Zendaya</span>
                         </h5>
                         <div className="mt-3">
-                          <p>Sensacional, através do site achei uma faxineira para limpart minha casa toda semana por um ótimo preço.</p>
+                          <p>"Sensacional, através do site achei uma faxineira para limpar minha casa toda semana por um ótimo preço."</p>
                         </div>
                       </div>
                     </div>
