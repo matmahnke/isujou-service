@@ -50,12 +50,20 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PropertyCommand command)
         {
-            var cm = command.ToEntity();
-            var userId = long.Parse(User.Identity.GetUserId());
-            cm.OwnerId = userId;
-            await _repository.AddAsync(cm);
-            await _uow.Commit();
-            return Ok();
+            try
+            {
+                var cm = command.ToEntity();
+                var userId = long.Parse(User.Identity.GetUserId());
+                cm.OwnerId = userId;
+                await _repository.AddAsync(cm);
+                await _uow.Commit();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut]
@@ -64,34 +72,52 @@ namespace iSujou.Api.Controllers
             try
             {
                 var cm = command.ToEntity();
-                var userId = long.Parse(User.Identity.GetUserId());
-                cm.OwnerId = userId;
-                await _repository.UpdateAsync(cm);
-                await _uow.Commit();
+                var property = await _repository.GetByIdAsync(cm.Id);
+
+                if (property != null)
+                {
+                    property.Title = cm.Title;
+                    property.Active = cm.Active;
+                    property.Description = cm.Description;
+                    property.State = cm.State;
+                    property.City = cm.City;
+                    property.Neighborhood = cm.Neighborhood;
+                    property.Street = cm.Street;
+                    property.Number = cm.Number;
+                    property.Cep = cm.Cep;
+                    property.Complement = cm.Complement;
+
+                    await _repository.UpdateAsync(property);
+                    await _uow.Commit();
+
+                    return Ok();
+                }
+                else
+                {
+                    throw new Exception("Registro não encontrado.");
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(new { message = ex.Message });
             }
-
-            return Ok();
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public async  Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
             try
             {
                 await _repository.RemoveAsync(id);
                 await _uow.Commit();
+
+                return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(new { message = ex.Message });
             }
-
-            return Ok();
         }
     }
 }

@@ -14,14 +14,14 @@ import api from '../../services/api';
 import Async from 'react-async';
 import Resources from '../../store/Resources.js'
 
-const getProperties = () =>
-  api.get('/property')
-
 export default class Properties extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  getProperties = () =>
+  api.get('/property')
 
   excluir(id) {
     api.delete('/property/' + id)
@@ -30,6 +30,8 @@ export default class Properties extends React.Component {
         if (data) {
           console.log('excluído')
         }
+
+        window.location.reload();
       })
       .catch((ex) => {
         console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
@@ -63,7 +65,7 @@ export default class Properties extends React.Component {
                 <Button color="primary" href="/property/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
-                <Async promiseFn={getProperties}>
+                <Async promiseFn={this.getProperties}>
                   {({ data, err, isLoading }) => {
                     if (isLoading) return "Carregando..."
                     if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {

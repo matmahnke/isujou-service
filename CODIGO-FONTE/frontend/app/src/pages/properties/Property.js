@@ -151,7 +151,7 @@ export default class Property extends React.Component {
       active
     }
 
-    if (id) {
+    if (this.isCreating()) {
       api.post('/property', model)
         .then(() => {
           window.location.href = '/properties';
