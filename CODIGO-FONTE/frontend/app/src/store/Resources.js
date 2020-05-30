@@ -30,4 +30,32 @@ export default class Resources {
       { id: 27, description: "Tocantins" }
     ]
   }
+
+  static GetContractStatus() {
+    return [
+      { id: 1, description: "Aberto" },
+      { id: 2, description: "Enviado ao contratado" },
+      { id: 3, description: "Enviado ao proprietário" },
+      { id: 4, description: "Ativo" },
+      { id: 5, description: "Concluído" },
+      { id: 6, description: "Suspenso" }
+    ]
+  }
+
+  static GetGenders() {
+    return [
+      { id: 1, description: "Homem" },
+      { id: 2, description: "Mulher" },
+      { id: 3, description: "Outro" }
+    ]
+  }
+
+  static GetProposalStatus() {
+    return [
+      { id: 1, description: "Pendente" },
+      { id: 2, description: "Recusada" },
+      { id: 3, description: "Aceita" },
+      { id: 4, description: "Cancelada" }
+    ]
+  }
 }
