@@ -15,17 +15,37 @@ import {
   InputGroup,
   Container,
   Row,
-  Col,
-  Pagination,
-  PaginationItem,
-  PaginationLink
+  Col
 } from "reactstrap";
 
 export default class Portfolio extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      adverts: []
+    }
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+
+    this.listarAnuncios()
   }
+
+  listarAnuncios() {
+    let adverts = [];
+
+    // vai fazer a requisicao ao invés do for fixo
+    for (var i = 1; i <= 5; i++)
+      adverts.push({ id: i, title: 'Casa no centro', date: '0' + i + '/05/2020', location: 'Blumenau, SC', photoUrl: 'https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg' });
+
+    this.setState({ adverts })
+
+    console.log(this.state.adverts)
+  }
+
   render() {
     return (
       <>
@@ -94,170 +114,28 @@ export default class Portfolio extends React.Component {
                   </Col>
                 </Row>
                 <Row className="mb-5">
-                  <Col lg="4">
-                    <Card className="shadow border-0">
-                      <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
-                      <CardHeader>Casa no centro</CardHeader>
-                      <CardBody>
-                        <p>
-                          <i className="fa fa-calendar"></i> 01/05/2020
-                        </p>
-                        <p className="description">
-                          Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
-                        </p>
-                        <Button
-                          color="primary"
-                          href="/advert/view/1"
-                        >
-                          Detalhes
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg="4">
-                    <Card className="shadow border-0">
-                      <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
-                      <CardHeader>Casa no centro</CardHeader>
-                      <CardBody>
-                        <p>
-                          <i className="fa fa-calendar"></i> 01/05/2020
-                        </p>
-                        <p className="description">
-                          Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
-                        </p>
-                        <Button
-                          color="primary"
-                          href="/advert/view/1"
-                        >
-                          Detalhes
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg="4">
-                    <Card className="shadow border-0">
-                      <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
-                      <CardHeader>Casa no centro</CardHeader>
-                      <CardBody>
-                        <p>
-                          <i className="fa fa-calendar"></i> 01/05/2020
-                        </p>
-                        <p className="description">
-                          Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
-                        </p>
-                        <Button
-                          color="primary"
-                          href="/advert/view/1"
-                        >
-                          Detalhes
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg="4">
-                    <Card className="shadow border-0">
-                      <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
-                      <CardHeader>Casa no centro</CardHeader>
-                      <CardBody>
-                        <p>
-                          <i className="fa fa-calendar"></i> 01/05/2020
-                        </p>
-                        <p className="description">
-                          Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
-                        </p>
-                        <Button
-                          color="primary"
-                          href="/advert/view/1"
-                        >
-                          Detalhes
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg="4">
-                    <Card className="shadow border-0">
-                      <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
-                      <CardHeader>Casa no centro</CardHeader>
-                      <CardBody>
-                        <p>
-                          <i className="fa fa-calendar"></i> 01/05/2020
-                        </p>
-                        <p className="description">
-                          Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
-                        </p>
-                        <Button
-                          color="primary"
-                          href="/advert/view/1"
-                        >
-                          Detalhes
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg="4">
-                    <Card className="shadow border-0">
-                      <CardImg top src="https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg" />
-                      <CardHeader>Casa no centro</CardHeader>
-                      <CardBody>
-                        <p>
-                          <i className="fa fa-calendar"></i> 01/05/2020
-                        </p>
-                        <p className="description">
-                          Empregados domésticos se cadastram e se disponibilizam a realizar a limpeza de estabelecimentos ou são solicitados por outros usuários.
-                        </p>
-                        <Button
-                          color="primary"
-                          href="/advert/view/1"
-                        >
-                          Detalhes
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Col>
+                  {this.state.adverts.map(advert =>
+                    <Col lg={4} className="mb-5">
+                      <Card className="shadow border-0">
+                        <CardImg top src={advert.photoUrl} />
+                        <CardHeader>{advert.title}</CardHeader>
+                        <CardBody>
+                          <p>
+                            {advert.date}, em {advert.location}
+                          </p>
+                          <Button
+                            color="primary"
+                            href={"/advert/view/" + advert.id}
+                          >
+                            Detalhes
+                          </Button>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  )}
                 </Row>
               </Container>
             </section>
-
-            <Container>
-              <Pagination className="mb-6 float-right">
-                <PaginationItem>
-                  <PaginationLink
-                    aria-label="Previous"
-                    onClick={e => e.preventDefault()}
-                    disabled
-                  >
-                    <i className="fa fa-angle-left" />
-                    <span className="sr-only">Previous</span>
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem className="active">
-                  <PaginationLink onClick={e => e.preventDefault()}>
-                    1
-              </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink onClick={e => e.preventDefault()}>
-                    2
-              </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink onClick={e => e.preventDefault()}>
-                    3
-              </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    aria-label="Next"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <i className="fa fa-angle-right" />
-                    <span className="sr-only">Next</span>
-                  </PaginationLink>
-                </PaginationItem>
-              </Pagination>
-            </Container>
           </div>
         </main>
         <SimpleFooter />

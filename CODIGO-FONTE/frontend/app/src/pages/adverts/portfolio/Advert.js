@@ -25,6 +25,7 @@ class Advert extends React.Component {
       id: null,
       title: '',
       date: null,
+      location: '',
       description: '',
       objectives: [],
       photos: [],
@@ -52,6 +53,7 @@ class Advert extends React.Component {
           id: this.props.match.params.id,
           title: 'Casa no centro',
           date: '01/05/2020',
+          location: 'Blumenau, Santa Catarina',
           description: 'Casa com três quartos, dois banheiros e uma área de festa.',
           objectives: ["Arrumar as camas", "Varrer o chão", "Limpar as janelas"],
           photos: ["https://i.pinimg.com/originals/39/ea/2e/39ea2ef9c74c127ffba4bc4ec4f1a9bc.jpg", "https://i.ytimg.com/vi/6qUyyXyYXrM/maxresdefault.jpg"],
@@ -116,7 +118,10 @@ class Advert extends React.Component {
                           </h2>
                         </Row>
                         <Row className="my-2">
-                          <Button size="sm" color="default" className="fa fa-calendar mr-2" /> <span>{this.state.date}</span>
+                          <Button size="sm" color="default" className="fa fa-calendar mr-2 width-30" /> <span className="mt-1">{this.state.date}</span>
+                        </Row>
+                        <Row className="my-2">
+                          <Button size="sm" color="default" className="fa fa-map-marker mr-2 width-30" /> <span className="mt-1">{this.state.location}</span>
                         </Row>
                         <Row>
                           {this.state.description}

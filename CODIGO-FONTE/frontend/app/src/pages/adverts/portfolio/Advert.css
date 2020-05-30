@@ -2,6 +2,10 @@
   max-height: 40vh !important;
 }
 
+.width-30 {
+  width: 30px !important;
+}
+
 @media (min-width: 770px) {
   .border-left-when-big {
     border-left: 0.0625rem solid rgba(0, 0, 0, 0.1);
