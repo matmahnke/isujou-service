@@ -77,7 +77,9 @@ namespace iSujou.Api.Controllers
             return Ok();
         }
 
-        public async  Task<IActionResult> Delete([FromQuery] int id)
+        [HttpDelete]
+        [Route("{id}")]
+        public async  Task<IActionResult> Delete(long id)
         {
             try
             {

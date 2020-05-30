@@ -23,6 +23,19 @@ export default class Properties extends React.Component {
     document.scrollingElement.scrollTop = 0;
   }
 
+  excluir(id) {
+    api.delete('/property/' + id)
+      .then(resp => {
+        const { data } = resp;
+        if (data) {
+          console.log('excluído')
+        }
+      })
+      .catch((ex) => {
+        console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
+      })
+  }
+
   render() {
     return (
       <>
@@ -79,7 +92,7 @@ export default class Properties extends React.Component {
                                     <Button color="primary" size="sm" title="Editar"
                                       href={"/property/edit/" + id}
                                     ><i className="fa fa-pencil"></i></Button>
-                                    <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
+                                    <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
                                   </td>
                                   <td>{title}</td>
                                   <td>{Resources.GetBrazilianStates()[state - 1].description}</td>
