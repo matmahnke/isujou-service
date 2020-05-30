@@ -40,7 +40,7 @@ const Login = (props) => {
             autoDismiss: true,
           })
 
-          window.location.href = props?.history?.location?.state?.from?.pathname ?? '/';;
+          window.location.href = props?.history?.location?.state?.from?.pathname ?? '/'
         }
       })
       .catch((ex) => {

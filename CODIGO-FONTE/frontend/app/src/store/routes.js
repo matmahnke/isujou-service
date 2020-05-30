@@ -46,16 +46,16 @@ const Routes = () => (
             <Route exact path='/login' component={Login} />
             <Route exact path='/logout' component={Logout} />
             <Route exact path='/register' component={Register} />
-            <Route exact path='/profile/:id' component={Profile} />
+            <Route exact path='/profile/:id' component={props => <Profile {...props} />} />
             <Route exact path='/adverts' component={Portfolio} />
-            <Route exact path='/advert/view/:id' component={PortfolioAdvert} />
+            <Route exact path='/advert/view/:id' component={props => <PortfolioAdvert {...props} />} />
             <PrivateRoute exact path='/adverts/mine' component={Adverts} />
-            <PrivateRoute exact path='/advert/new' component={() => <Advert type="new"/>} />
-            <PrivateRoute exact path='/advert/edit/:id' component={() => <Advert type="edit"/>} />
+            <PrivateRoute exact path='/advert/new' component={() => <Advert type="new" />} />
+            <PrivateRoute exact path='/advert/edit/:id' component={props => <Advert type="edit" {...props} />} />
             <PrivateRoute exact path='/properties' component={Properties} />
-            <PrivateRoute exact path='/property/new' component={() => <Property type="new"/>} />
-            <PrivateRoute exact path='/property/edit/:id' component={() => <Property type="edit"/>} />
-            <PrivateRoute exact path='/proposal/new/:id' component={Proposal} />
+            <PrivateRoute exact path='/property/new' component={() => <Property type="new" />} />
+            <PrivateRoute exact path='/property/edit/:id' component={props => <Property type="edit" {...props} />} />
+            <PrivateRoute exact path='/proposal/new/:id' component={props => <Proposal {...props} />} />
             <PrivateRoute exact path='/proposals/mine' component={Proposals} />
             <Route component={NotFound} />
         </Switch>

@@ -17,26 +17,71 @@ import SimpleFooter from "../../../components/Footers/SimpleFooter.js";
 
 import './Advert.css';
 
-const items = [
-  {
-    src: "https://i.pinimg.com/originals/39/ea/2e/39ea2ef9c74c127ffba4bc4ec4f1a9bc.jpg",
-    altText: '',
-    caption: '',
-    header: ''
-  },
-  {
-    src: "https://i.ytimg.com/vi/6qUyyXyYXrM/maxresdefault.jpg",
-    altText: '',
-    caption: '',
-    header: ''
-  }
-];
-
 class Advert extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      id: null,
+      title: '',
+      date: null,
+      description: '',
+      objectives: [],
+      photos: [],
+      ownerId: null,
+      ownerName: '',
+      ownerPhotoUrl: ''
+    }
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+
+    if (this.props.match.params?.id) {
+      let isValidId = !isNaN(this.props.match.params?.id);
+
+      if (!isValidId) {
+        console.log('Mostrar o erro que o id passado é inválido')
+      }
+      else {
+        let registerNotFound = false;
+
+        // faz requisicao, se retornou um objeto de verdade monta o model, senão bota isValidId = false
+        var model = {
+          id: this.props.match.params.id,
+          title: 'Casa no centro',
+          date: '01/05/2020',
+          description: 'Casa com três quartos, dois banheiros e uma área de festa.',
+          objectives: ["Arrumar as camas", "Varrer o chão", "Limpar as janelas"],
+          photos: ["https://i.pinimg.com/originals/39/ea/2e/39ea2ef9c74c127ffba4bc4ec4f1a9bc.jpg", "https://i.ytimg.com/vi/6qUyyXyYXrM/maxresdefault.jpg"],
+          ownerId: 1,
+          ownerName: 'Calvin Harris',
+          ownerPhotoUrl: require("../../../assets/img/icons/1.jpg")
+        }
+
+        if (registerNotFound) {
+          console.log('Mandar pra página de registro não encontrado')
+        }
+        else
+          this.setState(model)
+      }
+    }
   }
+
+  montarListaFotos() {
+    let fotos = []
+
+    for (var i = 0; i < this.state.photos.length; i++)
+      fotos.push({
+        src: this.state.photos[i], altText: '',
+        caption: '',
+        header: ''
+      })
+
+    return fotos
+  }
+
   render() {
     return (
       <>
@@ -60,32 +105,30 @@ class Advert extends React.Component {
               <Card className="card-profile shadow mt--500">
                 <div className="px-4 pt-2 pb-4">
                   <Row>
-                    <UncontrolledCarousel items={items} />
+                    <UncontrolledCarousel items={this.montarListaFotos()} />
                   </Row>
                   <CardBody>
                     <Row className="mt-4">
                       <Col md={8}>
                         <Row>
                           <h2>
-                            Casa no centro
-                        </h2>
+                            {this.state.title}
+                          </h2>
                         </Row>
                         <Row className="my-2">
-                          <Button size="sm" color="default" className="fa fa-calendar mr-2" /> <span>01/05/2020</span>
+                          <Button size="sm" color="default" className="fa fa-calendar mr-2" /> <span>{this.state.date}</span>
                         </Row>
                         <Row>
-                          Casa com três quartos, dois banheiros e uma área de festa.
-                      </Row>
-                        <hr className="ml--3"/>
+                          {this.state.description}
+                        </Row>
+                        <hr className="ml--3" />
                         <Row>
                           <h4>Objetivos</h4>
                         </Row>
                         <Row>
                           <Col className="ml--3">
                             <ListGroup>
-                              <ListGroupItem>Arrumar as camas</ListGroupItem>
-                              <ListGroupItem>Varrer o chão</ListGroupItem>
-                              <ListGroupItem>Limpar as janelas</ListGroupItem>
+                              {this.state.objectives.map(obj => <ListGroupItem key={obj}>{obj}</ListGroupItem>)}
                             </ListGroup>
                           </Col>
                         </Row>
@@ -96,19 +139,19 @@ class Advert extends React.Component {
                             alt="..."
                             width="150px"
                             className="rounded-circle"
-                            src={require("../../../assets/img/icons/1.jpg")}
+                            src={this.state.ownerPhotoUrl}
                           />
                         </Row>
                         <Row className="justify-content-center mt-2">
                           <h3>
-                            Calvin Harris
-                        </h3>
+                            {this.state.ownerName}
+                          </h3>
                         </Row>
                         <Row className="justify-content-center">
                           <Button
                             color="default"
                             size="sm"
-                            href="/profile/1"
+                            href={"/profile/" + this.state.ownerId}
                           >
                             Ver perfil
                         </Button>
@@ -119,7 +162,7 @@ class Advert extends React.Component {
                   <Row className="justify-content-center">
                     <Button
                       color="default"
-                      href="/proposal/new/1"
+                      href={"/proposal/new/" + this.state.id}
                     >
                       Fazer proposta
                     </Button>

@@ -12,6 +12,7 @@ import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 import api from '../../services/api';
 import Async from 'react-async';
+import Resources from '../../store/Resources.js'
 
 const getProperties = () =>
   api.get('/property')
@@ -81,7 +82,7 @@ export default class Properties extends React.Component {
                                     <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
                                   </td>
                                   <td>{title}</td>
-                                  <td>{state}</td>
+                                  <td>{Resources.GetBrazilianStates()[state - 1].description}</td>
                                   <td>{city}</td>
                                   <td>{neighborhood}</td>
                                   <td>
