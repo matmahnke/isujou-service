@@ -1,20 +1,28 @@
-import React from "react";
+import React from 'react'
 
 import {
   Button,
   Container,
   Row,
   Table
-} from "reactstrap";
+} from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import { useToasts } from 'react-toast-notifications'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import api from '../../services/api'
+import Async from 'react-async'
+import Resources from '../../store/Resources.js'
 
 export default class Proposals extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  getProposals = () =>
+    api.get('/proposal')
+
   render() {
     return (
       <>
@@ -39,46 +47,56 @@ export default class Proposals extends React.Component {
                 <h2>Minhas propostas</h2>
               </Row>
               <Row className="mt-4">
-                <Table responsive>
-                  <thead>
-                    <tr>
-                      <th>Ações</th>
-                      <th>Imóvel</th>
-                      <th>Data</th>
-                      <th>Hora</th>
-                      <th>Situação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Button color="danger" size="sm" title="Cancelar"><i className="fa fa-ban"></i></Button>
-                      </td>
-                      <td>Casa no centro</td>
-                      <td>05/05/2020</td>
-                      <td>12:00</td>
-                      <td>Aguardando</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="danger" size="sm" title="Cancelar"><i className="fa fa-ban"></i></Button>
-                      </td>
-                      <td>Casa no subúrbio</td>
-                      <td>01/05/2020</td>
-                      <td>09:00</td>
-                      <td>Concluída</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="danger" size="sm" title="Cancelar" disabled><i className="fa fa-ban"></i></Button>
-                      </td>
-                      <td>Apartamento</td>
-                      <td>05/12/2019</td>
-                      <td>12:00</td>
-                      <td>Cancelada</td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <Async promiseFn={this.getProposals}>
+                  {({ data, err, isLoading }) => {
+                    if (isLoading) return "Carregando..."
+                    if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+                      appearance: 'error',
+                      autoDismiss: true,
+                    })
+                    if (data)
+                      return (
+                        <Table responsive>
+                          <thead>
+                            <tr>
+                              <th>Ações</th>
+                              <th>Imóvel</th>
+                              <th>Data</th>
+                              <th>Situação</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.data.map((proposal, index) => {
+                              const { id, active, porperty, status, date, isMine, canRefuse, canApprove, canSuspend } = proposal
+                              return (
+                                <tr key={id}>
+                                  <td>
+                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine} disabled={canApprove}><i className="fa fa-check"></i></Button>
+                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={canRefuse}><i className="fa fa-times"></i></Button>
+                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
+                                  </td>
+                                  <td>{porperty}</td>
+                                  <td>{date}</td>
+                                  <td>{Resources.GetContractStatus()[status - 1].description}</td>
+                                  <td>
+                                    <div className="custom-control custom-checkbox">
+                                      <input
+                                        className="custom-control-input"
+                                        checked={active}
+                                        disabled
+                                        type="checkbox"
+                                      />
+                                      <label className="custom-control-label" htmlFor="customCheck2" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            })}
+                          </tbody>
+                        </Table>
+                      )
+                  }}
+                </Async>
               </Row>
             </Container>
           </section>

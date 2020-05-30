@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react'
 
 import {
   Button,
   Container,
   Row,
   Table
-} from "reactstrap";
+} from 'reactstrap'
 
 import { useToasts } from 'react-toast-notifications'
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
-import api from '../../services/api';
-import Async from 'react-async';
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import api from '../../services/api'
+import Async from 'react-async'
 import Resources from '../../store/Resources.js'
 
 export default class Properties extends React.Component {
