@@ -25,6 +25,7 @@ export default class Property extends React.Component {
     super(props);
 
     this.state = {
+      id: null,
       validationErrors: [],
       title: '',
       active: true,
@@ -35,7 +36,8 @@ export default class Property extends React.Component {
       street: '',
       number: '',
       cep: '',
-      complement: ''
+      complement: '',
+      mostrarForm: true
     }
 
     this.title_onChange = this.title_onChange.bind(this)
@@ -57,6 +59,21 @@ export default class Property extends React.Component {
     if (this.isCreating()) {
       this.setState({ active: true });
       document.getElementById('propertyActive').setAttribute("disabled", true)
+    } else if (this.props.match.params?.id) {
+      if (isNaN(this.props.match.params.id))
+        this.setState({ validationErrors: ["O parametro informado não foi encontrado (" + this.props.match.params.id + ")"], mostrarForm: false })
+      else {
+        api.get('/property/' + this.props.match.params.id)
+          .then(resp => {
+            const { data } = resp;
+            if (data) {
+              this.setState(data)
+            }
+          })
+          .catch((ex) => {
+            this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'], mostrarForm: false })
+          })
+      }
     }
   }
 
@@ -118,9 +135,10 @@ export default class Property extends React.Component {
   }
 
   save() {
-    const { title, active, description, state, city, neighborhood, street, cep, number, complement } = this.state
+    const { id, title, active, description, state, city, neighborhood, street, cep, number, complement } = this.state
 
     var model = {
+      id,
       title,
       description,
       state,
@@ -133,13 +151,23 @@ export default class Property extends React.Component {
       active
     }
 
-    api.post('/property', model)
-      .then(() => {
-        window.location.href = '/properties';
-      })
-      .catch((ex) => {
-        this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
-      })
+    if (id) {
+      api.post('/property', model)
+        .then(() => {
+          window.location.href = '/properties';
+        })
+        .catch((ex) => {
+          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
+        })
+    } else {
+      api.put('/property', model)
+        .then(() => {
+          window.location.href = '/properties';
+        })
+        .catch((ex) => {
+          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
+        })
+    }
   }
 
   montarListaErros() {
@@ -172,7 +200,7 @@ export default class Property extends React.Component {
                 toggle={() => this.setState({ validationErrors: [] })}
                 message={this.montarListaErros()}
               />
-              <Card className="shadow border-0">
+              <Card className="shadow border-0" hidden={!this.state.mostrarForm}>
                 <CardHeader>
                   <h2>{this.obterTitulo()}</h2>
                 </CardHeader>

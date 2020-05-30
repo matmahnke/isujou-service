@@ -28,6 +28,25 @@ namespace iSujou.Api.Controllers
             return Ok(await _repository.GetAllAsync());
         }
 
+        [HttpGet()]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            try
+            {
+                var property = await _repository.GetByIdAsync(id);
+
+                if (property == null)
+                    throw new Exception("Registro não encontrado.");
+
+                return Ok(property);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PropertyCommand command)
         {
