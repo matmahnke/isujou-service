@@ -33,7 +33,7 @@ export default class Rules extends React.Component {
 
           <Container className="pt-lg-3 mt--7 mb-5">
             <Col lg={12}>
-              <Card className="bg-secondary shadow border-0 p-3">
+              <Card className="shadow border-0 p-3">
                 <Row className="m-0">
                   <h2>Regras</h2>
                 </Row>
