@@ -76,7 +76,7 @@ export default class Advert extends React.Component {
 
   //#region OnChange
   property_onChange(event) {
-    this.setState({ property: event.target.value })
+    this.setState({ propertyId: event.target.value })
   }
 
   active_onChange(event) {
@@ -200,7 +200,7 @@ export default class Advert extends React.Component {
       validationErrors: items
     });
 
-    return this.state.validationErrors.length !== 0;
+    return this.state.validationErrors.length === 0;
   }
 
   montarListaErros() {
