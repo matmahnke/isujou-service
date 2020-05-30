@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 import {
   Button,
@@ -14,8 +14,9 @@ import {
   Label
 } from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
-import SimpleFooter from "../../components/Footers/SimpleFooter.js"
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import Loading from '../../components/Loading/Loading.js'
 import api from '../../services/api'
 import Resources from '../../store/Resources.js'
 import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
@@ -37,7 +38,8 @@ export default class Property extends React.Component {
       number: '',
       cep: '',
       complement: '',
-      mostrarForm: true
+      mostrarForm: true,
+      loading: true
     }
 
     this.title_onChange = this.title_onChange.bind(this)
@@ -60,20 +62,7 @@ export default class Property extends React.Component {
       this.setState({ active: true });
       document.getElementById('propertyActive').setAttribute("disabled", true)
     } else if (this.props.match.params?.id) {
-      if (isNaN(this.props.match.params.id))
-        this.setState({ validationErrors: ["O parametro informado não foi encontrado (" + this.props.match.params.id + ")"], mostrarForm: false })
-      else {
-        api.get('/property/' + this.props.match.params.id)
-          .then(resp => {
-            const { data } = resp;
-            if (data) {
-              this.setState(data)
-            }
-          })
-          .catch((ex) => {
-            this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'], mostrarForm: false })
-          })
-      }
+      this.trazerDados(this.props.match.params.id)
     }
   }
 
@@ -123,6 +112,27 @@ export default class Property extends React.Component {
     return this.props.type === 'new'
   }
 
+  trazerDados(id) {
+    if (isNaN(id))
+      this.setState({ validationErrors: ["O parametro informado não foi encontrado (" + id + ")"], mostrarForm: false })
+    else {
+      this.setState({ loading: true })
+      api.get('/property/' + id)
+        .then(resp => {
+          const { data } = resp;
+          if (data) {
+            this.setState(data)
+          }
+        })
+        .catch((ex) => {
+          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'], mostrarForm: false })
+        })
+        .finally(() => {
+          this.setState({ loading: false })
+        })
+    }
+  }
+
   obterTitulo() {
     var nome = this.props.type;
 
@@ -151,23 +161,23 @@ export default class Property extends React.Component {
       active
     }
 
-    if (this.isCreating()) {
-      api.post('/property', model)
-        .then(() => {
-          window.location.href = '/properties';
-        })
-        .catch((ex) => {
-          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
-        })
-    } else {
-      api.put('/property', model)
-        .then(() => {
-          window.location.href = '/properties';
-        })
-        .catch((ex) => {
-          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
-        })
-    }
+    var method = null;
+
+    this.setState({ loading: true })
+    if (this.isCreating())
+      method = api.post('/property', model)
+    else
+      method = api.put('/property', model)
+
+    method.then(() => {
+      window.location.href = '/properties';
+    })
+      .catch((ex) => {
+        this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
   }
 
   montarListaErros() {
@@ -179,6 +189,7 @@ export default class Property extends React.Component {
   render() {
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">
