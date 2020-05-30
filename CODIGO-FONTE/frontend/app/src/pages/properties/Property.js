@@ -39,7 +39,7 @@ export default class Property extends React.Component {
       cep: '',
       complement: '',
       mostrarForm: true,
-      loading: true
+      loading: false
     }
 
     this.title_onChange = this.title_onChange.bind(this)

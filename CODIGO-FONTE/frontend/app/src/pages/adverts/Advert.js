@@ -18,21 +18,21 @@ import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
 import SimpleFooter from '../../components/Footers/SimpleFooter.js'
 import ItemList from '../../components/ItemList/ItemList.js'
 import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
-
-const properties = [
-  { id: -1, description: "Nenhum" },
-  { id: 1, description: "Teste" }
-]
+import Loading from '../../components/Loading/Loading.js'
+import api from '../../services/api'
 
 export default class Advert extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       validationErrors: [],
-      property: -1,
-      dayMonth: new Date(),
-      hour: new Date(),
-      active: true
+      propertyId: 0,
+      dayMonth: '',
+      hour: '',
+      active: true,
+      properties: [],
+      loading: false,
+      predefinedItems: []
     }
 
     this.property_onChange = this.property_onChange.bind(this)
@@ -48,7 +48,30 @@ export default class Advert extends React.Component {
     if (this.isCreating()) {
       this.setState({ active: true });
       document.getElementById('advertActive').setAttribute("disabled", true)
+    } else if (this.props.match.params?.id) {
+      this.trazerDados(this.props.match.params.id)
     }
+
+    this.setState({ loading: true })
+    api.get('/property')
+      .then(resp => {
+        const { data } = resp
+
+        if (data)
+          this.setState({ properties: this.listarImoveis(data) })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
+
+  listarImoveis(data) {
+    var imoveis = [{ id: -1, description: "Nenhum" }]
+
+    for (var i = 0; i < data.length; i++)
+      imoveis.push({ id: data[i].id, description: data[i].title })
+
+    return imoveis
   }
 
   //#region OnChange
@@ -69,6 +92,27 @@ export default class Advert extends React.Component {
   }
   //#endregion
 
+  trazerDados(id) {
+    if (isNaN(id))
+      this.setState({ validationErrors: ["O parametro informado não foi encontrado (" + id + ")"], mostrarForm: false })
+    else {
+      this.setState({ loading: true })
+      api.get('/advert/' + id)
+        .then(resp => {
+          const { data } = resp;
+          if (data) {
+            this.setState(data)
+          }
+        })
+        .catch((ex) => {
+          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'], mostrarForm: false })
+        })
+        .finally(() => {
+          this.setState({ loading: false })
+        })
+    }
+  }
+
   isCreating() {
     return this.props.type === 'new'
   }
@@ -87,19 +131,38 @@ export default class Advert extends React.Component {
   }
 
   save() {
-    const { property, dayMonth, hour, active } = this.state
+    const { propertyId, dayMonth, hour, active } = this.state
 
     var model = {
-      propertyId: property,
-      date: this.obterData(dayMonth, hour),
+      propertyId,
+      dayMonth,
+      hour,
+      date: dayMonth + " " + hour,
       active,
       items: this.obterItens()
     }
 
+    var method = null;
+
     if (!this.validarAnuncio(model))
       return
 
-    // chama salvar
+    this.setState({ loading: true })
+    if (this.isCreating())
+      method = api.post('/advert', model)
+    else
+      method = api.put('/advert', model)
+
+    method.then(() => {
+      window.location.href = '/adverts/mine';
+    })
+      .catch((ex) => {
+        this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'] })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+
   }
 
   obterItens() {
@@ -113,14 +176,10 @@ export default class Advert extends React.Component {
     return items;
   }
 
-  obterData(dayMonth, hour) {
-    return new Date(dayMonth);
-  }
-
   validarAnuncio(advert) {
     var items = [];
 
-    if (advert.propertyId < 0)
+    if (!advert.propertyId || advert.propertyId < 0)
       items.push('É necessário selecionar um imóvel.')
 
     if (!advert.dayMonth)
@@ -153,6 +212,7 @@ export default class Advert extends React.Component {
   render() {
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">
@@ -188,9 +248,9 @@ export default class Advert extends React.Component {
                             type="select"
                             id="advertProperty"
                             onChange={this.property_onChange}
-                            value={this.state.property}
+                            value={this.state.propertyId}
                           >
-                            {properties.map(property => <option key={property.id} value={property.id}>{property.description}</option>)}
+                            {this.state.properties.map(property => <option key={property.id} value={property.id}>{property.description}</option>)}
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -246,7 +306,7 @@ export default class Advert extends React.Component {
                   <p>
                     Atividades feitas durante a limpeza. A descrição deve ter no mínimo dois caracteres e não são permitidos valores duplicados.
                   </p>
-                  <ItemList minLengthForItems={2} allowDuplicatedItems={false} />
+                  <ItemList items={this.state.predefinedItems} minLengthForItems={2} allowDuplicatedItems={false} />
                   <hr />
                   <Col>
                     <Row>
