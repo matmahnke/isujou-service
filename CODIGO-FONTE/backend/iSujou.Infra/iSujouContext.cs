@@ -1,11 +1,12 @@
 ﻿using iSujou.Domain.Entities;
 using iSujou.Infra.Mappings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace iSujou.Infra
 {
-    public class iSujouContext : IdentityDbContext<User>
+    public class iSujouContext : IdentityDbContext<User, IdentityRole<long>, long>
     {
         public iSujouContext(DbContextOptions<iSujouContext> options)
             : base(options)

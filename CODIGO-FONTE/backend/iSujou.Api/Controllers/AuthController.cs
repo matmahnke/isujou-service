@@ -3,6 +3,7 @@ using iSujou.Api.Application.Configurations;
 using iSujou.Api.Application.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Enums;
+using iSujou.Infra.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +26,7 @@ namespace iSujou.Api.Controllers
         private readonly ILoginService _service;
         private readonly SigningConfigurations _signingConfigurations;
         private readonly TokenConfigurations _tokenConfigurations;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole<long>> _roleManager;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
@@ -34,7 +35,7 @@ namespace iSujou.Api.Controllers
         ILoginService service,
             SigningConfigurations signingConfigurations,
             TokenConfigurations tokenConfigurations,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole<long>> roleManager)
         {
             _service = service;
             _signingConfigurations = signingConfigurations;
@@ -167,6 +168,7 @@ namespace iSujou.Api.Controllers
                     accessToken = token,
                     message = "OK"
                 });
+
             }
             else
             {
@@ -185,6 +187,7 @@ namespace iSujou.Api.Controllers
         [Authorize("Bearer")]
         public string PrivateAction()
         {
+            var user = _userManager.GetUserId(User);
             return "this message is secret";
         }
 

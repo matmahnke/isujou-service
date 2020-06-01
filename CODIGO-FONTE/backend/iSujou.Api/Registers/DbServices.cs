@@ -13,7 +13,7 @@ namespace iSujou.Api.Registers
             services.AddDbContext<iSujouContext>(options =>
             options.UseSqlServer(connectionString,
                 op => op.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null)
-            ));
+            ), ServiceLifetime.Transient);
 
             services
                 .AddHealthChecks()
@@ -28,7 +28,10 @@ namespace iSujou.Api.Registers
 
             var context = serviceScope.ServiceProvider.GetRequiredService<iSujouContext>();
 
-            context.Database.Migrate();
+            if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                context.Database.Migrate();
+            }
 
             return app;
         }

@@ -1,5 +1,8 @@
-﻿using iSujou.Infra;
+﻿using iSujou.Domain.Entities;
+using iSujou.Infra;
+using iSujou.Infra.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,9 +43,17 @@ namespace iSujou.Integration.Tests
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
-                    db.Database.Migrate();
+                    db.Database.EnsureCreated();
                 }
+                InitializeSeeds(services);
             });
+        }
+
+        private void InitializeSeeds(IServiceCollection services)
+        {
+            var um = services.BuildServiceProvider().GetService<UserManager<User>>();
+            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole<long>>>();
+            new IdentityInitializer(um, rm).Initialize();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using iSujou.Api;
 using iSujou.Api.Application.Commands;
+using iSujou.Integration.Tests.Utils;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Primitives;
@@ -39,11 +40,16 @@ namespace iSujou.Integration.Tests.controllers
                 Name = "Test"
             });
 
-            var result = await _client.PostAsJsonAsync("/api/v1/auth", new LoginCommand
+            var response = await _client.PostAsJsonAsync("/api/v1/auth", new LoginCommand
             {
                 Username = username,
                 Password = password
             });
+            var contents = await response.Content.ReadAsAsync<LoginResultModel>();
+
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.True(contents.authenticated);
+            Assert.NotNull(contents.accessToken);
         }
     }
 }
