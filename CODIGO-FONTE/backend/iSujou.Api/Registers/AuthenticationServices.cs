@@ -16,7 +16,7 @@ namespace iSujou.Api.Registers
         public static IServiceCollection AddAuthenticationService(this IServiceCollection services, IConfigurationSection tokenConfigurationsSesction)
         {
 
-            services.AddIdentity<User, IdentityRole>(config =>
+            services.AddIdentity<User, IdentityRole<long>>(config =>
             {
                 config.Password.RequiredLength = 4;
                 config.Password.RequireDigit = false;
