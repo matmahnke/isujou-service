@@ -1,5 +1,4 @@
-﻿using iSujou.Domain.Entities;
-using iSujou.Domain.Enums;
+﻿using iSujou.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;

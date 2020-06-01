@@ -17,13 +17,18 @@ export default class Advert extends Component {
 
     this.state = {
       item: '',
-      items: props.items ?? [],
+      items: [],
       erroMesasge: ''
     };
 
     this.addItem = this.addItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.removeItem = this.removeItem.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.items && this.props.items.length > 0)
+      this.setState({ items: this.props.items })
   }
 
   addItem() {
@@ -63,7 +68,7 @@ export default class Advert extends Component {
                 type="text"
                 id="itemTitle"
                 required
-                minLength={2}
+                minLength={this.props.minLengthForItems}
                 placeholder="Nome da atividade"
                 onChange={this.handleChange}
                 value={this.state.item}

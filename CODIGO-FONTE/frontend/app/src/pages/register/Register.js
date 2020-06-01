@@ -39,7 +39,6 @@ const Register = () => {
 			birthDate: birth,
 			gender: gender
 		}
-		debugger
 		api.post('auth/register/', model)
 			.then((res) => {
 				const { data } = res;
@@ -53,7 +52,7 @@ const Register = () => {
 				}
 			})
 			.catch((ex) => {
-				addToast(ex.response.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+				addToast(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
 					appearance: 'error',
 					autoDismiss: true,
 				})
