@@ -4,6 +4,7 @@ import GlobalNavbar from '../../../components/Navbars/GlobalNavbar.js'
 import SimpleFooter from '../../../components/Footers/SimpleFooter.js'
 import api from '../../../services/api'
 import Resources from '../../../store/Resources.js'
+import Utils from '../../../store/Utils.js'
 import Loading from '../../../components/Loading/Loading.js'
 
 import {
@@ -58,12 +59,6 @@ export default class Portfolio extends React.Component {
       .finally(() => {
         this.setState({ adverts, loading: false })
       })
-  }
-
-  formatarData(date) {
-    const dataNormal = date.toISOString();
-
-    return dataNormal.substring(8, 10) + '/' + dataNormal.substring(5, 6) + '/' + dataNormal.substring(0, 4)
   }
 
   render() {
@@ -142,7 +137,7 @@ export default class Portfolio extends React.Component {
                         <CardHeader>{advert.title}</CardHeader>
                         <CardBody>
                           <p>
-                            {this.formatarData(advert.date)}, em {advert.location}
+                            {Utils.formatarData(advert.date)}, em {advert.location}
                           </p>
                           <Button
                             color="primary"
