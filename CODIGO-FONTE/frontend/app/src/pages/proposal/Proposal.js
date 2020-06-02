@@ -26,10 +26,13 @@ export default class Proposal extends React.Component {
 
     this.state = {
       advertId: 0,
-      amount: 0.00,
+      amount: null,
       loading: false
     }
+
+    this.amount_onChange = this.amount_onChange.bind(this)
   }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -37,7 +40,12 @@ export default class Proposal extends React.Component {
       this.setState({ advertId: this.props.match.params.id })
   }
 
+  amount_onChange(event) {
+    this.setState({ amount: event.target.value })
+  }
+
   save() {
+    console.log(this.state)
     this.setState({ loading: true })
     api.get('/proposal')
       .then(resp => {
@@ -81,7 +89,7 @@ export default class Proposal extends React.Component {
                       <FormGroup>
                         <Label for="advertProperty">Quanto deseja oferecer?</Label>
                         <InputGroup>
-                          <CurrencyInput placeholder="R$0,00" type="text" value={this.state.amount}/>
+                          <CurrencyInput placeholder="R$0,00" type="text" value={this.state.amount} onChange={this.amount_onChange}/>
                         </InputGroup>
                       </FormGroup>
                     </Col>
