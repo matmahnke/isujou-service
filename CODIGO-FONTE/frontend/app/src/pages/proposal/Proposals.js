@@ -67,7 +67,7 @@ export default class Proposals extends React.Component {
                           </thead>
                           <tbody>
                             {data.data.map((proposal, index) => {
-                              const { id, active, porperty, status, date, isMine, canRefuse, canApprove, canSuspend } = proposal
+                              const { id, active, advert, status, date, isMine, canRefuse, canApprove, canSuspend } = proposal
                               return (
                                 <tr key={id}>
                                   <td>
@@ -75,8 +75,8 @@ export default class Proposals extends React.Component {
                                     <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={canRefuse}><i className="fa fa-times"></i></Button>
                                     <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
                                   </td>
-                                  <td>{porperty}</td>
-                                  <td>{date}</td>
+                                  <td>{advert.property.title}</td>
+                                  <td>{advert.date}</td>
                                   <td>{Resources.GetContractStatus()[status - 1].description}</td>
                                   <td>
                                     <div className="custom-control custom-checkbox">
