@@ -1,6 +1,8 @@
 ﻿using iSujou.Api.Application.Commands;
 using iSujou.CrossCutting.Data.Interfaces;
+using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -13,11 +15,13 @@ namespace iSujou.Api.Controllers
     {
         private readonly IProposalRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public ProposalController(IProposalRepository repository, IUnitOfWork unitOfWork)
+        public ProposalController(IProposalRepository repository, IUnitOfWork unitOfWork, UserManager<User> userManager)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -30,7 +34,7 @@ namespace iSujou.Api.Controllers
                     AdvertId = command.AdvertId,
                     Status = command.Status,
                     Value = command.Value,
-                    CandidateId = command.CandidateId
+                    CandidateId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id
                 });
                 await _unitOfWork.Commit();
             }

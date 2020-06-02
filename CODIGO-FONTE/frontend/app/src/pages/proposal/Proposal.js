@@ -47,7 +47,10 @@ export default class Proposal extends React.Component {
   save() {
     console.log(this.state)
     this.setState({ loading: true })
-    api.get('/proposal')
+    api.post('/proposal', { 
+      advertId: this.state.advertId,
+      value: this.state.amount.toString().replace("R$", "").replace(",", "")
+    })
       .then(resp => {
         const { data } = resp;
       })
