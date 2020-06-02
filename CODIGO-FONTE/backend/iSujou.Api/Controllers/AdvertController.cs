@@ -30,7 +30,7 @@ namespace iSujou.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _repository.GetAllAsync());
+            return Ok(await _repository.GetPortfolioAsync());
         }
 
         [HttpGet()]

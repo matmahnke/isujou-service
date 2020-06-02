@@ -1,7 +1,10 @@
-import React from "react";
+import React from 'react'
 
-import GlobalNavbar from "../../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../../components/Footers/SimpleFooter.js";
+import GlobalNavbar from '../../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../../components/Footers/SimpleFooter.js'
+import api from '../../../services/api'
+import Resources from '../../../store/Resources.js'
+import Loading from '../../../components/Loading/Loading.js'
 
 import {
   Button,
@@ -23,7 +26,8 @@ export default class Portfolio extends React.Component {
     super(props)
 
     this.state = {
-      adverts: []
+      adverts: [],
+      loading: false
     }
   }
 
@@ -37,18 +41,35 @@ export default class Portfolio extends React.Component {
   listarAnuncios() {
     let adverts = [];
 
-    // vai fazer a requisicao ao invés do for fixo
-    for (var i = 1; i <= 5; i++)
-      adverts.push({ id: i, title: 'Casa no centro', date: '0' + i + '/05/2020', location: 'Blumenau, SC', photoUrl: 'https://s2.glbimg.com/kmbgBzKPL0URISIQenPiAKo4ORI=/e.glbimg.com/og/ed/f/original/2017/08/23/5c147f01-dff6-4952-98a0-9394c88361c2.jpg' });
+    this.setState({ loading: true })
+    api.get('/advert')
+      .then(resp => {
+        const { data } = resp;
+        if (data) {
+          for (var i = 0; i < data.length; i++) {
+            const current = data[i]
+            adverts.push({ id: current.id, title: current.property.title, date: new Date(current.date), location: current.property.city + ', ' + Resources.GetBrazilianStates()[current.property.state - 1].description, photoUrl: '' })
+          }
+        }
+      })
+      .catch((ex) => {
+        this.setState({ loading: false })
+      })
+      .finally(() => {
+        this.setState({ adverts, loading: false })
+      })
+  }
 
-    this.setState({ adverts })
+  formatarData(date) {
+    const dataNormal = date.toISOString();
 
-    console.log(this.state.adverts)
+    return dataNormal.substring(8, 10) + '/' + dataNormal.substring(5, 6) + '/' + dataNormal.substring(0, 4)
   }
 
   render() {
     return (
       <>
+      <Loading hidden={!this.state.loading}/>
         <GlobalNavbar />
         <main ref="main">
           <div className="position-relative">
@@ -71,7 +92,7 @@ export default class Portfolio extends React.Component {
                   </Col>
                 </Row>
                 <br />
-                <Row>
+                <Row hidden>
                   <Col>
                     <FormGroup>
                       <InputGroup>
@@ -121,7 +142,7 @@ export default class Portfolio extends React.Component {
                         <CardHeader>{advert.title}</CardHeader>
                         <CardBody>
                           <p>
-                            {advert.date}, em {advert.location}
+                            {this.formatarData(advert.date)}, em {advert.location}
                           </p>
                           <Button
                             color="primary"
