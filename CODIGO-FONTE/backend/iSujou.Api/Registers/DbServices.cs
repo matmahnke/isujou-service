@@ -1,5 +1,8 @@
+using iSujou.Domain.Entities;
 using iSujou.Infra;
+using iSujou.Infra.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

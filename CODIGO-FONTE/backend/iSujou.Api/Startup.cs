@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace iSujou.Api
 {
@@ -64,7 +65,6 @@ namespace iSujou.Api
                 .AddAuthorizationServices()
                 .AddSwaggerServices();
 
-
             services.AddApiVersioning(p =>
             {
                 p.DefaultApiVersion = new ApiVersion(1, 0);
@@ -88,7 +88,10 @@ namespace iSujou.Api
                     .AddConsole()
                     .AddEventLog();
             });
+
             ILogger logger = loggerFactory.CreateLogger<Program>();
+
+            InitializeSeeds(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -121,6 +124,13 @@ namespace iSujou.Api
                 endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
+        }
+
+        private static async Task InitializeSeeds(IServiceCollection services)
+        {
+            var um = services.BuildServiceProvider().GetService<UserManager<User>>();
+            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole<long>>>();
+            await new IdentityInitializer(um, rm).Initialize();
         }
     }
 }

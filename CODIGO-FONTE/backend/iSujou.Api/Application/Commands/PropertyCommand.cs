@@ -5,6 +5,7 @@ namespace iSujou.Api.Application.Commands
 {
     public class PropertyCommand
     {
+        public long? Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public State State { get; set; }
@@ -20,6 +21,7 @@ namespace iSujou.Api.Application.Commands
         {
             return new Property
             {
+                Id = Id.GetValueOrDefault(),
                 Title = Title,
                 Description = Description,
                 State = State,

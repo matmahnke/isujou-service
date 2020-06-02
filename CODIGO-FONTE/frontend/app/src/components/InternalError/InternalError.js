@@ -2,17 +2,17 @@ import React from 'react';
 
 import { Button } from "reactstrap";
 
-import './NotFound.css';
+import './InternalError.css';
 
-const NotFound = () => 
+const InternalError = () => 
   <>
     <div className="centralizado">
-      <h2 className="shrug">¯\_(ツ)_/¯</h2>
+      <h2 className="shrug">（πーπ）</h2>
       <span className="rounded-circle img-center"/>
-      <h1>404</h1>
+      <h1 className="color-red">500</h1>
       <br/>
       <br/>
-      <h3>Página não encontrada.</h3>
+      <h3>Aconteceu um problema.</h3>
       <br/>
       <Button color="default" type="button" href="/">
         Início
@@ -20,4 +20,4 @@ const NotFound = () =>
     </div>
   </>
 
-export default NotFound;
+export default InternalError;

@@ -22,12 +22,10 @@ namespace iSujou.Infra.Data
 
         public async Task Initialize()
         {
-            var resultado = _roleManager.CreateAsync(
-                new IdentityRole<long>(Roles.DEFAULT)).Result;
-            if (!resultado.Succeeded)
+            if (!await _roleManager.RoleExistsAsync(Roles.DEFAULT))
             {
-                throw new Exception(
-                    $"Erro durante a criação da role { Roles.DEFAULT}.");
+                var resultado = _roleManager.CreateAsync(
+                    new IdentityRole<long>(Roles.DEFAULT)).Result;
             }
 
             CreateUser(
