@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 import {
   Button,
@@ -11,21 +11,46 @@ import {
   Row,
   Col,
   Label
-} from "reactstrap"
+} from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
-import SimpleFooter from "../../components/Footers/SimpleFooter.js"
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import api from '../../services/api'
+import Loading from '../../components/Loading/Loading.js'
 
 import CurrencyInput from "../../components/Inputs/CurrencyInput.js"
 
 export default class Proposal extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loading: false
+    }
+  }
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  save() {
+    this.setState({ loading: true })
+    api.get('/proposal')
+      .then(resp => {
+        const { data } = resp;
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
+
   render() {
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">
@@ -67,7 +92,7 @@ export default class Proposal extends React.Component {
                   </Row>
                   <Row>
                     <Col md={12}>
-                      <Button color="success">Enviar</Button>
+                      <Button color="success" onClick={() => this.save()}>Enviar</Button>
                     </Col>
                   </Row>
                 </CardBody>
