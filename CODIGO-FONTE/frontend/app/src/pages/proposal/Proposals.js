@@ -13,6 +13,7 @@ import SimpleFooter from '../../components/Footers/SimpleFooter.js'
 import api from '../../services/api'
 import Async from 'react-async'
 import Resources from '../../store/Resources.js'
+import Utils from '../../store/Utils.js'
 
 export default class Proposals extends React.Component {
   componentDidMount() {
@@ -76,8 +77,8 @@ export default class Proposals extends React.Component {
                                     <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
                                   </td>
                                   <td>{advert.property.title}</td>
-                                  <td>{advert.date}</td>
-                                  <td>{Resources.GetContractStatus()[status - 1].description}</td>
+                                  <td>{Utils.formatarData(new Date(advert.date))}</td>
+                                  <td>{Resources.GetContractStatus()[status - 1]?.description}</td>
                                 </tr>
                               )
                             })}
