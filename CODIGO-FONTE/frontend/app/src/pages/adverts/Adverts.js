@@ -11,6 +11,7 @@ import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 import api from '../../services/api';
+import Utils from '../../store/Utils.js'
 import Async from 'react-async';
 
 export default class Adverts extends React.Component {
@@ -72,8 +73,8 @@ export default class Adverts extends React.Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {data.data.map((property, index) => {
-                              const { id, propertyName, date, active } = property
+                            {data.data.map((adverd, index) => {
+                              const { id, property, date, active } = adverd
                               return (
                                 <tr key={id}>
                                   <td>
@@ -82,8 +83,8 @@ export default class Adverts extends React.Component {
                                     ><i className="fa fa-pencil"></i></Button>
                                     <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
                                   </td>
-                                  <td>{propertyName}</td>
-                                  <td>{date}</td>
+                                  <td>{property.title}</td>
+                                  <td>{Utils.formatarData(new Date(date))}</td>
                                   <td>
                                     <div className="custom-control custom-checkbox">
                                       <input
