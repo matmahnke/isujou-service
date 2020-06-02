@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardBody,
   FormGroup,
-  Form,
   InputGroup,
   Container,
   Row,
@@ -48,31 +47,29 @@ export default class Proposal extends React.Component {
                   <h2>Realizar proposta</h2>
                 </CardHeader>
                 <CardBody>
-                  <Form role="form">
-                    <Row>
-                      <Col md={6}>
-                        <FormGroup>
-                          <Label for="advertProperty">Quanto deseja oferecer?</Label>
-                          <InputGroup>
-                            <CurrencyInput placeholder="R$0,00" type="text" />
-                          </InputGroup>
-                        </FormGroup>
-                      </Col>
-                      <Col md={6} className="border-left">
-                        <p>
-                          Este valor será oferecido ao proprietário para realizar as atividades propostas no anúncio. Ela pode ser aceita, recusada ou negociada caso desejado.
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup>
+                        <Label for="advertProperty">Quanto deseja oferecer?</Label>
+                        <InputGroup>
+                          <CurrencyInput placeholder="R$0,00" type="text" />
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col md={6} className="border-left">
+                      <p>
+                        Este valor será oferecido ao proprietário para realizar as atividades propostas no anúncio. Ela pode ser aceita, recusada ou negociada caso desejado.
                         </p>
-                        <p>
-                          Consulte as <a href="/rules">regras</a> para maiores informações.
+                      <p>
+                        Consulte as <a href="/rules">regras</a> para maiores informações.
                         </p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md={12}>
-                        <Button color="success">Enviar</Button>
-                      </Col>
-                    </Row>
-                  </Form>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={12}>
+                      <Button color="success">Enviar</Button>
+                    </Col>
+                  </Row>
                 </CardBody>
               </Card>
             </Container>

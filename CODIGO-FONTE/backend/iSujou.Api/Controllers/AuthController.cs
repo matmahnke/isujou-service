@@ -101,7 +101,7 @@ namespace iSujou.Api.Controllers
 
                 if (result.Succeeded)
                 {
-                    // await _userManager.AddToRoleAsync(user, Roles.DEFAULT)
+                    await _userManager.AddToRoleAsync(user, Roles.DEFAULT);
 
                     return CreateToken(command.Username);
                 }
