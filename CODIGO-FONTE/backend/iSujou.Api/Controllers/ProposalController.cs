@@ -1,6 +1,7 @@
 ﻿using iSujou.Api.Application.Commands;
 using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Entities;
+using iSujou.Domain.Enums;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace iSujou.Api.Controllers
                 {
                     AdvertId = command.AdvertId,
                     Status = command.Status,
-                    Value = command.Value,
+                    Value = 1,
                     CandidateId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id
                 });
                 await _unitOfWork.Commit();
@@ -48,7 +49,37 @@ namespace iSujou.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _repository.GetAllAsync());
+            var proposals = await _repository.GetProposals();
+            return Ok(proposals);
+        }
+
+        [HttpGet]
+        [Route("aprove/{id}")]
+        public async Task<IActionResult> aprove(long id)
+        {
+            var proposal = await _repository.GetByIdAsync(id);
+            proposal.Status = ProposalStatus.Accepted;
+            await _unitOfWork.Commit();
+            return Ok();
+        }
+
+
+        [Route("refuse/{id}")]
+        public async Task<IActionResult> refuse(long id)
+        {
+            var proposal = await _repository.GetByIdAsync(id);
+            proposal.Status = ProposalStatus.Refused;
+            await _unitOfWork.Commit();
+            return Ok();
+        }
+
+        [Route("suspend/{id}")]
+        public async Task<IActionResult> suspend(long id)
+        {
+            var proposal = await _repository.GetByIdAsync(id);
+            proposal.Status = ProposalStatus.Canceled;
+            await _unitOfWork.Commit();
+            return Ok();
         }
     }
 }
