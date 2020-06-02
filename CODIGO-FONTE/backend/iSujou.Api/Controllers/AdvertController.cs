@@ -1,7 +1,8 @@
 using iSujou.Api.Application.Commands;
 using iSujou.CrossCutting.Data.Interfaces;
+using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -15,11 +16,13 @@ namespace iSujou.Api.Controllers
     {
         private readonly IAdvertRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public AdvertController(IAdvertRepository repository, IUnitOfWork unitOfWork)
+        public AdvertController(IAdvertRepository repository, IUnitOfWork unitOfWork, UserManager<User> userManager)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -50,12 +53,15 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]AdvertCommand command)
         {
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
             await _repository.AddAsync(new Domain.Entities.Advert
             {
                 Active = command.Active,
                 Date = command.Date,
                 PropertyId = command.PropertyId,
-                CreatorId = User.Identity.GetUserId()
+                CreatorId = user.Id
             });
             await _unitOfWork.Commit();
             return Ok();
