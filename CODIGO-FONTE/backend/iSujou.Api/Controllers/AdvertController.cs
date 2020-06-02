@@ -3,6 +3,7 @@ using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace iSujou.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1")]
+    [AllowAnonymous]
     public class AdvertController : ControllerBase
     {
         private readonly IAdvertRepository _repository;
@@ -51,23 +53,32 @@ namespace iSujou.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize("Bearer")]
         public async Task<IActionResult> Create([FromBody]AdvertCommand command)
         {
-
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            await _repository.AddAsync(new Domain.Entities.Advert
+            try
             {
-                Active = command.Active,
-                Date = command.Date,
-                PropertyId = command.PropertyId,
-                CreatorId = user.Id
-            });
-            await _unitOfWork.Commit();
-            return Ok();
+                await _repository.AddAsync(new Advert
+                {
+                    Active = command.Active,
+                    Date = command.Date,
+                    PropertyId = command.PropertyId,
+                    CreatorId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id
+                });
+                await _unitOfWork.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
         }
 
         [HttpPut]
+        [Authorize("Bearer")]
         public async Task<IActionResult> Update([FromBody] AdvertCommand command)
         {
             try
@@ -90,19 +101,20 @@ namespace iSujou.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize("Bearer")]
         public async Task<IActionResult> Delete(long id)
         {
             try
             {
                 await _repository.RemoveAsync(id);
                 await _unitOfWork.Commit();
+
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
-
-            return Ok();
         }
     }
 }

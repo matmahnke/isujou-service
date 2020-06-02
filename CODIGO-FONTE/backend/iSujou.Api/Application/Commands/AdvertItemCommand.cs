@@ -2,5 +2,6 @@
 {
     public class AdvertItemCommand
     {
+        public string Value { get; set; }
     }
 }

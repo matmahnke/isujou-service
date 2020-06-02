@@ -171,7 +171,7 @@ export default class Advert extends React.Component {
     let list = document.querySelector('#itemList').children;
 
     for (var i = 0; i < list.length; i++)
-      items.push(list[i].getAttribute("data-value"))
+      items.push({ value: list[i].getAttribute("data-value") } )
 
     return items;
   }
