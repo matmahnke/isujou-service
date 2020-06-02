@@ -4,5 +4,6 @@
     {
         public long AdvertId { get; set; }
         public virtual Advert Advert { get; set; }
+        public string Description { get; set; }
     }
 }

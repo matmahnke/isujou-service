@@ -2,6 +2,7 @@
 using iSujou.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace iSujou.Infra.Repositories
@@ -11,6 +12,14 @@ namespace iSujou.Infra.Repositories
         public AdvertRepository(DbContext context) 
             : base(context)
         {
+        }
+
+        public async Task<Advert> GetAdvert(long id)
+        {
+            return await _set
+                .Include(x => x.Items)
+                .Include(advert => advert.Property)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<List<Advert>> GetPortfolioAsync()

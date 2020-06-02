@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace iSujou.Api.Controllers
 {
@@ -39,7 +40,7 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                var property = await _repository.GetByIdAsync(id);
+                var property = await _repository.GetAdvert(id);
 
                 if (property == null)
                     throw new Exception("Registro não encontrado.");
@@ -63,7 +64,11 @@ namespace iSujou.Api.Controllers
                     Active = command.Active,
                     Date = command.Date,
                     PropertyId = command.PropertyId,
-                    CreatorId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id
+                    CreatorId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id,
+                    Items = command.Items.Select(x => new AdvertItem
+                    {
+                        Description = x.Value
+                    }).ToList()
                 });
                 await _unitOfWork.Commit();
                 return Ok();
@@ -87,7 +92,11 @@ namespace iSujou.Api.Controllers
                 {
                     Active = command.Active,
                     Date = command.Date,
-                    PropertyId = command.PropertyId
+                    PropertyId = command.PropertyId,
+                    Items = command.Items.Select(x => new AdvertItem
+                    {
+                        Description = x.Value
+                    }).ToList()
                 });
                 await _unitOfWork.Commit();
             }
