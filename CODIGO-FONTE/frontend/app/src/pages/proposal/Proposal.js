@@ -25,12 +25,16 @@ export default class Proposal extends React.Component {
     super(props)
 
     this.state = {
+      advertId: 0,
+      amount: 0.00,
       loading: false
     }
   }
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+    if (this.props.match.params?.id)
+      this.setState({ advertId: this.props.match.params.id })
   }
 
   save() {
@@ -77,7 +81,7 @@ export default class Proposal extends React.Component {
                       <FormGroup>
                         <Label for="advertProperty">Quanto deseja oferecer?</Label>
                         <InputGroup>
-                          <CurrencyInput placeholder="R$0,00" type="text" />
+                          <CurrencyInput placeholder="R$0,00" type="text" value={this.state.amount}/>
                         </InputGroup>
                       </FormGroup>
                     </Col>
