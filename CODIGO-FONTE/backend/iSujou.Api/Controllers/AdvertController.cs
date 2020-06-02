@@ -39,12 +39,12 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                var property = await _repository.GetByIdAsync(id);
+                var advert = _repository.GetByIdWithDetails(id);
 
-                if (property == null)
+                if (advert == null)
                     throw new Exception("Registro não encontrado.");
 
-                return Ok(property);
+                return Ok(advert);
             }
             catch (Exception ex)
             {

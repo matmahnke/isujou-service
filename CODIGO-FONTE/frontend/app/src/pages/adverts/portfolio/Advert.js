@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 import {
   Button,
@@ -10,10 +10,14 @@ import {
   ListGroupItem,
   Row,
   UncontrolledCarousel
-} from "reactstrap";
+} from 'reactstrap'
 
-import GlobalNavbar from "../../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../../components/Footers/SimpleFooter.js";
+import GlobalNavbar from '../../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../../components/Footers/SimpleFooter.js'
+import Loading from '../../../components/Loading/Loading.js'
+import api from '../../../services/api'
+import Utils from '../../../store/Utils.js'
+import Resources from '../../../store/Resources.js'
 
 import './Advert.css';
 
@@ -26,12 +30,12 @@ class Advert extends React.Component {
       title: '',
       date: null,
       location: '',
-      description: '',
       objectives: [],
       photos: [],
       ownerId: null,
       ownerName: '',
-      ownerPhotoUrl: ''
+      ownerPhotoUrl: '',
+      loading: false
     }
   }
 
@@ -40,33 +44,40 @@ class Advert extends React.Component {
     document.scrollingElement.scrollTop = 0;
 
     if (this.props.match.params?.id) {
-      let isValidId = !isNaN(this.props.match.params?.id);
+      const id = this.props.match.params.id
+      let isValidId = !isNaN(id);
 
       if (!isValidId) {
         console.log('Mostrar o erro que o id passado é inválido')
       }
       else {
-        let registerNotFound = false;
-
-        // faz requisicao, se retornou um objeto de verdade monta o model, senão bota isValidId = false
-        var model = {
-          id: this.props.match.params.id,
-          title: 'Casa no centro',
-          date: '01/05/2020',
-          location: 'Blumenau, Santa Catarina',
-          description: 'Casa com três quartos, dois banheiros e uma área de festa.',
-          objectives: ["Arrumar as camas", "Varrer o chão", "Limpar as janelas"],
-          photos: ["https://i.pinimg.com/originals/39/ea/2e/39ea2ef9c74c127ffba4bc4ec4f1a9bc.jpg", "https://i.ytimg.com/vi/6qUyyXyYXrM/maxresdefault.jpg"],
-          ownerId: 1,
-          ownerName: 'Calvin Harris',
-          ownerPhotoUrl: require("../../../assets/img/icons/1.jpg")
-        }
-
-        if (registerNotFound) {
-          console.log('Mandar pra página de registro não encontrado')
-        }
-        else
-          this.setState(model)
+        this.setState({ loading: true })
+        api.get('/advert/' + id)
+          .then(resp => {
+            const { data } = resp;
+            console.log(data)
+            if (data) {
+              console.log(data)
+              var model = {
+                id: data.id,
+                title: data.property.title,
+                date: data.date,
+                location: data.property.city + ', ' + Resources.GetBrazilianStates()[data.property.state - 1].description,
+                objectives: data.items ?? [],
+                photos: [],
+                ownerId: data.ownerId,
+                ownerName: data.creator?.UserInfo.Name ?? 'Proprietário',
+                ownerPhotoUrl: data.creator?.UserInfo ?? require("../../../assets/img/icons/1.jpg")
+              }
+              this.setState(model)
+            }
+          })
+          .catch((ex) => {
+            console.log(ex)
+          })
+          .finally(() => {
+            this.setState({ loading: false })
+          })
       }
     }
   }
@@ -87,6 +98,7 @@ class Advert extends React.Component {
   render() {
     return (
       <>
+        <Loading hidden={!this.state.loading}/>
         <GlobalNavbar />
         <main ref="main">
           <section className="section-profile-cover section-shaped my-0">
@@ -118,13 +130,10 @@ class Advert extends React.Component {
                           </h2>
                         </Row>
                         <Row className="my-2">
-                          <Button size="sm" color="default" className="fa fa-calendar mr-2 width-30" /> <span className="mt-1">{this.state.date}</span>
+                          <Button size="sm" color="default" className="fa fa-calendar mr-2 width-30" /> <span className="mt-1">{Utils.formatarData(new Date(this.state.date))}</span>
                         </Row>
                         <Row className="my-2">
                           <Button size="sm" color="default" className="fa fa-map-marker mr-2 width-30" /> <span className="mt-1">{this.state.location}</span>
-                        </Row>
-                        <Row>
-                          {this.state.description}
                         </Row>
                         <hr className="ml--3" />
                         <Row>

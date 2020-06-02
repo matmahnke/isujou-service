@@ -78,17 +78,6 @@ export default class Proposals extends React.Component {
                                   <td>{advert.property.title}</td>
                                   <td>{advert.date}</td>
                                   <td>{Resources.GetContractStatus()[status - 1].description}</td>
-                                  <td>
-                                    <div className="custom-control custom-checkbox">
-                                      <input
-                                        className="custom-control-input"
-                                        checked={active}
-                                        disabled
-                                        type="checkbox"
-                                      />
-                                      <label className="custom-control-label" htmlFor="customCheck2" />
-                                    </div>
-                                  </td>
                                 </tr>
                               )
                             })}
