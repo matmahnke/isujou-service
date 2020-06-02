@@ -9,12 +9,12 @@ namespace iSujou.Infra.Data
     public class IdentityInitializer
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole<long>> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
 
         public IdentityInitializer(
             UserManager<User> userManager,
-            RoleManager<IdentityRole<long>> roleManager)
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -24,11 +24,11 @@ namespace iSujou.Infra.Data
         {
             if (!await _roleManager.RoleExistsAsync(Roles.DEFAULT))
             {
-                var resultado = _roleManager.CreateAsync(
-                    new IdentityRole<long>(Roles.DEFAULT)).Result;
+                await _roleManager.CreateAsync(
+                    new IdentityRole(Roles.DEFAULT));
             }
 
-            CreateUser(
+            await CreateUser(
                 new User()
                 {
                     UserName = "admin",
@@ -37,15 +37,15 @@ namespace iSujou.Infra.Data
         }
 
 
-        private void CreateUser(
+        private async Task CreateUser(
             User user,
             string password,
             string initialRole = null)
         {
             if (_userManager.FindByNameAsync(user.UserName).Result == null)
             {
-                var resultado = _userManager
-                    .CreateAsync(user, password).Result;
+                var resultado = await _userManager
+                    .CreateAsync(user, password);
 
                 if (resultado.Succeeded &&
                     !String.IsNullOrWhiteSpace(initialRole))

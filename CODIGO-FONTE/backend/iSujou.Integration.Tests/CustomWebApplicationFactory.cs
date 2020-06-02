@@ -52,7 +52,7 @@ namespace iSujou.Integration.Tests
         private void InitializeSeeds(IServiceCollection services)
         {
             var um = services.BuildServiceProvider().GetService<UserManager<User>>();
-            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole<long>>>();
+            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
             new IdentityInitializer(um, rm).Initialize();
         }
     }

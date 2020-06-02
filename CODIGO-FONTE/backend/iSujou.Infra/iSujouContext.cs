@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iSujou.Infra
 {
-    public class iSujouContext : IdentityDbContext<User, IdentityRole<long>, long>
+    public class iSujouContext : IdentityDbContext<User, IdentityRole, string>
     {
         public iSujouContext(DbContextOptions<iSujouContext> options)
             : base(options)

@@ -6,7 +6,7 @@ namespace iSujou.Domain.Entities
 {
     public class Property : EntityBase
     {
-        public long OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public virtual User Owner { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

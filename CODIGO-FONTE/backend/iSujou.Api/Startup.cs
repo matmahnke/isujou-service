@@ -129,7 +129,7 @@ namespace iSujou.Api
         private static async Task InitializeSeeds(IServiceCollection services)
         {
             var um = services.BuildServiceProvider().GetService<UserManager<User>>();
-            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole<long>>>();
+            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
             await new IdentityInitializer(um, rm).Initialize();
         }
     }

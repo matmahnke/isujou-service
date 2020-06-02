@@ -55,7 +55,7 @@ namespace iSujou.Api.Controllers
                 Active = command.Active,
                 Date = command.Date,
                 PropertyId = command.PropertyId,
-                CreatorId = long.Parse(User.Identity.GetUserId())
+                CreatorId = User.Identity.GetUserId()
             });
             await _unitOfWork.Commit();
             return Ok();

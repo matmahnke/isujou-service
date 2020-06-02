@@ -26,7 +26,7 @@ namespace iSujou.Api.Controllers
         private readonly ILoginService _service;
         private readonly SigningConfigurations _signingConfigurations;
         private readonly TokenConfigurations _tokenConfigurations;
-        private readonly RoleManager<IdentityRole<long>> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
@@ -35,7 +35,7 @@ namespace iSujou.Api.Controllers
             ILoginService service,
             SigningConfigurations signingConfigurations,
             TokenConfigurations tokenConfigurations,
-            RoleManager<IdentityRole<long>> roleManager)
+            RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _signingConfigurations = signingConfigurations;
