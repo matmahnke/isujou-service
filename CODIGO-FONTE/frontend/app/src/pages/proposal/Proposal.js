@@ -52,7 +52,7 @@ export default class Proposal extends React.Component {
       value: this.state.amount.toString().replace("R$", "").replace(",", "")
     })
       .then(resp => {
-        const { data } = resp;
+        window.location.href = '/proposals/mine'
       })
       .catch((ex) => {
         console.log(ex)
