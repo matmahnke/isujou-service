@@ -22,6 +22,15 @@ namespace iSujou.Infra.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public Advert GetByIdWithDetails(long id)
+        {
+            return _set.Where(advert => advert.Id == id)
+                       .Include(advert => advert.Property)
+                       .Include(advert => advert.Creator)
+                       .Include(advert => advert.Editor)
+                       .FirstOrDefault();
+        }
+
         public Task<List<Advert>> GetPortfolioAsync()
         {
             return _set.Include(advert => advert.Property).ToListAsync();
