@@ -26,8 +26,8 @@ namespace iSujou.Infra.Repositories
         {
             return _set.Where(advert => advert.Id == id)
                        .Include(advert => advert.Property)
-                       .Include(advert => advert.Creator)
-                       .Include(advert => advert.Editor)
+                       .Include(advert => advert.Creator).ThenInclude(creator => creator.UserInfo)
+                       .Include(advert => advert.Editor).ThenInclude(creator => creator.UserInfo)
                        .FirstOrDefault();
         }
 

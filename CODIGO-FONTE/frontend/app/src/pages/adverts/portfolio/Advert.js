@@ -55,7 +55,6 @@ class Advert extends React.Component {
         api.get('/advert/' + id)
           .then(resp => {
             const { data } = resp;
-            console.log(data)
             if (data) {
               console.log(data)
               var model = {
@@ -65,9 +64,9 @@ class Advert extends React.Component {
                 location: data.property.city + ', ' + Resources.GetBrazilianStates()[data.property.state - 1].description,
                 objectives: data.items ?? [],
                 photos: [],
-                ownerId: data.ownerId,
-                ownerName: data.creator?.UserInfo.Name ?? 'Proprietário',
-                ownerPhotoUrl: data.creator?.UserInfo ?? require("../../../assets/img/icons/1.jpg")
+                ownerId: data.creator?.userInfoId ?? 0,
+                ownerName: data.creator?.userInfo?.name ?? 'Proprietário',
+                ownerPhotoUrl: data.creator?.userInfo?.photo ?? require("../../../assets/img/icons/1.jpg")
               }
               this.setState(model)
             }

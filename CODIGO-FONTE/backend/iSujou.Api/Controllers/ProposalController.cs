@@ -5,6 +5,9 @@ using iSujou.Domain.Enums;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace iSujou.Api.Controllers
@@ -49,8 +52,27 @@ namespace iSujou.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            List<object> result = new List<object>();
             var proposals = await _repository.GetProposals();
-            return Ok(proposals);
+            var userId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+
+            foreach (var proposal in proposals)
+            {
+                bool isMine = userId == proposal.Advert.CreatorId,
+                     showButtons = isMine && proposal.Status == ProposalStatus.Pending;
+                result.Add(new
+                {
+                    id = proposal.Id,
+                    advert = proposal.Advert,
+                    status = proposal.Status,
+                    isMine = isMine,
+                    canApprove = showButtons,
+                    canRefuse = showButtons,
+                    canSuspend = showButtons
+                });
+            }
+
+            return Ok(result);
         }
 
         [HttpGet]
