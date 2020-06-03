@@ -101,7 +101,13 @@ export default class Advert extends React.Component {
         .then(resp => {
           const { data } = resp;
           if (data) {
-            this.setState(data)
+            var model = {
+              propertyId: data.propertyId,
+              predefinedItems: data.items?.length > 0 ? data.items.map(item => item.description) : [],
+              dayMonth: data.date.substring(0, 10)
+            }
+
+            this.setState(model)
           }
         })
         .catch((ex) => {
@@ -171,7 +177,7 @@ export default class Advert extends React.Component {
     let list = document.querySelector('#itemList').children;
 
     for (var i = 0; i < list.length; i++)
-      items.push({ value: list[i].getAttribute("data-value") } )
+      items.push({ value: list[i].getAttribute("data-value") })
 
     return items;
   }
