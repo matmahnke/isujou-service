@@ -1,6 +1,7 @@
 import React from 'react'
 
 import api from '../../services/api';
+import Loading from '../../components/Loading/Loading.js'
 
 const Logout = () => {
 	const deslogar = () => {
@@ -18,9 +19,7 @@ const Logout = () => {
 		<>
 			{deslogar()}
 
-			<div className="spinner-border" role="status">
-				<span className="sr-only">Carregando...</span>
-			</div>
+			<Loading />
 		</>
 	)
 };

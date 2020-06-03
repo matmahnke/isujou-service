@@ -62,7 +62,7 @@ class Advert extends React.Component {
                 title: data.property.title,
                 date: data.date,
                 location: data.property.city + ', ' + Resources.GetBrazilianStates()[data.property.state - 1].description,
-                objectives: data.items ?? [],
+                objectives: data.items?.length > 0 ? data.items.map(item => item.description) : [],
                 photos: [],
                 ownerId: data.creator?.userInfoId ?? 0,
                 ownerName: data.creator?.userInfo?.name ?? 'Proprietário',
