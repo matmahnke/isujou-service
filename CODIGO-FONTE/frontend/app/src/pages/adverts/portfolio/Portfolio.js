@@ -131,7 +131,7 @@ export default class Portfolio extends React.Component {
                 </Row>
                 <Row className="mb-5">
                   {this.state.adverts.map(advert =>
-                    <Col lg={4} className="mb-5">
+                    <Col lg={4} key={advert.id} className="mb-5">
                       <Card className="shadow border-0">
                         <CardImg top src={advert.photoUrl} />
                         <CardHeader>{advert.title}</CardHeader>

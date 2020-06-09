@@ -56,7 +56,6 @@ class Advert extends React.Component {
           .then(resp => {
             const { data } = resp;
             if (data) {
-              console.log(data)
               var model = {
                 id: data.id,
                 title: data.property.title,
