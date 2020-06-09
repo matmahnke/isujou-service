@@ -1,25 +1,58 @@
-import React from "react";
+import React, { Component } from 'react'
 
 import {
-  Button,
   Card,
   Container,
   Row,
   Col,
   Table
-} from "reactstrap";
+} from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import api from '../../services/api'
+import Resources from '../../store/Resources.js'
+import Loading from '../../components/Loading/Loading.js'
 
-export default class Profile extends React.Component {
+import './Profile.css';
+
+export default class Profile extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      id: null,
+      name: 'Perfil',
+      photoUrl: null,
+      amountAdverts: 0,
+      amountAssessments: 0,
+      description: 'Descição',
+      achievements: [],
+      loading: false
+    }
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
+
+    this.setState({ loading: true })
+
+    // Faz a requisição
+    if (this.props.match.params?.id)
+    {
+      const id = this.props.match.params.id;
+
+      this.setState({ id })
+    }
+
+    this.setState({ loading: false })
   }
+
   render() {
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main className="profile-page" ref="main">
           <section className="section-profile-cover section-shaped my-0">
@@ -53,120 +86,59 @@ export default class Profile extends React.Component {
           <section className="section">
             <Container>
               <Card className="card-profile shadow mt--400">
-                <div className="px-4">
-                  <Row className="justify-content-center">
-                    <Col className="order-lg-2" lg="3">
-                      <div className="card-profile-image">
-                        <img
-                          alt="..."
-                          className="rounded-circle"
-                          src={require("../../assets/img/icons/1.jpg")}
-                        />
+                <Col md={12} className="px-4">
+                  <Row className="justify-content-center mb-4 profile-image">
+                    <img
+                      alt="..."
+                      className="rounded-circle shadow shadow-lg--hover"
+                      src={this.state.photoUrl ?? require("../../assets/img/icons/no-image.png")}
+                    />
+                  </Row>
+                  <Row className="justify-content-center ">
+                    <h3>
+                      {this.state.name}
+                    </h3>
+                  </Row>
+                  <Row className="justify-content-center mb-3">
+                    <div className="card-profile-stats d-flex justify-content-center">
+                      <div>
+                        <span className="heading">{this.state.amountAdverts}</span>
+                        <span className="description">{'Anúncio' + (this.state.amountAdverts !== 1 ? 's' : '')}</span>
                       </div>
-                    </Col>
-                    <Col
-                      className="order-lg-3 text-lg-right align-self-lg-center"
-                      lg="4"
-                    >
-                      <div className="card-profile-actions py-4 mt-lg-0">
-                        <Button
-                          className="float-right"
-                          color="default"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          Mensagem
-                        </Button>
+                      <div>
+                        <span className="heading">{this.state.achievements.length}</span>
+                        <span className="description">{'Conquista' + (this.state.achievements.length !== 1 ? 's' : '')}</span>
                       </div>
-                    </Col>
-                    <Col className="order-lg-1" lg="4">
-                      <div className="card-profile-stats d-flex justify-content-center">
-                        <div>
-                          <span className="heading">22</span>
-                          <span className="description">Anúncios</span>
-                        </div>
-                        <div>
-                          <span className="heading">10</span>
-                          <span className="description">Conquistas</span>
-                        </div>
-                        <div>
-                          <span className="heading">89</span>
-                          <span className="description">Avaliações</span>
-                        </div>
+                      <div>
+                        <span className="heading">{this.state.amountAssessments}</span>
+                        <span className="description">{'Avaliaç' + (this.state.amountAssessments !== 1 ? 'ões' : 'ão')}</span>
                       </div>
+                    </div>
+                  </Row>
+                  <Row className="mt-5 justify-content-center" hidden={this.state.description?.length === 0}>
+                    <Col lg="9" className="border-top py-5 text-center">
+                      <p>
+                        {this.state.description}
+                      </p>
                     </Col>
                   </Row>
-                  <div className="text-center mt-5">
-                    <h3>
-                      Calvin Harris
-                    </h3>
-                    <div className="h6 font-weight-300">
-                      <i className="ni location_pin mr-2" />
-                      Faxineiro na região de São Paulo (SP)
-                    </div>
-                  </div>
-                  <div className="mt-5 py-5 border-top text-center">
-                    <Row className="justify-content-center text-left">
-                      <Col lg="9">
-                        <p>
-                          Trabalho na área há 15 anos, já fui funcionário de empresas de limpeza e atualmente sigo limpando casas de forma autonoma.
-                          Gosto bastante de música, futebol e cerveja.
-                        </p>
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="py-5 border-top text-center">
-                    <Row className="justify-content-center text-left">
-                      <Col lg="9">
-                        <h4>
-                          Conquistas
+                  <Row className="justify-content-center" hidden={this.state.achievements?.length === 0}>
+                    <Col lg="9" className="border-top py-5">
+                      <h4>
+                        Conquistas
                         </h4>
-                        <Table responsive>
-                          <thead>
+                      <Table responsive borderless striped>
+                        <tbody>
+                          {this.state.achievements.map(achievement =>
                             <tr>
-                              <th>#</th>
-                              <th>Table heading</th>
-                              <th>Table heading</th>
-                              <th>Table heading</th>
-                              <th>Table heading</th>
-                              <th>Table heading</th>
-                              <th>Table heading</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
-                            </tr>
-                          </tbody>
-                        </Table>
-                      </Col>
-                    </Row>
-                  </div>
-                </div>
+                              <td>{achievement.description}</td>
+                              <td className="text-right">{achievement.points} <i className="fa fa-star text-yellow"></i></td>
+                            </tr>)}
+                        </tbody>
+                      </Table>
+                    </Col>
+                  </Row>
+                </Col>
               </Card>
             </Container>
           </section>
