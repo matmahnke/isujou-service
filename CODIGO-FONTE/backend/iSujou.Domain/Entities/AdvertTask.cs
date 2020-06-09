@@ -10,7 +10,6 @@ namespace iSujou.Domain.Entities
         public string Description { get; set; }
         public DateTime? CompletedDate { get; set; }
 
-        [NotMapped]
         public bool Done => CompletedDate.HasValue;
     }
 }

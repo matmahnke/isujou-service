@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from 'react'
 import {
 	Button,
 	Card,
@@ -14,12 +13,51 @@ import {
 	Container,
 	Row,
 	Col
-} from "reactstrap";
+} from 'reactstrap'
 
-import SimpleFooter from '../../components/Footers/SimpleFooter';
+import { useToasts } from 'react-toast-notifications'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
+import api from '../../services/api'
+
 const Register = () => {
+	const { addToast } = useToasts()
+
 	const handleSubmit = values => {
-		alert('Ainda não :(')
+		var name = document.getElementById('personName').value;
+		var lastname = document.getElementById('personLastName').value;
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		var cpf = document.getElementById('personCpf').value;
+		var birth = document.getElementById('personBirthDay').value;
+		var gender = document.querySelector('input[name="gender-group"]:checked').value;
+		var model = {
+			name: name,
+			username: email,
+			lastName: lastname,
+			password: password,
+			cpf: cpf,
+			birthDate: birth,
+			gender: gender
+		}
+		api.post('auth/register/', model)
+			.then((res) => {
+				const { data } = res;
+				if (data) {
+					localStorage.setItem('Authorization', data.accessToken)
+					addToast('Usuário cadastrado com sucesso', {
+						appearance: 'success',
+						autoDismiss: true,
+					})
+					window.location.href = '/home'
+				}
+			})
+			.catch((ex) => {
+				addToast(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+					appearance: 'error',
+					autoDismiss: true,
+				})
+			})
+		values.preventDefault();
 	}
 
 	return (
@@ -51,7 +89,7 @@ const Register = () => {
 					<Row className="justify-content-center">
 						<Col lg="8">
 							<Card className="bg-secondary shadow border-0">
-								<CardHeader className="bg-white pb-5">
+								<CardHeader className="bg-white pb-5" hidden={true}>
 									<div className="text-muted text-center mb-3">
 										<small>Criar sua conta com</small>
 									</div>
@@ -76,7 +114,7 @@ const Register = () => {
 										<small>Cirar uma conta com suas credenciais</small>
 									</div>
 									<Form role="form"
-										onSubmit={handleSubmit}
+										onSubmit={e => handleSubmit(e)}
 									>
 										<Row>
 											<Col md={6}>
@@ -141,6 +179,7 @@ const Register = () => {
 															type="password"
 															autoComplete="off"
 															id="password"
+															minLength="4"
 															required
 														/>
 													</InputGroup>
@@ -158,6 +197,7 @@ const Register = () => {
 															placeholder="Confirmar senha"
 															type="password"
 															autoComplete="off"
+															minLength="4"
 															id="confirmPassword"
 															required
 														/>

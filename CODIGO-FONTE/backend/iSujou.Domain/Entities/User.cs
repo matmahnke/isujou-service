@@ -1,16 +1,10 @@
-﻿using iSujou.Domain.Enums;
-using System;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace iSujou.Domain.Entities
 {
-    public class User : EntityBase
+    public class User : IdentityUser
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string Cpf { get; set; }
-        public DateTime BirthDate { get; set; }
-        public Gender Gender { get; set; }
+        public virtual UserInfo UserInfo { get; set; }
+        public long? UserInfoId { get; set; }
     }
 }

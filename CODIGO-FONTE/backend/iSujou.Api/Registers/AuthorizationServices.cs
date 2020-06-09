@@ -1,36 +1,25 @@
-using iSujou.Infra;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
 
 namespace iSujou.Api.Registers
 {
     public static class AuthorizationService
     {
-        public static IServiceCollection AddAuthorizationService(this IServiceCollection services, string jwtKey)
+        public static IServiceCollection AddAuthorizationServices(this IServiceCollection services)
         {
-            //services
-            //    .AddDefaultIdentity<IdentityUser>()
-            //    .AddRoles<IdentityRole>()
-            //    .AddEntityFrameworkStores<iSujouContext>();
-
-            services.AddAuthorization(options =>
+            services.AddAuthorization(auth =>
             {
-                var builder = new AuthorizationPolicyBuilder();
-                var policy = builder.RequireAuthenticatedUser()
-                .RequireClaim(ClaimTypes.Role)
-                .Build();
-                options.DefaultPolicy = policy;
-                options.AddPolicy("RequireAdministratorRole",
-                     policy => policy.RequireRole("Administrator"));
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
             });
 
             return services;
         }
 
-        public static IApplicationBuilder UseAuthorizationService(this IApplicationBuilder app)
+        public static IApplicationBuilder UseAuthorizationServices(this IApplicationBuilder app)
         {
             app.UseAuthorization();
             return app;

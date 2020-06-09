@@ -91,5 +91,10 @@ namespace iSujou.Infra.Repositories
                 _set.Remove(entity);
             }
         }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

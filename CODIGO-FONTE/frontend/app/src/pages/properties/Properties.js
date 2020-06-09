@@ -1,20 +1,43 @@
-import React from "react";
+import React from 'react'
 
 import {
   Button,
   Container,
   Row,
   Table
-} from "reactstrap";
+} from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import { useToasts } from 'react-toast-notifications'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import api from '../../services/api'
+import Async from 'react-async'
+import Resources from '../../store/Resources.js'
 
 export default class Properties extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  getProperties = () =>
+  api.get('/property')
+
+  excluir(id) {
+    api.delete('/property/' + id)
+      .then(resp => {
+        const { data } = resp;
+        if (data) {
+          console.log('excluído')
+        }
+
+        window.location.reload();
+      })
+      .catch((ex) => {
+        console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
+      })
+  }
+
   render() {
     return (
       <>
@@ -42,83 +65,60 @@ export default class Properties extends React.Component {
                 <Button color="primary" href="/property/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
-                <Table responsive>
-                  <thead>
-                    <tr>
-                      <th>Ações</th>
-                      <th>Título</th>
-                      <th>Estado</th>
-                      <th>Cidade</th>
-                      <th>Bairro</th>
-                      <th>Ativo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Casa na praia</td>
-                      <td>Santa Catarina</td>
-                      <td>Itajaí</td>
-                      <td>Meia Praia</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Apartamento</td>
-                      <td>Santa Catarina</td>
-                      <td>Blumenau</td>
-                      <td>Victor Konder</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/property/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Chacrá</td>
-                      <td>Santa Catarina</td>
-                      <td>Blumenau</td>
-                      <td>Vila Itoupava</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <Async promiseFn={this.getProperties}>
+                  {({ data, err, isLoading }) => {
+                    if (isLoading) return "Carregando..."
+                    if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+                                                          appearance: 'error',
+                                                          autoDismiss: true,
+                                                        })
+                    if (data)
+                      return (
+                        <Table responsive>
+                          <thead>
+                            <tr>
+                              <th>Ações</th>
+                              <th>Título</th>
+                              <th>Estado</th>
+                              <th>Cidade</th>
+                              <th>Bairro</th>
+                              <th>Ativo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.data.map((property, index) => {
+                              const { active, city, id, neighborhood, state, title } = property
+                              return (
+                                <tr key={id}>
+                                  <td>
+                                    <Button color="primary" size="sm" title="Editar"
+                                      href={"/property/edit/" + id}
+                                    ><i className="fa fa-pencil"></i></Button>
+                                    <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
+                                  </td>
+                                  <td>{title}</td>
+                                  <td>{Resources.GetBrazilianStates()[state - 1].description}</td>
+                                  <td>{city}</td>
+                                  <td>{neighborhood}</td>
+                                  <td>
+                                    <div className="custom-control custom-checkbox">
+                                      <input
+                                        className="custom-control-input"
+                                        checked={active}
+                                        disabled
+                                        type="checkbox"
+                                      />
+                                      <label className="custom-control-label" htmlFor="customCheck2" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            })}
+                          </tbody>
+                        </Table>
+                      )
+                  }}
+                </Async>
               </Row>
             </Container>
           </section>

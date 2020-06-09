@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace iSujou.Domain.Entities
 {
@@ -8,5 +9,6 @@ namespace iSujou.Domain.Entities
         public virtual Property Property { get; set; }
         public DateTime Date { get; set; }
         public bool Active { get; set; }
+        public List<AdvertItem> Items { get; set; }
     }
 }

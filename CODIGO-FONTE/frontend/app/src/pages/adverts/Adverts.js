@@ -7,14 +7,26 @@ import {
   Table
 } from "reactstrap";
 
+import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
 import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import api from '../../services/api';
+import Utils from '../../store/Utils.js'
+import Async from 'react-async';
 
 export default class Adverts extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  getAdverts = () =>
+    api.get('/advert')
+
+  excluir(id) {
+
+  }
+
   render() {
     return (
       <>
@@ -42,78 +54,56 @@ export default class Adverts extends React.Component {
                 <Button color="primary" href="/advert/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
-                <Table responsive>
-                  <thead>
-                    <tr>
-                      <th>Ações</th>
-                      <th>Imóvel</th>
-                      <th>Data</th>
-                      <th>Hora</th>
-                      <th>Ativo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/advert/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Casa no centro</td>
-                      <td>05/05/2020</td>
-                      <td>12:00</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/advert/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Casa no subúrbio</td>
-                      <td>01/05/2020</td>
-                      <td>09:00</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button color="primary" size="sm" title="Editar" href="/advert/edit/1"><i className="fa fa-pencil"></i></Button>
-                        <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
-                      </td>
-                      <td>Apartamento</td>
-                      <td>05/12/2019</td>
-                      <td>12:00</td>
-                      <td>
-                        <div className="custom-control custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            disabled
-                            type="checkbox"
-                          />
-                          <label className="custom-control-label" htmlFor="customCheck2" />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <Async promiseFn={this.getAdverts}>
+                  {({ data, err, isLoading }) => {
+                    if (isLoading) return "Carregando..."
+                    if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+                      appearance: 'error',
+                      autoDismiss: true,
+                    })
+                    if (data)
+                      return (
+                        <Table responsive>
+                          <thead>
+                            <tr>
+                              <th>Ações</th>
+                              <th>Imóvel</th>
+                              <th>Data</th>
+                              <th>Ativo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.data.map((adverd, index) => {
+                              const { id, property, date, active } = adverd
+                              return (
+                                <tr key={id}>
+                                  <td>
+                                    <Button color="primary" size="sm" title="Editar"
+                                      href={"/advert/edit/" + id}
+                                    ><i className="fa fa-pencil"></i></Button>
+                                    <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
+                                  </td>
+                                  <td>{property.title}</td>
+                                  <td>{Utils.formatarData(new Date(date))}</td>
+                                  <td>
+                                    <div className="custom-control custom-checkbox">
+                                      <input
+                                        className="custom-control-input"
+                                        checked={active}
+                                        disabled
+                                        type="checkbox"
+                                      />
+                                      <label className="custom-control-label" htmlFor="customCheck2" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            })}
+                          </tbody>
+                        </Table>
+                      )
+                  }}
+                </Async>
               </Row>
             </Container>
           </section>

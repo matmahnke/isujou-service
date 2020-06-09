@@ -1,12 +1,18 @@
 using iSujou.Api.Registers;
+using iSujou.Domain.Entities;
 using iSujou.Infra;
+using iSujou.Infra.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace iSujou.Api
 {
@@ -17,11 +23,29 @@ namespace iSujou.Api
             Configuration = configuration;
         }
 
+        readonly string policy = "iSujouPolicy";
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var jwtKey = Configuration.GetSection("JwtConfiguration:Secret").Value;
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: specificOriginsKey,
+            //    builder =>
+            //    {
+            //        builder.WithOrigins("http://localhost:3000/")
+            //        .AllowCredentials();
+            //    });
+            //});
+
+            services.AddCors(o => o.AddPolicy(policy, builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+            var configurationSection = Configuration.GetSection("TokenConfigurations");
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddControllers()
@@ -37,10 +61,9 @@ namespace iSujou.Api
 
             services
                 .AddDbServices(connectionString)
-                .AddAuthenticationService(jwtKey)
-                .AddAuthorization()
+                .AddAuthenticationService(configurationSection)
+                .AddAuthorizationServices()
                 .AddSwaggerServices();
-
 
             services.AddApiVersioning(p =>
             {
@@ -56,10 +79,24 @@ namespace iSujou.Api
                 p.ApiVersionParameterSource = new UrlSegmentApiVersionReader();
             });
 
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter("Microsoft", LogLevel.Warning)
+                    .AddFilter("System", LogLevel.Warning)
+                    .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug)
+                    .AddConsole()
+                    .AddEventLog();
+            });
+
+            ILogger logger = loggerFactory.CreateLogger<Program>();
+
+            InitializeSeeds(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(policy);
 
             if (env.IsDevelopment())
             {
@@ -78,8 +115,8 @@ namespace iSujou.Api
 
             app
                 .UseDbServices()
-                //.UseAuthenticationService()
-                //.UseAuthorizationService()
+                .UseAuthenticationServices()
+                .UseAuthorizationServices()
                 .UseSwaggerServices();
 
             app.UseEndpoints(endpoints =>
@@ -87,6 +124,13 @@ namespace iSujou.Api
                 endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
+        }
+
+        private static async Task InitializeSeeds(IServiceCollection services)
+        {
+            var um = services.BuildServiceProvider().GetService<UserManager<User>>();
+            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
+            await new IdentityInitializer(um, rm).Initialize();
         }
     }
 }
