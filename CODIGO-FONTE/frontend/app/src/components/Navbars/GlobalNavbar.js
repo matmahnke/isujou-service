@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
+import { isAuthenticated } from './../../services/auth.js'
 
 import {
   Button,
@@ -42,6 +43,20 @@ class GlobalNavbar extends React.Component {
       collapseClasses: ""
     });
   };
+
+  montarBotaoLoginPerfil() {
+    if (!isAuthenticated()) {
+      return <Button
+        className="btn-neutral"
+        color="secondary"
+        href="/login"
+      >
+        <span className="nav-link-inner--text ml-1">
+          Login
+        </span>
+      </Button>
+    }
+  }
 
   render() {
     return (
@@ -95,11 +110,19 @@ class GlobalNavbar extends React.Component {
                   <NavItem>
                     <NavLink href="/rules">Regras</NavLink>
                   </NavItem>
-                  <UncontrolledDropdown nav inNavbar>
+                  <UncontrolledDropdown nav inNavbar hidden={!isAuthenticated()}>
                     <DropdownToggle nav caret>
-                      Gerenciar
+                      Minha Conta
                     </DropdownToggle>
-                    <DropdownMenu right>
+                    <DropdownMenu>
+                      <DropdownItem href="/profile/1">
+                        Meu perfil
+                      </DropdownItem>
+                      <DropdownItem href="/settings">
+                        Configuracoes
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      <span className="small text-uppercase pl-3 text-black"><strong>Gerenciar</strong></span>
                       <DropdownItem href="/properties">
                         Imóveis
                       </DropdownItem>
@@ -109,20 +132,16 @@ class GlobalNavbar extends React.Component {
                       <DropdownItem href="/proposals/mine">
                         Propostas
                       </DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem href="/logout">
+                        Desconectar
+                      </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto">
                   <NavItem className="d-none d-lg-block ml-lg-4">
-                    <Button
-                      className="btn-neutral"
-                      color="secondary"
-                      href="/login"
-                    >
-                      <span className="nav-link-inner--text ml-1">
-                        Login
-                      </span>
-                    </Button>
+                    {this.montarBotaoLoginPerfil()}
                   </NavItem>
                 </Nav>
               </UncontrolledCollapse>

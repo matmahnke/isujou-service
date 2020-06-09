@@ -3,6 +3,7 @@ using iSujou.Api.Application.Configurations;
 using iSujou.Api.Application.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Enums;
+using iSujou.Infra.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -29,8 +31,8 @@ namespace iSujou.Api.Controllers
         private readonly SignInManager<User> _signInManager;
 
         public AuthController(UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        ILoginService service,
+            SignInManager<User> signInManager,
+            ILoginService service,
             SigningConfigurations signingConfigurations,
             TokenConfigurations tokenConfigurations,
             RoleManager<IdentityRole> roleManager)
@@ -47,67 +49,32 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         public IActionResult Login([FromBody]LoginCommand user)
         {
-            bool credenciaisValidas = false;
-            if (user != null && !string.IsNullOrWhiteSpace(user.Username))
+            try
             {
-                // Verifica a existência do usuário nas tabelas do
-                // ASP.NET Core Identity
-                var userIdentity = _userManager
-                    .FindByNameAsync(user.Username).Result;
-                if (userIdentity != null)
+                bool credenciaisValidas = false;
+                if (user != null && !string.IsNullOrWhiteSpace(user.Username))
                 {
-                    // Efetua o login com base no Id do usuário e sua senha
-                    var resultadoLogin = _signInManager
-                        .CheckPasswordSignInAsync(userIdentity, user.Password, false)
-                        .Result;
-                    if (resultadoLogin.Succeeded)
+                    // Verifica a existência do usuário nas tabelas do ASP.NET Core Identity
+                    var userIdentity = _userManager.FindByNameAsync(user.Username).Result;
+
+                    if (userIdentity != null)
                     {
-                        // Verifica se o usuário em questão possui
-                        // a role
-                        credenciaisValidas = _userManager.IsInRoleAsync(
-                            userIdentity, Roles.DEFAULT).Result;
+                        // Efetua o login com base no Id do usuário e sua senha
+                        var resultadoLogin = _signInManager.CheckPasswordSignInAsync(userIdentity, user.Password, false).Result;
+
+                        if (resultadoLogin.Succeeded)
+                            credenciaisValidas = resultadoLogin.Succeeded || _userManager.IsInRoleAsync(userIdentity, Roles.DEFAULT).Result; // Verifica se o usuário em questão possui a role
                     }
                 }
+
+                if (credenciaisValidas)
+                    return CreateToken(user.Username);
+                else
+                    throw new Exception("Usuário e senha inválidos.");
             }
-
-            if (credenciaisValidas)
+            catch (Exception ex)
             {
-                ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(user.Username, "Login"),
-                    new[] {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Username)
-                    }
-                );
-
-                DateTime dataCriacao = DateTime.Now;
-                DateTime dataExpiracao = dataCriacao +
-                    TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
-
-                var handler = new JwtSecurityTokenHandler();
-                var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-                {
-                    Issuer = _tokenConfigurations.Issuer,
-                    Audience = _tokenConfigurations.Audience,
-                    SigningCredentials = _signingConfigurations.SigningCredentials,
-                    Subject = identity,
-                    NotBefore = dataCriacao,
-                    Expires = dataExpiracao
-                });
-                var token = handler.WriteToken(securityToken);
-
-                return Ok(new
-                {
-                    authenticated = true,
-                    created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    accessToken = token,
-                    message = "OK"
-                });
-            }
-            else
-            {
-                return BadRequest();
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -123,66 +90,74 @@ namespace iSujou.Api.Controllers
                     Name = command.Name,
                     LastName = command.LastName,
                     Cpf = command.Cpf,
-                    BirthDate = command.BirthDate
+                    BirthDate = command.BirthDate,
+                    Gender = (Gender)command.Gender
                 }
             };
 
-            var result = await _userManager.CreateAsync(user, command.Password);
-
-            if (result.Succeeded)
+            try
             {
-                await _userManager.AddToRoleAsync(user, Roles.DEFAULT);
+                var result = await _userManager.CreateAsync(user, command.Password);
 
-                ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(command.Username, "Login"),
-                    new[] {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, command.Username)
-                    }
-                );
-
-                DateTime dataCriacao = DateTime.Now;
-                DateTime dataExpiracao = dataCriacao +
-                    TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
-
-                var handler = new JwtSecurityTokenHandler();
-                var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+                if (result.Succeeded)
                 {
-                    Issuer = _tokenConfigurations.Issuer,
-                    Audience = _tokenConfigurations.Audience,
-                    SigningCredentials = _signingConfigurations.SigningCredentials,
-                    Subject = identity,
-                    NotBefore = dataCriacao,
-                    Expires = dataExpiracao
-                });
-                var token = handler.WriteToken(securityToken);
+                    await _userManager.AddToRoleAsync(user, Roles.DEFAULT);
 
-                return Ok(new
+                    return CreateToken(command.Username);
+                }
+                else
                 {
-                    authenticated = true,
-                    created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    accessToken = token,
-                    message = "OK"
-                });
+                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(erro => erro.Description)));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { message = ex.Message });
             }
         }
 
-        [HttpGet("private")]
-        [Authorize("Bearer")]
-        public string PrivateAction()
+        [HttpGet]
+        public async Task<IActionResult> Logout()
         {
-            return "this message is secret";
+            await _signInManager.SignOutAsync();
+
+            return Ok();
         }
 
-        [HttpGet("public")]
-        public string PublicAction()
+        private IActionResult CreateToken(string username)
         {
-            return "this message is public";
+            ClaimsIdentity identity = new ClaimsIdentity(
+                        new GenericIdentity(username, "Login"),
+                        new[] {
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                            new Claim(JwtRegisteredClaimNames.UniqueName, username)
+                        }
+                    );
+
+            DateTime dataCriacao = DateTime.Now;
+            DateTime dataExpiracao = dataCriacao +
+                TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
+
+            var handler = new JwtSecurityTokenHandler();
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = _tokenConfigurations.Issuer,
+                Audience = _tokenConfigurations.Audience,
+                SigningCredentials = _signingConfigurations.SigningCredentials,
+                Subject = identity,
+                NotBefore = dataCriacao,
+                Expires = dataExpiracao
+            });
+            var token = handler.WriteToken(securityToken);
+
+            return Ok(new
+            {
+                authenticated = true,
+                created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                accessToken = token,
+                message = "OK"
+            });
         }
     }
 }

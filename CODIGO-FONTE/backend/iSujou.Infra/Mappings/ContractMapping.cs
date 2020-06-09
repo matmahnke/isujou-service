@@ -14,18 +14,14 @@ namespace iSujou.Infra.Mappings
                 .WithOne()
                 .OnDelete(DeleteBehavior.SetNull);
 
-            //builder.HasOne(x => x.Owner)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.OwnerId)
-            //    .OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(x => x.Owner)
+                .WithMany();
 
             builder.Property(x => x.OwnerSignatureDate)
                 .IsRequired(false);
 
-            //builder.HasOne(x => x.Hired)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.HiredId)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.Hired)
+                .WithMany();
 
             builder.Property(x => x.HiredSignatureDate)
                 .IsRequired(false);

@@ -7,6 +7,7 @@ import './NotFound.css';
 const NotFound = () => 
   <>
     <div className="centralizado">
+      <h2 className="shrug">¯\_(ツ)_/¯</h2>
       <span className="rounded-circle img-center"/>
       <h1>404</h1>
       <br/>

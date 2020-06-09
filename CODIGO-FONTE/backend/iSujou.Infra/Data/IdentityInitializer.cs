@@ -1,78 +1,58 @@
 ﻿using iSujou.Domain.Entities;
 using iSujou.Domain.Enums;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace iSujou.Infra.Data
 {
-        public class IdentityInitializer
+    public class IdentityInitializer
+    {
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+
+        public IdentityInitializer(
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
-            private readonly iSujouContext _context;
-            private readonly UserManager<IdentityUser> _userManager;
-            private readonly RoleManager<IdentityRole> _roleManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
 
-
-            public IdentityInitializer(
-                iSujouContext context,
-                UserManager<IdentityUser> userManager,
-                RoleManager<IdentityRole> roleManager)
+        public async Task Initialize()
+        {
+            if (!await _roleManager.RoleExistsAsync(Roles.DEFAULT))
             {
-                _context = context;
-                _userManager = userManager;
-                _roleManager = roleManager;
+                await _roleManager.CreateAsync(
+                    new IdentityRole(Roles.DEFAULT));
             }
 
-            public void Initialize()
-            {
-                if (_context.Database.EnsureCreated())
+            await CreateUser(
+                new User()
                 {
-                    if (!_roleManager.RoleExistsAsync(Roles.DEFAULT).Result)
-                    {
-                        var resultado = _roleManager.CreateAsync(
-                            new IdentityRole(Roles.DEFAULT)).Result;
-                        if (!resultado.Succeeded)
-                        {
-                            throw new Exception(
-                                $"quot; Erro durante a criação da role { Roles.DEFAULT}.");
-                        }
-                    }
+                    UserName = "admin",
+                    Email = "admin@teste.com"
+                }, "Pa$$w0rd", Roles.DEFAULT);
+        }
 
-                    CreateUser(
-                        new IdentityUser()
-                        {
-                            UserName = "admin_apialturas",
-                            Email = "admin-apialturas@teste.com.br"
-                        }, "AdminAPIAlturas01!", Roles.DEFAULT);
 
-                    CreateUser(
-                        new IdentityUser()
-                        {
-                            UserName = "usrinvalido_apialturas",
-                            Email = "usrinvalido-apialturas@teste.com.br",
-                            EmailConfirmed = true
-                        }, "UsrInvAPIAlturas01!");
-                }
-            }
-
-            private void CreateUser(
-                IdentityUser user,
-                string password,
-                string initialRole = null)
+        private async Task CreateUser(
+            User user,
+            string password,
+            string initialRole = null)
+        {
+            if (_userManager.FindByNameAsync(user.UserName).Result == null)
             {
-                if (_userManager.FindByNameAsync(user.UserName).Result == null)
-                {
-                    var resultado = _userManager
-                        .CreateAsync(user, password).Result;
+                var resultado = await _userManager
+                    .CreateAsync(user, password);
 
-                    if (resultado.Succeeded &&
-                        !String.IsNullOrWhiteSpace(initialRole))
-                    {
-                        _userManager.AddToRoleAsync(user.Id, initialRole).Wait();
-                    }
+                if (resultado.Succeeded &&
+                    !String.IsNullOrWhiteSpace(initialRole))
+                {
+                    _userManager.AddToRoleAsync(user, initialRole).Wait();
                 }
             }
         }
     }
+}

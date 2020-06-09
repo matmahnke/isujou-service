@@ -31,7 +31,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.0",
     "react-text-mask": "5.4.3",
-    "react-toastify": "^5.5.0",
+    "react-toast-notifications": "^2.4.0",
     "reactstrap": "8.4.1",
     "text-mask-addons": "3.8.0",
     "yup": "^0.28.3"

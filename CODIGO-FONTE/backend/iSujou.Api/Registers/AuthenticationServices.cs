@@ -15,7 +15,6 @@ namespace iSujou.Api.Registers
     {
         public static IServiceCollection AddAuthenticationService(this IServiceCollection services, IConfigurationSection tokenConfigurationsSesction)
         {
-
             services.AddIdentity<User, IdentityRole>(config =>
             {
                 config.Password.RequiredLength = 4;
@@ -36,7 +35,6 @@ namespace iSujou.Api.Registers
 
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
-
 
             var tokenConfigurations = new TokenConfigurations();
             new ConfigureFromConfigurationOptions<TokenConfigurations>(

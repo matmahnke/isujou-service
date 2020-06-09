@@ -1,26 +1,43 @@
-import React from "react";
+import React from 'react'
 
 import {
   Button,
   Container,
   Row,
   Table
-} from "reactstrap";
+} from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
-import api from '../../services/api';
-import Async from 'react-async';
-import { toast } from 'react-toastify';
-
-const getProperties = () =>
-  api.get('/property')
+import { useToasts } from 'react-toast-notifications'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
+import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import api from '../../services/api'
+import Async from 'react-async'
+import Resources from '../../store/Resources.js'
 
 export default class Properties extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  getProperties = () =>
+  api.get('/property')
+
+  excluir(id) {
+    api.delete('/property/' + id)
+      .then(resp => {
+        const { data } = resp;
+        if (data) {
+          console.log('excluído')
+        }
+
+        window.location.reload();
+      })
+      .catch((ex) => {
+        console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
+      })
+  }
+
   render() {
     return (
       <>
@@ -48,10 +65,13 @@ export default class Properties extends React.Component {
                 <Button color="primary" href="/property/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
-                <Async promiseFn={getProperties}>
+                <Async promiseFn={this.getProperties}>
                   {({ data, err, isLoading }) => {
                     if (isLoading) return "Carregando..."
-                    if (err) return toast.error(err.message)
+                    if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
+                                                          appearance: 'error',
+                                                          autoDismiss: true,
+                                                        })
                     if (data)
                       return (
                         <Table responsive>
@@ -74,10 +94,10 @@ export default class Properties extends React.Component {
                                     <Button color="primary" size="sm" title="Editar"
                                       href={"/property/edit/" + id}
                                     ><i className="fa fa-pencil"></i></Button>
-                                    <Button color="danger" size="sm" title="Excluir"><i className="fa fa-minus"></i></Button>
+                                    <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
                                   </td>
                                   <td>{title}</td>
-                                  <td>{state}</td>
+                                  <td>{Resources.GetBrazilianStates()[state - 1].description}</td>
                                   <td>{city}</td>
                                   <td>{neighborhood}</td>
                                   <td>
