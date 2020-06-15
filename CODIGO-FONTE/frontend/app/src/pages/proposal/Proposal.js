@@ -45,7 +45,6 @@ export default class Proposal extends React.Component {
   }
 
   save() {
-    console.log(this.state)
     this.setState({ loading: true })
     api.post('/proposal', { 
       advertId: this.state.advertId,

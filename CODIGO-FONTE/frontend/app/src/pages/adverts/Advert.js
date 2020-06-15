@@ -19,6 +19,7 @@ import SimpleFooter from '../../components/Footers/SimpleFooter.js'
 import ItemList from '../../components/ItemList/ItemList.js'
 import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
 import Loading from '../../components/Loading/Loading.js'
+import Error from '../../components/Error/Error.js'
 import api from '../../services/api'
 
 export default class Advert extends React.Component {
@@ -31,8 +32,9 @@ export default class Advert extends React.Component {
       hour: '',
       active: true,
       properties: [],
+      predefinedItems: [],
       loading: false,
-      predefinedItems: []
+      error: null
     }
 
     this.property_onChange = this.property_onChange.bind(this)
@@ -59,6 +61,14 @@ export default class Advert extends React.Component {
 
         if (data)
           this.setState({ properties: this.listarImoveis(data) })
+      })
+      .catch((ex) => {
+        let error = { showLogin: true, status: null }
+        
+        if (ex.response)
+          error.status = ex.response.status
+
+        this.setState({ error })
       })
       .finally(() => {
         this.setState({ loading: false })
@@ -218,6 +228,7 @@ export default class Advert extends React.Component {
   render() {
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">

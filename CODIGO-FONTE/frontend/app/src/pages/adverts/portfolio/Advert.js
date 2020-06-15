@@ -56,7 +56,6 @@ class Advert extends React.Component {
           .then(resp => {
             const { data } = resp;
             if (data) {
-              console.log(data)
               var model = {
                 id: data.id,
                 title: data.property.title,
@@ -66,7 +65,7 @@ class Advert extends React.Component {
                 photos: [],
                 ownerId: data.creator?.userInfoId ?? 0,
                 ownerName: data.creator?.userInfo?.name ?? 'Proprietário',
-                ownerPhotoUrl: data.creator?.userInfo?.photo ?? require("../../../assets/img/icons/1.jpg")
+                ownerPhotoUrl: data.creator?.userInfo?.photo ?? require("../../../assets/img/icons/no-image.png")
               }
               this.setState(model)
             }
