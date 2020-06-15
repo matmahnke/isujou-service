@@ -65,7 +65,7 @@ namespace iSujou.Api.Controllers
                     Date = command.Date,
                     PropertyId = command.PropertyId,
                     CreatorId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id,
-                    Items = command.Items.Select(x => new AdvertItem
+                    Items = command.Items?.Select(x => new AdvertItem
                     {
                         Description = x.Value
                     }).ToList()

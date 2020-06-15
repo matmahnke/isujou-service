@@ -16,6 +16,10 @@ namespace iSujou.Infra.Mappings
 
             builder.HasMany(x => x.Items)
                 .WithOne(x => x.Advert);
+
+            builder.HasOne(x => x.Creator)
+                .WithMany(x => x.Adverts)
+                .HasForeignKey(x => x.CreatorId);
         }
     }
 }

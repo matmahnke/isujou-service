@@ -178,9 +178,6 @@ namespace iSujou.Infra.Migrations
                     b.Property<long>("PropertyId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -188,8 +185,6 @@ namespace iSujou.Infra.Migrations
                     b.HasIndex("EditorId");
 
                     b.HasIndex("PropertyId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Advert");
                 });
@@ -543,7 +538,7 @@ namespace iSujou.Infra.Migrations
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
+                        .WithMany("Adverts")
                         .HasForeignKey("CreatorId");
 
                     b.HasOne("iSujou.Domain.Entities.User", "Editor")
@@ -555,10 +550,6 @@ namespace iSujou.Infra.Migrations
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("iSujou.Domain.Entities.User", null)
-                        .WithMany("Adverts")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.AdvertItem", b =>

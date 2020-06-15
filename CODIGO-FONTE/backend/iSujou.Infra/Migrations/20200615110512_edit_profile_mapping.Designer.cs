@@ -10,8 +10,8 @@ using iSujou.Infra;
 namespace iSujou.Infra.Migrations
 {
     [DbContext(typeof(iSujouContext))]
-    [Migration("20200602235000_edit_advert_property_relation")]
-    partial class edit_advert_property_relation
+    [Migration("20200615110512_edit_profile_mapping")]
+    partial class edit_profile_mapping
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -449,7 +449,9 @@ namespace iSujou.Infra.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("UserInfoId")
+                        .IsUnique()
+                        .HasFilter("[UserInfoId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -538,7 +540,7 @@ namespace iSujou.Infra.Migrations
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
+                        .WithMany("Adverts")
                         .HasForeignKey("CreatorId");
 
                     b.HasOne("iSujou.Domain.Entities.User", "Editor")
@@ -618,8 +620,8 @@ namespace iSujou.Infra.Migrations
             modelBuilder.Entity("iSujou.Domain.Entities.User", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.UserInfo", "UserInfo")
-                        .WithMany()
-                        .HasForeignKey("UserInfoId");
+                        .WithOne("User")
+                        .HasForeignKey("iSujou.Domain.Entities.User", "UserInfoId");
                 });
 #pragma warning restore 612, 618
         }
