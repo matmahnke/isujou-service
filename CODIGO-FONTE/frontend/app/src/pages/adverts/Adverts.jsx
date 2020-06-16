@@ -1,18 +1,18 @@
-import React from "react";
+import React from 'react'
 
 import {
   Button,
   Container,
   Row,
   Table
-} from "reactstrap";
+} from 'reactstrap'
 
 import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
-import api from '../../services/api';
+import api from '../../services/api'
 import Utils from '../../store/Utils'
-import Async from 'react-async';
+import Async from 'react-async'
 
 export default class Adverts extends React.Component {
   componentDidMount() {

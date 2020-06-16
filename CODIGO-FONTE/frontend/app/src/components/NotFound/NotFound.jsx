@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import { Button } from "reactstrap";
+import { Button } from 'reactstrap'
 
-import './NotFound.css';
+import './NotFound.css'
 
 const NotFound = () => 
   <>

@@ -1,7 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// JavaScript plugin that hides or shows a component based on your scroll
-import Headroom from "headroom.js";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Headroom from 'headroom.js'
 import { isAuthenticated } from './../../services/auth'
 
 import {
@@ -19,7 +18,7 @@ import {
   Container,
   Row,
   Col
-} from "reactstrap";
+} from 'reactstrap'
 
 class GlobalNavbar extends React.Component {
   componentDidMount() {
