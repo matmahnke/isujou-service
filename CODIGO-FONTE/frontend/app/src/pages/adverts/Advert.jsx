@@ -99,7 +99,8 @@ export default class Advert extends React.Component {
             var model = {
               propertyId: data.propertyId,
               predefinedItems: data.items?.length > 0 ? data.items.map(item => item.description) : [],
-              dayMonth: data.date.substring(0, 10)
+              dayMonth: data.date.substring(0, 10),
+              hour: data.date.substring(11, 20),
             }
 
             this.setState(model)
@@ -209,7 +210,7 @@ export default class Advert extends React.Component {
   }
 
   render() {
-    const { propertyId, dayMonth, hour, active } = this.state
+    const { propertyId, dayMonth, hour, active, predefinedItems } = this.state
 
     return (
       <>
@@ -312,7 +313,7 @@ export default class Advert extends React.Component {
                   <p>
                     Atividades feitas durante a limpeza. A descrição deve ter no mínimo dois caracteres e não são permitidos valores duplicados.
                   </p>
-                  <ItemList items={this.state.predefinedItems} minLengthForItems={2} allowDuplicatedItems={false} />
+                  <ItemList items={predefinedItems} minLengthForItems={2} allowDuplicatedItems={false} />
                   <hr />
                   <Col>
                     <Row>
