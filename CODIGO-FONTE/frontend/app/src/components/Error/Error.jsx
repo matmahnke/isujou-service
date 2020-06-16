@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Col, Row } from 'reactstrap'
+import { Button, Row } from 'reactstrap'
 
 import './Error.css';
 

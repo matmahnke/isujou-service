@@ -42,16 +42,13 @@ export default class Property extends React.Component {
       loading: false
     }
 
-    this.title_onChange = this.title_onChange.bind(this)
-    this.active_onChange = this.active_onChange.bind(this)
-    this.description_onChange = this.description_onChange.bind(this)
-    this.state_onChange = this.state_onChange.bind(this)
-    this.city_onChange = this.city_onChange.bind(this)
-    this.neighborhood_onChange = this.neighborhood_onChange.bind(this)
-    this.street_onChange = this.street_onChange.bind(this)
-    this.number_onChange = this.number_onChange.bind(this)
-    this.cep_onChange = this.cep_onChange.bind(this)
-    this.complement_onChange = this.complement_onChange.bind(this)
+    this.onChange = this.onChange.bind(this)
+  }
+  
+  onChange = e => {
+    let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+
+    this.setState({ [e.target.name]: value })
   }
 
   componentDidMount() {
@@ -66,51 +63,7 @@ export default class Property extends React.Component {
     }
   }
 
-  //#region OnChange
-  title_onChange(event) {
-    this.setState({ title: event.target.value })
-  }
-
-  active_onChange(event) {
-    this.setState({ active: event.target.checked })
-  }
-
-  description_onChange(event) {
-    this.setState({ description: event.target.value })
-  }
-
-  state_onChange(event) {
-    this.setState({ state: event.target.value })
-  }
-
-  city_onChange(event) {
-    this.setState({ city: event.target.value })
-  }
-
-  neighborhood_onChange(event) {
-    this.setState({ neighborhood: event.target.value })
-  }
-
-  street_onChange(event) {
-    this.setState({ street: event.target.value })
-  }
-
-  number_onChange(event) {
-    this.setState({ number: event.target.value })
-  }
-
-  cep_onChange(event) {
-    this.setState({ cep: event.target.value })
-  }
-
-  complement_onChange(event) {
-    this.setState({ complement: event.target.value })
-  }
-  //#endregion
-
-  isCreating() {
-    return this.props.type === 'new'
-  }
+  isCreating = () => this.props.type === 'new'
 
   trazerDados(id) {
     if (isNaN(id))
@@ -187,6 +140,8 @@ export default class Property extends React.Component {
   }
 
   render() {
+    const { title, active, description, state, city, neighborhood, street, number, cep, complement } = this.state
+
     return (
       <>
         <Loading hidden={!this.state.loading} />
@@ -229,8 +184,9 @@ export default class Property extends React.Component {
                           <Input
                             type="text"
                             id="propertyTitle"
-                            onChange={this.title_onChange}
-                            value={this.state.title}
+                            name="title"
+                            onChange={this.onChange}
+                            value={title}
                             required
                           />
                         </InputGroup>
@@ -242,8 +198,9 @@ export default class Property extends React.Component {
                         <input
                           className="custom-control-input"
                           id="propertyActive"
-                          onChange={this.active_onChange}
-                          checked={this.state.active}
+                          name="active"
+                          onChange={this.onChange}
+                          checked={active}
                           type="checkbox"
                         />
                         <label className="custom-control-label" htmlFor="propertyActive">
@@ -261,8 +218,9 @@ export default class Property extends React.Component {
                             type="textarea"
                             rows="3"
                             id="propertyDescription"
-                            onChange={this.description_onChange}
-                            value={this.state.description}
+                            name="description"
+                            onChange={this.onChange}
+                            value={description}
                             required
                           />
                         </InputGroup>
@@ -285,8 +243,9 @@ export default class Property extends React.Component {
                                 type="select"
                                 name="select"
                                 id="propertyState"
-                                onChange={this.state_onChange}
-                                value={this.state.state}
+                                name="state"
+                                onChange={this.onChange}
+                                value={state}
                               >
                                 {Resources.GetBrazilianStates().map(state => <option key={state.id} value={state.id}>{state.description}</option>)}
                               </Input>
@@ -300,8 +259,9 @@ export default class Property extends React.Component {
                               <Input
                                 type="text"
                                 id="propertyCity"
-                                onChange={this.city_onChange}
-                                value={this.state.city}
+                                name="city"
+                                onChange={this.onChange}
+                                value={city}
                                 required
                               />
                             </InputGroup>
@@ -314,8 +274,9 @@ export default class Property extends React.Component {
                               <Input
                                 type="text"
                                 id="propertyNeightborhood"
-                                onChange={this.neighborhood_onChange}
-                                value={this.state.neighborhood}
+                                name="neighborhood"
+                                onChange={this.onChange}
+                                value={neighborhood}
                                 required
                               />
                             </InputGroup>
@@ -330,8 +291,9 @@ export default class Property extends React.Component {
                               <Input
                                 type="text"
                                 id="propertyStreet"
-                                onChange={this.street_onChange}
-                                value={this.state.street}
+                                name="street"
+                                onChange={this.onChange}
+                                value={street}
                                 required
                               />
                             </InputGroup>
@@ -344,8 +306,9 @@ export default class Property extends React.Component {
                               <Input
                                 type="number"
                                 id="propertyNumber"
-                                onChange={this.number_onChange}
-                                value={this.state.number}
+                                name="number"
+                                onChange={this.onChange}
+                                value={number}
                                 required
                               />
                             </InputGroup>
@@ -358,8 +321,9 @@ export default class Property extends React.Component {
                               <Input
                                 type="text"
                                 id="propertyCep"
-                                onChange={this.cep_onChange}
-                                value={this.state.cep}
+                                name="cep"
+                                onChange={this.onChange}
+                                value={cep}
                                 required
                               />
                             </InputGroup>
@@ -375,8 +339,9 @@ export default class Property extends React.Component {
                                 type="textarea"
                                 rows="3"
                                 id="propertyComplement"
-                                onChange={this.complement_onChange}
-                                value={this.state.complement}
+                                name="complement"
+                                onChange={this.onChange}
+                                value={complement}
                               />
                             </InputGroup>
                           </FormGroup>

@@ -41,7 +41,7 @@ export default class Advert extends React.Component {
   }
 
   onChange = e => {
-    let value = e.target.type == 'checkbox' ? e.target.checked : e.target.value
+    let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
 
     this.setState({ [e.target.name]: value })
   }
