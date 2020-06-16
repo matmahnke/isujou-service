@@ -6,6 +6,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <StartupObject></StartupObject>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<noWarn>1591</noWarn>
   </PropertyGroup>
 
   <ItemGroup>
