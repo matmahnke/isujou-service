@@ -1,11 +1,11 @@
 import React from 'react'
 
-import GlobalNavbar from '../../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../../components/Footers/SimpleFooter.js'
+import GlobalNavbar from '../../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../../components/Footers/SimpleFooter'
 import api from '../../../services/api'
-import Resources from '../../../store/Resources.js'
-import Utils from '../../../store/Utils.js'
-import Loading from '../../../components/Loading/Loading.js'
+import Resources from '../../../store/Resources'
+import Utils from '../../../store/Utils'
+import Loading from '../../../components/Loading/Loading'
 
 import {
   Button,
@@ -20,7 +20,7 @@ import {
   Container,
   Row,
   Col
-} from "reactstrap";
+} from 'reactstrap'
 
 export default class Portfolio extends React.Component {
   constructor(props) {

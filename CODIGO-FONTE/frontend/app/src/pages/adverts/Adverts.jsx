@@ -1,41 +1,30 @@
-import React from 'react'
+import React from "react";
 
 import {
   Button,
   Container,
   Row,
   Table
-} from 'reactstrap'
+} from "reactstrap";
 
 import { useToasts } from 'react-toast-notifications'
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
-import api from '../../services/api'
-import Async from 'react-async'
-import Resources from '../../store/Resources.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
+import api from '../../services/api';
+import Utils from '../../store/Utils'
+import Async from 'react-async';
 
-export default class Properties extends React.Component {
+export default class Adverts extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }
 
-  getProperties = () =>
-  api.get('/property')
+  getAdverts = () =>
+    api.get('/advert')
 
   excluir(id) {
-    api.delete('/property/' + id)
-      .then(resp => {
-        const { data } = resp;
-        if (data) {
-          console.log('excluído')
-        }
 
-        window.location.reload();
-      })
-      .catch((ex) => {
-        console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
-      })
   }
 
   render() {
@@ -59,47 +48,43 @@ export default class Properties extends React.Component {
           <section className="section">
             <Container className="card shadow px-4 pt-3">
               <Row className="pl-2">
-                <h2>Imóveis</h2>
+                <h2>Anúncios</h2>
               </Row>
               <Row className="pl-2 mt-2">
-                <Button color="primary" href="/property/new">Cadastrar</Button>
+                <Button color="primary" href="/advert/new">Cadastrar</Button>
               </Row>
               <Row className="mt-4">
-                <Async promiseFn={this.getProperties}>
+                <Async promiseFn={this.getAdverts}>
                   {({ data, err, isLoading }) => {
                     if (isLoading) return "Carregando..."
                     if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
-                                                          appearance: 'error',
-                                                          autoDismiss: true,
-                                                        })
+                      appearance: 'error',
+                      autoDismiss: true,
+                    })
                     if (data)
                       return (
                         <Table responsive>
                           <thead>
                             <tr>
                               <th>Ações</th>
-                              <th>Título</th>
-                              <th>Estado</th>
-                              <th>Cidade</th>
-                              <th>Bairro</th>
+                              <th>Imóvel</th>
+                              <th>Data</th>
                               <th>Ativo</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {data.data.map((property, index) => {
-                              const { active, city, id, neighborhood, state, title } = property
+                            {data.data.map((adverd, index) => {
+                              const { id, property, date, active } = adverd
                               return (
                                 <tr key={id}>
                                   <td>
                                     <Button color="primary" size="sm" title="Editar"
-                                      href={"/property/edit/" + id}
+                                      href={"/advert/edit/" + id}
                                     ><i className="fa fa-pencil"></i></Button>
                                     <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
                                   </td>
-                                  <td>{title}</td>
-                                  <td>{Resources.GetBrazilianStates()[state - 1].description}</td>
-                                  <td>{city}</td>
-                                  <td>{neighborhood}</td>
+                                  <td>{property.title}</td>
+                                  <td>{Utils.formatarData(new Date(date))}</td>
                                   <td>
                                     <div className="custom-control custom-checkbox">
                                       <input

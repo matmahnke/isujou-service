@@ -12,12 +12,12 @@ import {
   UncontrolledCarousel
 } from 'reactstrap'
 
-import GlobalNavbar from '../../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../../components/Footers/SimpleFooter.js'
-import Loading from '../../../components/Loading/Loading.js'
+import GlobalNavbar from '../../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../../components/Footers/SimpleFooter'
+import Loading from '../../../components/Loading/Loading'
 import api from '../../../services/api'
-import Utils from '../../../store/Utils.js'
-import Resources from '../../../store/Resources.js'
+import Utils from '../../../store/Utils'
+import Resources from '../../../store/Resources'
 
 import './Advert.css';
 

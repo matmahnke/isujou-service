@@ -8,11 +8,11 @@ import {
   Table
 } from 'reactstrap'
 
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
-import Resources from '../../store/Resources.js'
-import Loading from '../../components/Loading/Loading.js'
+import Resources from '../../store/Resources'
+import Loading from '../../components/Loading/Loading'
 
 import './Profile.css';
 

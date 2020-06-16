@@ -13,12 +13,12 @@ import {
   Label
 } from 'reactstrap'
 
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
-import Loading from '../../components/Loading/Loading.js'
+import Loading from '../../components/Loading/Loading'
 
-import CurrencyInput from "../../components/Inputs/CurrencyInput.js"
+import CurrencyInput from '../../components/Inputs/CurrencyInput'
 
 export default class Proposal extends React.Component {
   constructor(props) {

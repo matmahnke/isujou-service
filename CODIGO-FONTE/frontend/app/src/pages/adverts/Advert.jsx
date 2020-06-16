@@ -14,12 +14,12 @@ import {
   Label
 } from 'reactstrap'
 
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
-import ItemList from '../../components/ItemList/ItemList.js'
-import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
-import Loading from '../../components/Loading/Loading.js'
-import Error from '../../components/Error/Error.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
+import ItemList from '../../components/ItemList/ItemList'
+import ErrorAlert from '../../components/Alerts/ErrorAlert'
+import Loading from '../../components/Loading/Loading'
+import Error from '../../components/Error/Error'
 import api from '../../services/api'
 
 export default class Advert extends React.Component {

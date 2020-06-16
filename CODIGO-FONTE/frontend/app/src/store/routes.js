@@ -1,16 +1,16 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import { isAuthenticated } from './../services/auth.js'
+import { isAuthenticated } from './../services/auth'
 import NotFound from './../components/NotFound/NotFound'
 
-import Auth from '../pages/auth/auth.js'
+import Auth from '../pages/auth/auth'
 import Home from './../pages/home/Home'
 import Login from './../pages/login/Login'
 import Logout from './../pages/logout/Logout'
 import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
 import Settings from './../pages/settings/Settings'
-import Rules from '../pages/rules/Rules.js'
+import Rules from '../pages/rules/Rules'
 
 // Anúncios
 import Portfolio from './../pages/adverts/portfolio/Portfolio'

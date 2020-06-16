@@ -8,12 +8,12 @@ import {
 } from 'reactstrap'
 
 import { useToasts } from 'react-toast-notifications'
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
 import Async from 'react-async'
-import Resources from '../../store/Resources.js'
-import Utils from '../../store/Utils.js'
+import Resources from '../../store/Resources'
+import Utils from '../../store/Utils'
 
 export default class Proposals extends React.Component {
   componentDidMount() {

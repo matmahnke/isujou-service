@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js";
-import SimpleFooter from "../../components/Footers/SimpleFooter.js";
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
 
 import {
   Button,
@@ -11,7 +11,7 @@ import {
   Container,
   Row,
   Col
-} from "reactstrap";
+} from 'reactstrap'
 
 export default class Home extends React.Component {
   componentDidMount() {

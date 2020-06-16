@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
-import { isAuthenticated } from './../../services/auth.js'
+import { isAuthenticated } from './../../services/auth'
 
 import {
   Button,

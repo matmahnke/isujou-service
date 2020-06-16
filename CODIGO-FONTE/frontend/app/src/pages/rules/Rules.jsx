@@ -9,8 +9,8 @@ import {
   Col
 } from 'reactstrap'
 
-import GlobalNavbar from "../../components/Navbars/GlobalNavbar.js"
-import SimpleFooter from "../../components/Footers/SimpleFooter.js"
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
 
 export default class Rules extends React.Component {
   render() {

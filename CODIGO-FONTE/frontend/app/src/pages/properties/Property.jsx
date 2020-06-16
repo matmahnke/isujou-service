@@ -14,12 +14,12 @@ import {
   Label
 } from 'reactstrap'
 
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
-import Loading from '../../components/Loading/Loading.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
+import Loading from '../../components/Loading/Loading'
 import api from '../../services/api'
-import Resources from '../../store/Resources.js'
-import ErrorAlert from '../../components/Alerts/ErrorAlert.js'
+import Resources from '../../store/Resources'
+import ErrorAlert from '../../components/Alerts/ErrorAlert'
 
 export default class Property extends React.Component {
   constructor(props) {

@@ -21,10 +21,10 @@ import {
 
 import classnames from 'classnames'
 
-import GlobalNavbar from '../../components/Navbars/GlobalNavbar.js'
-import SimpleFooter from '../../components/Footers/SimpleFooter.js'
+import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
+import SimpleFooter from '../../components/Footers/SimpleFooter'
 
-import Loading from '../../components/Loading/Loading.js'
+import Loading from '../../components/Loading/Loading'
 import api from '../../services/api'
 
 export default class Settings extends Component {

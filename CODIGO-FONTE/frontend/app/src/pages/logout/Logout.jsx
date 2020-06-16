@@ -1,7 +1,7 @@
 import React from 'react'
 
 import api from '../../services/api';
-import Loading from '../../components/Loading/Loading.js'
+import Loading from '../../components/Loading/Loading'
 
 const Logout = () => {
 	const deslogar = () => {
