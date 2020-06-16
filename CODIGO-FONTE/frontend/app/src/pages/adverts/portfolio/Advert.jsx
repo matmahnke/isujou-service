@@ -58,14 +58,14 @@ class Advert extends React.Component {
             if (data) {
               var model = {
                 id: data.id,
-                title: data.property.title,
+                title: data.title,
                 date: data.date,
-                location: data.property.city + ', ' + Resources.GetBrazilianStates()[data.property.state - 1].description,
+                location: data.city + ', ' + Resources.GetBrazilianStates()[data.state - 1].description,
                 objectives: data.items?.length > 0 ? data.items.map(item => item.description) : [],
                 photos: [],
-                ownerId: data.creator?.userInfoId ?? 0,
-                ownerName: data.creator?.userInfo?.name ?? 'Proprietário',
-                ownerPhotoUrl: data.creator?.userInfo?.photo ?? require("../../../assets/img/icons/no-image.png")
+                ownerId: data.ownerId,
+                ownerName: data.ownerName,
+                ownerPhotoUrl: data.ownerPhotoUrl?.length > 0 ? data.ownerPhotoUrl : require("../../../assets/img/icons/no-image.png")
               }
               this.setState(model)
             }
@@ -128,7 +128,7 @@ class Advert extends React.Component {
                           </h2>
                         </Row>
                         <Row className="my-2">
-                          <Button size="sm" color="default" className="fa fa-calendar mr-2 width-30" /> <span className="mt-1">{Utils.formatarData(new Date(this.state.date))}</span>
+                          <Button size="sm" color="default" className="fa fa-calendar mr-2 width-30" /> <span className="mt-1">{this.state.date}</span>
                         </Row>
                         <Row className="my-2">
                           <Button size="sm" color="default" className="fa fa-map-marker mr-2 width-30" /> <span className="mt-1">{this.state.location}</span>

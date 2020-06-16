@@ -45,7 +45,19 @@ namespace iSujou.Api.Controllers
                 if (advert == null)
                     throw new Exception("Registro não encontrado.");
 
-                return Ok(advert);
+                return Ok(new 
+                {
+                    id = advert.Id,
+                    title = advert.Property.Title,
+                    date = advert.Date.ToString("dd/MM/yyyy"),
+                    city = advert.Property.City,
+                    state = advert.Property.State,
+                    items = advert.Items,
+                    photos = new string[] {},
+                    ownerId = advert.Creator.UserInfo.Id,
+                    ownerName = advert.Creator.UserInfo.Name,
+                    ownerPhotoUrl = ""
+                });
             }
             catch (Exception ex)
             {
