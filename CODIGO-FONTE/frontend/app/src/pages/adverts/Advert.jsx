@@ -37,10 +37,13 @@ export default class Advert extends React.Component {
       error: null
     }
 
-    this.property_onChange = this.property_onChange.bind(this)
-    this.active_onChange = this.active_onChange.bind(this)
-    this.dayMonth_onChange = this.dayMonth_onChange.bind(this)
-    this.hour_onChange = this.hour_onChange.bind(this)
+    this.onChange = this.onChange.bind(this)
+  }
+
+  onChange = e => {
+    let value = e.target.type == 'checkbox' ? e.target.checked : e.target.value
+
+    this.setState({ [e.target.name]: value })
   }
 
   componentDidMount() {
@@ -84,24 +87,6 @@ export default class Advert extends React.Component {
     return imoveis
   }
 
-  //#region OnChange
-  property_onChange(event) {
-    this.setState({ propertyId: event.target.value })
-  }
-
-  active_onChange(event) {
-    this.setState({ active: event.target.checked })
-  }
-
-  dayMonth_onChange(event) {
-    this.setState({ dayMonth: event.target.value })
-  }
-
-  hour_onChange(event) {
-    this.setState({ hour: event.target.value })
-  }
-  //#endregion
-
   trazerDados(id) {
     if (isNaN(id))
       this.setState({ validationErrors: ["O parametro informado não foi encontrado (" + id + ")"], mostrarForm: false })
@@ -129,9 +114,7 @@ export default class Advert extends React.Component {
     }
   }
 
-  isCreating() {
-    return this.props.type === 'new'
-  }
+  isCreating = () => this.props.type === 'new'
 
   obterTitulo() {
     var nome = this.props.type ?? "Anúncio";
@@ -226,6 +209,8 @@ export default class Advert extends React.Component {
   }
 
   render() {
+    const { propertyId, dayMonth, hour, active } = this.state
+
     return (
       <>
         <Error error={this.state.error} />
@@ -264,8 +249,9 @@ export default class Advert extends React.Component {
                           <Input
                             type="select"
                             id="advertProperty"
-                            onChange={this.property_onChange}
-                            value={this.state.propertyId}
+                            name="propertyId"
+                            onChange={this.onChange}
+                            value={propertyId}
                           >
                             {this.state.properties.map(property => <option key={property.id} value={property.id}>{property.description}</option>)}
                           </Input>
@@ -279,8 +265,9 @@ export default class Advert extends React.Component {
                           <Input
                             type="date"
                             id="advertDate"
-                            onChange={this.dayMonth_onChange}
-                            value={this.state.dayMonth}
+                            name="dayMonth"
+                            onChange={this.onChange}
+                            value={dayMonth}
                             required
                           />
                         </InputGroup>
@@ -293,8 +280,9 @@ export default class Advert extends React.Component {
                           <Input
                             type="time"
                             id="advertTime"
-                            onChange={this.hour_onChange}
-                            value={this.state.hour}
+                            name="hour"
+                            onChange={this.onChange}
+                            value={hour}
                             required
                           />
                         </InputGroup>
@@ -307,8 +295,9 @@ export default class Advert extends React.Component {
                           <input
                             className="custom-control-input"
                             id="advertActive"
-                            onChange={this.active_onChange}
-                            checked={this.state.active}
+                            name="active"
+                            onChange={this.onChange}
+                            checked={active}
                             type="checkbox"
                           />
                           <label className="custom-control-label" htmlFor="advertActive">
