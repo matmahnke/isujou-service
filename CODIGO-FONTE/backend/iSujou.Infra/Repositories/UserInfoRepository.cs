@@ -13,9 +13,9 @@ namespace iSujou.Infra.Repositories
         {
         }
 
-        public async Task<UserInfo> GetUserProfileByName(string name)
+        public async Task<UserInfo> GetUserProfileById(long id)
         {
-            return await _set.Include(x => x.User).ThenInclude(x => x.Adverts).Where(x => x.User.UserName == name).FirstOrDefaultAsync();
+            return await _set.Include(x => x.User).ThenInclude(x => x.Adverts).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
     }
 }

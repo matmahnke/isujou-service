@@ -17,7 +17,7 @@ namespace iSujou.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1")]
-    [Authorize("Bearer")]
+    [AllowAnonymous]
     public class ProfileController : ControllerBase
     {
         private readonly IUserInfoRepository _userInfo;
@@ -29,29 +29,30 @@ namespace iSujou.Api.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet()]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
         {
-
             try
             {
-                var user = await _userInfo.GetUserProfileByName(User.Identity.Name);
+                var userInfo = await _userInfo.GetUserProfileById(id);
+
+                if (userInfo == null)
+                    throw new Exception("Registro não encontrado.");
 
                 return Ok(new ProfileDto
                 {
                     achievements = new object[0],
-                    AmountAdverts = user.User.Adverts.Count,
+                    AmountAdverts = userInfo.User.Adverts.Count,
                     AmountArchevements = 0,
                     AmountAssessments = 0,
-                    BirthDate = user.BirthDate,
-                    Cpf = user.Cpf,
+                    BirthDate = userInfo.BirthDate,
+                    Cpf = userInfo.Cpf,
                     Description = "",
                     FotoUrl = "",
-                    Gender = user.Gender,
-                    Id = user.User.Id,
-                    LastName = user.LastName,
-                    Name = user.Name
+                    Gender = userInfo.Gender,
+                    LastName = userInfo.LastName,
+                    Name = userInfo.Name
                 });
             }
             catch (Exception ex)

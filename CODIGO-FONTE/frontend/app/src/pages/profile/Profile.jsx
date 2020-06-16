@@ -39,14 +39,33 @@ export default class Profile extends Component {
     this.setState({ loading: true })
 
     // Faz a requisição
-    if (this.props.match.params?.id)
-    {
+    if (this.props.match.params?.id) {
       const id = this.props.match.params.id;
+
+      api.get('/profile/' + id)
+        .then(resp => {
+          const { data } = resp;
+          var model = {
+            id: id,
+            name: data.name,
+            photoUrl: data.photoUrl,
+            amountAdverts: data.amountAdverts,
+            amountAssessments: data.amountAssessments,
+            achievements: data.achievements,
+            description: data.description
+          }
+
+          this.setState(model)
+        })
+        .catch((ex) => {
+          console.log(ex)
+        })
+        .finally(() => {
+          this.setState({ loading: false })
+        })
 
       this.setState({ id })
     }
-
-    this.setState({ loading: false })
   }
 
   render() {
