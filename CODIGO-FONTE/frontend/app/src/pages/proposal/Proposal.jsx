@@ -30,7 +30,7 @@ export default class Proposal extends React.Component {
       loading: false
     }
 
-    this.amount_onChange = this.amount_onChange.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
 
   componentDidMount() {
@@ -40,9 +40,7 @@ export default class Proposal extends React.Component {
       this.setState({ advertId: this.props.match.params.id })
   }
 
-  amount_onChange(event) {
-    this.setState({ amount: event.target.value })
-  }
+  onChange = e => this.setState({ [e.target.name]: e.target.value })
 
   save() {
     this.setState({ loading: true })
@@ -62,6 +60,8 @@ export default class Proposal extends React.Component {
   }
 
   render() {
+    const { amount } = this.state
+
     return (
       <>
         <Loading hidden={!this.state.loading} />
@@ -91,7 +91,7 @@ export default class Proposal extends React.Component {
                       <FormGroup>
                         <Label for="advertProperty">Quanto deseja oferecer?</Label>
                         <InputGroup>
-                          <CurrencyInput placeholder="R$0,00" type="text" value={this.state.amount} onChange={this.amount_onChange}/>
+                          <CurrencyInput placeholder="R$0,00" type="text" value={amount} onChange={this.onChange} name="amount"/>
                         </InputGroup>
                       </FormGroup>
                     </Col>

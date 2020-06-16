@@ -241,7 +241,6 @@ export default class Property extends React.Component {
                             <InputGroup>
                               <Input
                                 type="select"
-                                name="select"
                                 id="propertyState"
                                 name="state"
                                 onChange={this.onChange}
