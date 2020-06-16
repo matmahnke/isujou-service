@@ -280,7 +280,7 @@ export default class Advert extends React.Component {
                             type="date"
                             id="advertDate"
                             onChange={this.dayMonth_onChange}
-                            value={this.dayMonth}
+                            value={this.state.dayMonth}
                             required
                           />
                         </InputGroup>

@@ -9,6 +9,7 @@ import Login from './../pages/login/Login'
 import Logout from './../pages/logout/Logout'
 import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
+import Settings from './../pages/settings/Settings'
 import Rules from '../pages/rules/Rules.js'
 
 // Anúncios
@@ -49,6 +50,7 @@ const Routes = () => (
             <Route exact path='/profile/:id' component={props => <Profile {...props} />} />
             <Route exact path='/adverts' component={Portfolio} />
             <Route exact path='/advert/view/:id' component={props => <PortfolioAdvert {...props} />} />
+            <PrivateRoute exact path='/settings' component={Settings} />
             <PrivateRoute exact path='/adverts/mine' component={Adverts} />
             <PrivateRoute exact path='/advert/new' component={() => <Advert type="new" />} />
             <PrivateRoute exact path='/advert/edit/:id' component={props => <Advert type="edit" {...props} />} />
