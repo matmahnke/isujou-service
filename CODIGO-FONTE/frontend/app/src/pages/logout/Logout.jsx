@@ -4,24 +4,24 @@ import api from '../../services/api';
 import Loading from '../../components/Loading/Loading'
 
 const Logout = () => {
-	const deslogar = () => {
-		api.get('auth')
-			.then((res) => {
-				localStorage.removeItem('Authorization');
-				window.location.href = '/home'
-			})
-			.catch((ex) => {
-				console.log(ex)
-			})
-	}
+  const deslogar = () => {
+    api.get('auth')
+       .catch((ex) => {
+         console.log(ex)
+       })
+       .finally(() => {
+         localStorage.removeItem('Authorization');
+         window.location.href = '/home'
+       })
+  }
 
-	return (
-		<>
-			{deslogar()}
+  return (
+    <>
+      {deslogar()}
 
-			<Loading />
-		</>
-	)
+      <Loading />
+    </>
+  )
 };
 
 export default Logout;
