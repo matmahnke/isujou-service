@@ -13,5 +13,7 @@ namespace iSujou.Domain.Entities
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
         public User User { get; set; }
+        public int Points { get; set; }
+        public Archievements Archievement { get; set; }
     }
 }
