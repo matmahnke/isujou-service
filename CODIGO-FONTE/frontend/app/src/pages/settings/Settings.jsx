@@ -26,6 +26,7 @@ import SimpleFooter from '../../components/Footers/SimpleFooter'
 
 import Loading from '../../components/Loading/Loading'
 import api from '../../services/api'
+import Resources from '../../store/Resources'
 
 export default class Settings extends Component {
   constructor(props) {
@@ -35,9 +36,14 @@ export default class Settings extends Component {
       activeTab: '1',
       userId: null,
       name: '',
+      lastName: '',
       description: '',
+      birthDate: '',
+      cpf: '',
+      gender: 3,
       feedbacks: [],
       achievements: [],
+      photo: null,
       loading: false
     }
 
@@ -65,7 +71,7 @@ export default class Settings extends Component {
   }
 
   render() {
-    const { name, description } = this.state
+    const { name, lastName, description, birthDate, cpf, gender, photo } = this.state
 
     return (
       <>
@@ -114,7 +120,10 @@ export default class Settings extends Component {
                     <Row>
                       <Col lg="8">
                         <Row>
-                          <Col lg="12">
+                          <h5><i className="fa fa-globe text-green" title="Estas informações são públicas!" /> Informações do perfil</h5>
+                        </Row>
+                        <Row>
+                          <Col lg="6">
                             <FormGroup>
                               <Label for="name">Nome</Label>
                               <InputGroup>
@@ -124,6 +133,21 @@ export default class Settings extends Component {
                                   name="name"
                                   onChange={this.onChange}
                                   value={name}
+                                  required
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                          <Col lg="6">
+                            <FormGroup>
+                              <Label for="lastName">Sobrenome</Label>
+                              <InputGroup>
+                                <Input
+                                  type="text"
+                                  id="lastName"
+                                  name="lastName"
+                                  onChange={this.onChange}
+                                  value={lastName}
                                   required
                                 />
                               </InputGroup>
@@ -149,16 +173,84 @@ export default class Settings extends Component {
                         </Row>
                       </Col>
                       <Col lg="4">
+                        <Row className="justify-content-center">
+                          <img
+                            alt="..."
+                            width="150px"
+                            className="rounded-circle"
+                            src={photo?.length > 0 ? photo : require("../../assets/img/icons/no-image.png")}
+                          />
+                        </Row>
+                        <Row className="justify-content-center mt-4">
+                          <Button size="sm" color="secondary">
+                            Alterar foto
+                          </Button>
+                        </Row>
+                      </Col>
+                      <Col lg="8">
                         <Row>
-                          Foto
+                          <h5><i className="fa fa-user" title="Estas informações somente você e os administradores do iSujou possuem acesso." /> Dados pessoais</h5>
+                        </Row>
+                        <Row>
+                          <Col lg="6">
+                            <FormGroup>
+                              <Label for="cpf">CPF</Label>
+                              <InputGroup>
+                                <Input
+                                  type="text"
+                                  id="cpf"
+                                  name="cpf"
+                                  onChange={this.onChange}
+                                  value={cpf}
+                                  readOnly
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                          <Col lg="6">
+                            <FormGroup>
+                              <Label for="birthDate">Data de nascimento</Label>
+                              <InputGroup>
+                                <Input
+                                  type="date"
+                                  id="birthDate"
+                                  name="birthDate"
+                                  onChange={this.onChange}
+                                  value={birthDate}
+                                  readOnly
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col lg="6">
+                            <FormGroup>
+                              <Label for="gender">Gênero</Label>
+                              <InputGroup>
+                                <Input
+                                  type="select"
+                                  id="gender"
+                                  name="gender"
+                                  onChange={this.onChange}
+                                  value={gender}
+                                >
+                                  {Resources.GetGenders().map(property => <option key={property.id} value={property.id}>{property.description}</option>)}
+                                </Input>
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
                         </Row>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col md={12}>
+                    <Col className="mt-4" lg={12}>
+                      <Row>
+                        <p><small>Somente os campos habilitados podem ser alterados.</small></p>
+                      </Row>
+                      <Row>
                         <Button color="success" onClick={() => this.save()}>Salvar</Button>
-                      </Col>
-                    </Row>
+                      </Row>
+                    </Col>
                   </TabPane>
                   <TabPane tabId="2" className="p-2">
                     <Row>

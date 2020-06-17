@@ -65,7 +65,7 @@ namespace iSujou.Api.Controllers
                     id = proposal.Id,
                     advert = proposal.Advert,
                     status = proposal.Status == 0 ? ProposalStatus.Pending : proposal.Status,
-                    isMine = isMine,
+                    isMine,
                     canApprove = showButtons,
                     canRefuse = showButtons,
                     canSuspend = showButtons
