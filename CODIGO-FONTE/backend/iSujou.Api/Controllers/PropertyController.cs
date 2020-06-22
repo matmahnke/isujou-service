@@ -5,7 +5,9 @@ using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace iSujou.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _repository.GetAllAsync());
+            return Ok(_repository.GetAll().Include(x => x.Owner).Where(x => x.Owner.UserName == User.Identity.Name));
         }
 
         [HttpGet()]

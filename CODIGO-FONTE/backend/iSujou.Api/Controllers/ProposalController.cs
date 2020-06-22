@@ -53,8 +53,9 @@ namespace iSujou.Api.Controllers
         public async Task<IActionResult> Get()
         {
             List<object> result = new List<object>();
-            var proposals = await _repository.GetProposals();
-            var userId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+            var username = User?.Identity?.Name;
+            var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username);
+            var userId = (await _userManager.FindByNameAsync(username)).Id;
 
             foreach (var proposal in proposals)
             {

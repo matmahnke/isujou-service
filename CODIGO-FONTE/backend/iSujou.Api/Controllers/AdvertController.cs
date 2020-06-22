@@ -31,7 +31,7 @@ namespace iSujou.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _repository.GetPortfolioAsync());
+            return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name));
         }
 
         [HttpGet()]

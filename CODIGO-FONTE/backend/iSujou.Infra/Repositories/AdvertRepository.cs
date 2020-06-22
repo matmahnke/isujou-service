@@ -26,7 +26,7 @@ namespace iSujou.Infra.Repositories
 
         public Task<List<Advert>> GetPortfolioAsync()
         {
-            return _set.Include(advert => advert.Property).ToListAsync();
+            return _set.Include(advert => advert.Property).Include(x => x.Creator).ToListAsync();
         }
     }
 }
