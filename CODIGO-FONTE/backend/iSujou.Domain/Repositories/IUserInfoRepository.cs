@@ -8,6 +8,6 @@ namespace iSujou.Domain.Repositories
 {
     public interface IUserInfoRepository: IRepository<UserInfo>
     {
-        public Task<UserInfo> GetUserProfileByName(string name);
+        public Task<UserInfo> GetUserProfileById(long id);
     }
 }
