@@ -23,7 +23,7 @@ export default class Adverts extends React.Component {
   getAdverts = () =>
     api.get('/advert')
 
-  excluir(id) {
+  inativar(id) {
 
   }
 
@@ -82,7 +82,7 @@ export default class Adverts extends React.Component {
                                     <Button color="primary" size="sm" title="Editar"
                                       href={"/advert/edit/" + id}
                                     ><i className="fa fa-pencil"></i></Button>
-                                    <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
+                                    <Button color="danger" size="sm" title="Inativar" onClick={() => this.inativar(id)} hidden={!active}><i className="fa fa-times"></i></Button>
                                   </td>
                                   <td>{title}</td>
                                   <td>{date}</td>
