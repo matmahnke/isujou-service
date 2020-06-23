@@ -15,6 +15,14 @@ import Utils from '../../store/Utils'
 import Async from 'react-async'
 
 export default class Adverts extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loading: false
+    }
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -24,7 +32,17 @@ export default class Adverts extends React.Component {
     api.get('/advert/authenticated')
 
   inativar(id) {
-
+    this.setState({ loading: true })
+    api.post('/advert/suspend/' + id)
+      .then(resp => {
+        console.log('Sucesso')
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
   }
 
   render() {
@@ -75,19 +93,17 @@ export default class Adverts extends React.Component {
                           </thead>
                           <tbody>
                             {data.data.map((adverd, index) => {
-                              const { id, title, date, active } = adverd
+                              const { id, title, formatedDate, hourForComponent, active } = adverd
                               console.log(data)
                               return (
                                 <tr key={id}>
                                   <td>
-                                    <Button color="primary" size="sm" title="Editar"
-                                      href={"/advert/edit/" + id}
-                                    ><i className="fa fa-pencil"></i></Button>
+                                    <Button color="primary" size="sm" title="Editar" href={"/advert/edit/" + id} disabled={!active}><i className="fa fa-pencil"></i></Button>
                                     <Button color="danger" size="sm" title="Inativar" onClick={() => this.inativar(id)} hidden={!active}><i className="fa fa-times"></i></Button>
                                   </td>
                                   <td>{id}</td>
                                   <td>{title}</td>
-                                  <td>{date}</td>
+                                  <td>{formatedDate} {hourForComponent}</td>
                                   <td>
                                     <div className="custom-control custom-checkbox">
                                       <input

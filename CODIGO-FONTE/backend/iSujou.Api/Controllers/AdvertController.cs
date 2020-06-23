@@ -34,7 +34,7 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                return Ok((await _repository.GetPortfolioAsync()).OrderByDescending(advert => advert.Id).Select(advert => new AdvertViewModel(advert)));
+                return Ok((await _repository.GetPortfolioAsync()).Where(advert => advert.Active).OrderByDescending(advert => advert.Id).Select(advert => new AdvertViewModel(advert)));
             }
             catch (Exception ex)
             {
@@ -131,14 +131,21 @@ namespace iSujou.Api.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpPost]
+        [Route("suspend/{id}")]
         [Authorize("Bearer")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Suspender(long id)
         {
             try
             {
-                await _repository.RemoveAsync(id);
+                var advert = await _repository.GetAdvert(id);
+
+                if (advert == null)
+                    throw new Exception("Registro não encontrado.");
+
+                advert.Active = false;
+                advert.EditorId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+                advert.EditionDate = DateTime.Now;
                 await _unitOfWork.Commit();
 
                 return Ok();

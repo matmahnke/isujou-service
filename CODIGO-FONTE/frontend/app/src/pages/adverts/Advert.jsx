@@ -99,8 +99,9 @@ export default class Advert extends React.Component {
             var model = {
               propertyId: data.propertyId,
               predefinedItems: data.items?.length > 0 ? data.items.map(item => item.description) : [],
-              dayMonth: data.date.substring(0, 10),
-              hour: data.date.substring(11, 20),
+              dayMonth: data.dateForComponent,
+              hour: data.hourForComponent,
+              active: data.active
             }
 
             this.setState(model)
