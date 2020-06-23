@@ -1,14 +1,14 @@
 using iSujou.Api.Application.Commands;
+using iSujou.Api.ViewModel;
 using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
-using iSujou.Api.ViewModel;
+using System.Threading.Tasks;
 
 namespace iSujou.Api.Controllers
 {
@@ -34,7 +34,7 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                return Ok((await _repository.GetPortfolioAsync()).Select(advert => new AdvertViewModel(advert)));
+                return Ok((await _repository.GetPortfolioAsync()).OrderByDescending(advert => advert.Id).Select(advert => new AdvertViewModel(advert)));
             }
             catch (Exception ex)
             {
@@ -46,7 +46,14 @@ namespace iSujou.Api.Controllers
         [Authorize("Bearer")]
         public async Task<IActionResult> GetAdvertsByAuthenticatedUser()
         {
-            return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name).Select(advert => new AdvertViewModel(advert)));
+            try
+            {
+                return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name).OrderByDescending(advert => advert.Id).Select(advert => new AdvertViewModel(advert)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet()]
@@ -103,7 +110,7 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                await _repository.UpdateAsync(new Domain.Entities.Advert
+                await _repository.UpdateAsync(new Advert
                 {
                     Active = command.Active,
                     Date = command.Date,
@@ -113,14 +120,15 @@ namespace iSujou.Api.Controllers
                         Description = x.Value
                     }).ToList()
                 });
+
                 await _unitOfWork.Commit();
+
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
-
-            return Ok();
         }
 
         [HttpDelete]

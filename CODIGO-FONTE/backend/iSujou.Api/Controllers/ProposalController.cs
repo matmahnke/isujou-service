@@ -10,12 +10,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace iSujou.Api.Controllers
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1")]
+    [Authorize("Bearer")]
     public class ProposalController : ControllerBase
     {
         private readonly IProposalRepository _repository;
@@ -34,11 +36,11 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                await _repository.AddAsync(new Domain.Entities.Proposal
+                await _repository.AddAsync(new Proposal
                 {
                     AdvertId = command.AdvertId,
-                    Status = command.Status,
-                    Value = 1,
+                    Status = ProposalStatus.Pending,
+                    Value = command.Value,
                     CandidateId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id
                 });
                 await _unitOfWork.Commit();
@@ -58,22 +60,22 @@ namespace iSujou.Api.Controllers
             {
                 List<object> result = new List<object>();
                 var username = User?.Identity?.Name;
-                var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username);
+                var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username).OrderByDescending(proposal => proposal.Id);
                 var userId = (await _userManager.FindByNameAsync(username)).Id;
 
                 foreach (var proposal in proposals)
                 {
                     bool isMine = userId == proposal.Advert.CreatorId,
-                         showButtons = isMine && proposal.Status == ProposalStatus.Pending;
+                         showInitialButtons = proposal.Status == ProposalStatus.Pending;
                     result.Add(new
                     {
                         id = proposal.Id,
                         advert = new AdvertViewModel(proposal.Advert),
                         status = proposal.Status == 0 ? ProposalStatus.Pending : proposal.Status,
                         isMine,
-                        canApprove = showButtons,
-                        canRefuse = showButtons,
-                        canSuspend = showButtons
+                        canApprove = showInitialButtons,
+                        canRefuse = showInitialButtons,
+                        canSuspend = showInitialButtons
                     });
                 }
 
@@ -85,32 +87,35 @@ namespace iSujou.Api.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("aprove/{id}")]
-        public async Task<IActionResult> aprove(long id)
-        {
-            var proposal = await _repository.GetByIdAsync(id);
-            proposal.Status = ProposalStatus.Accepted;
-            await _unitOfWork.Commit();
-            return Ok();
-        }
+        [HttpPost]
+        [Route("approve/{id}")]
+        public async Task<IActionResult> Approve(long id)
+            => await ChangeStatus(id, ProposalStatus.Accepted);
 
+        [HttpPost]
         [Route("refuse/{id}")]
-        public async Task<IActionResult> refuse(long id)
-        {
-            var proposal = await _repository.GetByIdAsync(id);
-            proposal.Status = ProposalStatus.Refused;
-            await _unitOfWork.Commit();
-            return Ok();
-        }
+        public async Task<IActionResult> Refuse(long id)
+            => await ChangeStatus(id, ProposalStatus.Refused);
 
+        [HttpPost]
         [Route("suspend/{id}")]
-        public async Task<IActionResult> suspend(long id)
+        public async Task<IActionResult> Suspend(long id)
+            => await ChangeStatus(id, ProposalStatus.Canceled);
+
+        private async Task<IActionResult> ChangeStatus(long id, ProposalStatus status)
         {
-            var proposal = await _repository.GetByIdAsync(id);
-            proposal.Status = ProposalStatus.Canceled;
-            await _unitOfWork.Commit();
-            return Ok();
+            try
+            {
+                var proposal = await _repository.GetByIdAsync(id);
+                proposal.Status = status;
+                await _unitOfWork.Commit();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }
