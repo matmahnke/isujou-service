@@ -1,4 +1,5 @@
 ﻿using iSujou.Api.Application.Commands;
+using iSujou.Api.ViewModel;
 using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Enums;
@@ -29,7 +30,7 @@ namespace iSujou.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]ProposalCommand command)
+        public async Task<IActionResult> Create([FromBody] ProposalCommand command)
         {
             try
             {
@@ -41,39 +42,47 @@ namespace iSujou.Api.Controllers
                     CandidateId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id
                 });
                 await _unitOfWork.Commit();
+
+                return Ok();
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { message = ex.Message });
             }
-            return Ok();
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<object> result = new List<object>();
-            var username = User?.Identity?.Name;
-            var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username);
-            var userId = (await _userManager.FindByNameAsync(username)).Id;
-
-            foreach (var proposal in proposals)
+            try
             {
-                bool isMine = userId == proposal.Advert.CreatorId,
-                     showButtons = isMine && proposal.Status == ProposalStatus.Pending;
-                result.Add(new
-                {
-                    id = proposal.Id,
-                    advert = proposal.Advert,
-                    status = proposal.Status == 0 ? ProposalStatus.Pending : proposal.Status,
-                    isMine,
-                    canApprove = showButtons,
-                    canRefuse = showButtons,
-                    canSuspend = showButtons
-                });
-            }
+                List<object> result = new List<object>();
+                var username = User?.Identity?.Name;
+                var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username);
+                var userId = (await _userManager.FindByNameAsync(username)).Id;
 
-            return Ok(result);
+                foreach (var proposal in proposals)
+                {
+                    bool isMine = userId == proposal.Advert.CreatorId,
+                         showButtons = isMine && proposal.Status == ProposalStatus.Pending;
+                    result.Add(new
+                    {
+                        id = proposal.Id,
+                        advert = new AdvertViewModel(proposal.Advert),
+                        status = proposal.Status == 0 ? ProposalStatus.Pending : proposal.Status,
+                        isMine,
+                        canApprove = showButtons,
+                        canRefuse = showButtons,
+                        canSuspend = showButtons
+                    });
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet]
@@ -85,7 +94,6 @@ namespace iSujou.Api.Controllers
             await _unitOfWork.Commit();
             return Ok();
         }
-
 
         [Route("refuse/{id}")]
         public async Task<IActionResult> refuse(long id)

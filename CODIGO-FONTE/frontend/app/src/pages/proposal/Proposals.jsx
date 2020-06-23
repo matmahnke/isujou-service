@@ -76,8 +76,8 @@ export default class Proposals extends React.Component {
                                     <Button color="danger" size="sm" title="Recusar" hidden={isMine} disabled={canRefuse}><i className="fa fa-times"></i></Button>
                                     <Button color="danger" size="sm" title="Suspender" hidden={!isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
                                   </td>
-                                  <td>{advert.property.title}</td>
-                                  <td>{Utils.formatarData(new Date(advert.date))}</td>
+                                  <td>{advert.title}</td>
+                                  <td>{advert.date}</td>
                                   <td>{Resources.GetProposalStatus()[status - 1]?.description}</td>
                                 </tr>
                               )
