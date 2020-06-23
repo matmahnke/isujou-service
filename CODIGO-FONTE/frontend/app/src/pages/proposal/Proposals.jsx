@@ -14,6 +14,7 @@ import api from '../../services/api'
 import Async from 'react-async'
 import Resources from '../../store/Resources'
 import Utils from '../../store/Utils'
+import Loading from '../../components/Loading/Loading'
 
 export default class Proposals extends React.Component {
   constructor(props) {
@@ -60,9 +61,24 @@ export default class Proposals extends React.Component {
       })
   }
 
+  suspend(id) {
+    this.setState({ loading: true })
+    api.post('/proposal/suspend/' + id)
+      .then(resp => {
+        console.log('Sucesso')
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
+
   render() {
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">
@@ -111,7 +127,7 @@ export default class Proposals extends React.Component {
                                   <td>
                                     <Button color="success" size="sm" title="Aprovar" hidden={!isMine} disabled={!canApprove} onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
                                     <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={!canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
-                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={!canSuspend}><i className="fa fa-ban"></i></Button>
+                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={!canSuspend} onClick={() => this.suspend(id)}><i className="fa fa-ban"></i></Button>
                                   </td>
                                   <td>{id}</td>
                                   <td>{advert.title}</td>
