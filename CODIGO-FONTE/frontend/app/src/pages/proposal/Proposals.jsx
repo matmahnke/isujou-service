@@ -16,6 +16,14 @@ import Resources from '../../store/Resources'
 import Utils from '../../store/Utils'
 
 export default class Proposals extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loading: false
+    }
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -23,6 +31,34 @@ export default class Proposals extends React.Component {
 
   getProposals = () =>
     api.get('/proposal')
+
+  approve(id) {
+    this.setState({ loading: true })
+    api.post('/proposal/approve/' + id)
+      .then(resp => {
+        console.log('Sucesso')
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
+
+  refuse(id) {
+    this.setState({ loading: true })
+    api.post('/proposal/refuse/' + id)
+      .then(resp => {
+        console.log('Sucesso')
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
 
   render() {
     return (
@@ -72,9 +108,9 @@ export default class Proposals extends React.Component {
                               return (
                                 <tr key={id}>
                                   <td>
-                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine} disabled={canApprove}><i className="fa fa-check"></i></Button>
-                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={canRefuse}><i className="fa fa-times"></i></Button>
-                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
+                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine} disabled={!canApprove} onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
+                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={!canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
+                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={!canSuspend}><i className="fa fa-ban"></i></Button>
                                   </td>
                                   <td>{advert.title}</td>
                                   <td>{advert.date}</td>
