@@ -63,11 +63,11 @@ namespace iSujou.Api.Controllers
                 List<object> result = new List<object>();
                 var username = User?.Identity?.Name;
                 var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username).OrderByDescending(proposal => proposal.Id);
-                var userId = (await _userManager.FindByNameAsync(username)).Id;
+                var user = (await _userManager.FindByNameAsync(username));
 
                 foreach (var proposal in proposals)
                 {
-                    bool isMine = userId == proposal.Advert.CreatorId,
+                    bool isMine = user.Id == proposal.Advert.CreatorId,
                          showInitialButtons = proposal.Status == ProposalStatus.Pending;
                     result.Add(new
                     {
@@ -80,7 +80,9 @@ namespace iSujou.Api.Controllers
                         canRefuse = showInitialButtons,
                         canSuspend = showInitialButtons,
                         canStart = proposal.Status == ProposalStatus.Accepted,
-                        canComplete = proposal.Status == ProposalStatus.Active
+                        canComplete = proposal.Status == ProposalStatus.Active,
+                        canWriteFeedBack = proposal.Status == ProposalStatus.Completed,
+                        feedbackProfileId = isMine ? proposal.Candidate.UserInfoId : proposal.Advert.Creator.UserInfoId
                     });
                 }
 
