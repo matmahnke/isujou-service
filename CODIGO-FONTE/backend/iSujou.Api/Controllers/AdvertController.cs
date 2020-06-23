@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using iSujou.Api.ViewModel;
 
 namespace iSujou.Api.Controllers
 {
@@ -31,6 +32,15 @@ namespace iSujou.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            try
+            {
+                return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name).Select(advert => new AdvertViewModel(advert)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
             return Ok((await _repository.GetPortfolioAsync()));
         }
 
@@ -52,19 +62,7 @@ namespace iSujou.Api.Controllers
                 if (advert == null)
                     throw new Exception("Registro não encontrado.");
 
-                return Ok(new 
-                {
-                    id = advert.Id,
-                    title = advert.Property.Title,
-                    date = advert.Date.ToString("dd/MM/yyyy"),
-                    city = advert.Property.City,
-                    state = advert.Property.State,
-                    items = advert.Items,
-                    photos = new string[] {},
-                    ownerId = advert.Creator.UserInfo.Id,
-                    ownerName = advert.Creator.UserInfo.Name,
-                    ownerPhotoUrl = ""
-                });
+                return Ok(new AdvertViewModel(advert));
             }
             catch (Exception ex)
             {
@@ -74,7 +72,7 @@ namespace iSujou.Api.Controllers
 
         [HttpPost]
         [Authorize("Bearer")]
-        public async Task<IActionResult> Create([FromBody]AdvertCommand command)
+        public async Task<IActionResult> Create([FromBody] AdvertCommand command)
         {
             try
             {

@@ -14,7 +14,9 @@ namespace iSujou.Infra.Repositories
 
         public Task<List<Proposal>> GetProposals()
         {
-            return _set.Include(p => p.Advert).ThenInclude(a => a.Property).Include(x => x.Candidate).Include(x => x.Advert).ThenInclude(x => x.CreatorId).ToListAsync();
+            return _set.Include(p => p.Advert).ThenInclude(a => a.Property)
+                       .Include(x => x.Candidate)
+                       .Include(x => x.Advert).ThenInclude(x => x.Creator).ThenInclude(x => x.UserInfo).ToListAsync();
         }
     }
 }
