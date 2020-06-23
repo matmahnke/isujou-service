@@ -49,7 +49,7 @@ export default class Portfolio extends React.Component {
         if (data) {
           for (var i = 0; i < data.length; i++) {
             const current = data[i]
-            adverts.push({ id: current.id, title: current.title, date: current.date, location: current.city + ', ' + Resources.GetBrazilianStates()[current.state - 1].description, photoUrl: '' })
+            adverts.push({ id: current.id, title: current.title, date: current.formatedDate, location: current.city + ', ' + Resources.GetBrazilianStates()[current.state - 1].description, photoUrl: '' })
           }
         }
       })

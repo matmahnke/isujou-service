@@ -21,14 +21,16 @@ namespace iSujou.Api.Controllers
     public class ProposalController : ControllerBase
     {
         private readonly IProposalRepository _repository;
+        private readonly IAdvertRepository _adverRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<User> _userManager;
 
-        public ProposalController(IProposalRepository repository, IUnitOfWork unitOfWork, UserManager<User> userManager)
+        public ProposalController(IProposalRepository repository, IUnitOfWork unitOfWork, UserManager<User> userManager, IAdvertRepository adverRepository)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _adverRepository = adverRepository;
         }
 
         [HttpPost]
@@ -70,6 +72,7 @@ namespace iSujou.Api.Controllers
                     result.Add(new
                     {
                         id = proposal.Id,
+                        value = proposal.Value.ToString("N2"),
                         advert = new AdvertViewModel(proposal.Advert),
                         status = proposal.Status == 0 ? ProposalStatus.Pending : proposal.Status,
                         isMine,
@@ -90,7 +93,22 @@ namespace iSujou.Api.Controllers
         [HttpPost]
         [Route("approve/{id}")]
         public async Task<IActionResult> Approve(long id)
-            => await ChangeStatus(id, ProposalStatus.Accepted);
+        {
+            try
+            {
+                var proposal = await _repository.GetByIdAsync(id);
+                var advert = await _adverRepository.GetByIdAsync(proposal.AdvertId.GetValueOrDefault());
+                advert.Active = false;
+                proposal.Status = ProposalStatus.Accepted;
+                await _unitOfWork.Commit();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         [HttpPost]
         [Route("refuse/{id}")]

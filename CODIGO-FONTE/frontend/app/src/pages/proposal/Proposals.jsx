@@ -116,12 +116,13 @@ export default class Proposals extends React.Component {
                               <th>#</th>
                               <th>Imóvel</th>
                               <th>Data</th>
+                              <th>Valor</th>
                               <th>Situação</th>
                             </tr>
                           </thead>
                           <tbody>
                             {data.data.map((proposal, index) => {
-                              const { id, advert, status, isMine, canRefuse, canApprove, canSuspend } = proposal
+                              const { id, advert, status, isMine, canRefuse, canApprove, canSuspend, value } = proposal
                               return (
                                 <tr key={id}>
                                   <td>
@@ -131,7 +132,8 @@ export default class Proposals extends React.Component {
                                   </td>
                                   <td>{id}</td>
                                   <td>{advert.title}</td>
-                                  <td>{advert.date}</td>
+                                  <td>{advert.formatedDate}</td>
+                                  <td title={value}>R$ --,--</td>
                                   <td>{Resources.GetProposalStatus()[status - 1]?.description}</td>
                                 </tr>
                               )

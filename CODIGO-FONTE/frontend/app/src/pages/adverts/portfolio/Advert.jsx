@@ -59,7 +59,7 @@ class Advert extends React.Component {
               var model = {
                 id: data.id,
                 title: data.title,
-                date: data.date,
+                date: data.formatedDate,
                 location: data.city + ', ' + Resources.GetBrazilianStates()[data.state - 1].description,
                 objectives: data.items?.length > 0 ? data.items.map(item => item.description) : [],
                 photos: [],

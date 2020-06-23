@@ -34,7 +34,7 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                return Ok((await _repository.GetPortfolioAsync()).Where(advert => advert.Active).OrderByDescending(advert => advert.Id).Select(advert => new AdvertViewModel(advert)));
+                return Ok((await _repository.GetPortfolioAsync()).Where(advert => advert.Active).OrderByDescending(advert => advert.Date).Select(advert => new AdvertViewModel(advert)));
             }
             catch (Exception ex)
             {
