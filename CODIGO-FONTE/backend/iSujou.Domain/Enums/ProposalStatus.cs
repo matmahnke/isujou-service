@@ -15,6 +15,12 @@ namespace iSujou.Domain.Enums
         Accepted,
         [Description("Cancelada")]
         // Quando o Empregado desiste
-        Canceled
+        Canceled,
+        [Description("Ativada")]
+        // Quando o proprietário inicia
+        Active,
+        [Description("Concluída")]
+        // Quando o proprietário conclui
+        Completed
     }
 }

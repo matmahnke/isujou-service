@@ -78,7 +78,9 @@ namespace iSujou.Api.Controllers
                         isMine,
                         canApprove = showInitialButtons,
                         canRefuse = showInitialButtons,
-                        canSuspend = showInitialButtons
+                        canSuspend = showInitialButtons,
+                        canStart = proposal.Status == ProposalStatus.Accepted,
+                        canComplete = proposal.Status == ProposalStatus.Active
                     });
                 }
 
@@ -119,6 +121,16 @@ namespace iSujou.Api.Controllers
         [Route("suspend/{id}")]
         public async Task<IActionResult> Suspend(long id)
             => await ChangeStatus(id, ProposalStatus.Canceled);
+
+        [HttpPost]
+        [Route("start/{id}")]
+        public async Task<IActionResult> Start(long id)
+            => await ChangeStatus(id, ProposalStatus.Active);
+
+        [HttpPost]
+        [Route("complete/{id}")]
+        public async Task<IActionResult> Complete(long id)
+            => await ChangeStatus(id, ProposalStatus.Completed);
 
         private async Task<IActionResult> ChangeStatus(long id, ProposalStatus status)
         {

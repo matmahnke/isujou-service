@@ -75,6 +75,34 @@ export default class Proposals extends React.Component {
       })
   }
 
+  iniciar(id) {
+    this.setState({ loading: true })
+    api.post('/proposal/start/' + id)
+      .then(resp => {
+        console.log('Sucesso')
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
+
+  concluir(id) {
+    this.setState({ loading: true })
+    api.post('/proposal/complete/' + id)
+      .then(resp => {
+        console.log('Sucesso')
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
+  }
+
   render() {
     return (
       <>
@@ -122,13 +150,15 @@ export default class Proposals extends React.Component {
                           </thead>
                           <tbody>
                             {data.data.map((proposal, index) => {
-                              const { id, advert, status, isMine, canRefuse, canApprove, canSuspend, value } = proposal
+                              const { id, advert, status, value, isMine, canRefuse, canApprove, canSuspend, canStart, canComplete } = proposal
                               return (
                                 <tr key={id}>
                                   <td>
-                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine} disabled={!canApprove} onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
-                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={!canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
-                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={!canSuspend} onClick={() => this.suspend(id)}><i className="fa fa-ban"></i></Button>
+                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine || !canApprove}  onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
+                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine || !canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
+                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine || !canSuspend} onClick={() => this.suspend(id)}><i className="fa fa-ban"></i></Button>
+                                    <Button color="warning" size="sm" title="Iniciar" hidden={!isMine || !canStart} onClick={() => this.iniciar(id)}><i className="fa fa-play"></i></Button>
+                                    <Button color="default" size="sm" title="Concluir" hidden={!isMine || !canComplete} onClick={() => this.concluir(id)}><i className="fa fa-stop"></i></Button>
                                   </td>
                                   <td>{id}</td>
                                   <td>{advert.title}</td>
