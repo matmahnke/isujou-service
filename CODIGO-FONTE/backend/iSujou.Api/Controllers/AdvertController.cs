@@ -34,21 +34,19 @@ namespace iSujou.Api.Controllers
         {
             try
             {
-                return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name).Select(advert => new AdvertViewModel(advert)));
+                return Ok((await _repository.GetPortfolioAsync()).Select(advert => new AdvertViewModel(advert)));
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
         }
-            return Ok((await _repository.GetPortfolioAsync()));
-        }
 
         [HttpGet("authenticated")]
         [Authorize("Bearer")]
         public async Task<IActionResult> GetAdvertsByAuthenticatedUser()
         {
-            return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name));
+            return Ok((await _repository.GetPortfolioAsync()).Where(x => x.Creator.UserName == User.Identity.Name).Select(advert => new AdvertViewModel(advert)));
         }
 
         [HttpGet()]
