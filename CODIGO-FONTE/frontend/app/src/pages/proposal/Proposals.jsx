@@ -72,9 +72,9 @@ export default class Proposals extends React.Component {
                               return (
                                 <tr key={id}>
                                   <td>
-                                    <Button color="success" size="sm" title="Aprovar" hidden={isMine} disabled={canApprove}><i className="fa fa-check"></i></Button>
-                                    <Button color="danger" size="sm" title="Recusar" hidden={isMine} disabled={canRefuse}><i className="fa fa-times"></i></Button>
-                                    <Button color="danger" size="sm" title="Suspender" hidden={!isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
+                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine} disabled={canApprove}><i className="fa fa-check"></i></Button>
+                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={canRefuse}><i className="fa fa-times"></i></Button>
+                                    <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={canSuspend}><i className="fa fa-ban"></i></Button>
                                   </td>
                                   <td>{advert.title}</td>
                                   <td>{advert.date}</td>
