@@ -21,7 +21,7 @@ export default class Adverts extends React.Component {
   }
 
   getAdverts = () =>
-    api.get('/advert')
+    api.get('/advert/authenticated')
 
   inativar(id) {
 
@@ -67,6 +67,7 @@ export default class Adverts extends React.Component {
                           <thead>
                             <tr>
                               <th>Ações</th>
+                              <th>#</th>
                               <th>Imóvel</th>
                               <th>Data</th>
                               <th>Ativo</th>
@@ -84,6 +85,7 @@ export default class Adverts extends React.Component {
                                     ><i className="fa fa-pencil"></i></Button>
                                     <Button color="danger" size="sm" title="Inativar" onClick={() => this.inativar(id)} hidden={!active}><i className="fa fa-times"></i></Button>
                                   </td>
+                                  <td>{id}</td>
                                   <td>{title}</td>
                                   <td>{date}</td>
                                   <td>

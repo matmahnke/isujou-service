@@ -97,6 +97,7 @@ export default class Proposals extends React.Component {
                           <thead>
                             <tr>
                               <th>Ações</th>
+                              <th>#</th>
                               <th>Imóvel</th>
                               <th>Data</th>
                               <th>Situação</th>
@@ -112,6 +113,7 @@ export default class Proposals extends React.Component {
                                     <Button color="danger" size="sm" title="Recusar" hidden={!isMine} disabled={!canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
                                     <Button color="danger" size="sm" title="Suspender" hidden={isMine} disabled={!canSuspend}><i className="fa fa-ban"></i></Button>
                                   </td>
+                                  <td>{id}</td>
                                   <td>{advert.title}</td>
                                   <td>{advert.date}</td>
                                   <td>{Resources.GetProposalStatus()[status - 1]?.description}</td>

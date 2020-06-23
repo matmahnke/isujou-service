@@ -60,7 +60,7 @@ namespace iSujou.Api.Controllers
             {
                 List<object> result = new List<object>();
                 var username = User?.Identity?.Name;
-                var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username);
+                var proposals = (await _repository.GetProposals()).Where(x => x.Candidate.UserName == username || x.Advert.Creator.UserName == username).OrderByDescending(proposal => proposal.Id);
                 var userId = (await _userManager.FindByNameAsync(username)).Id;
 
                 foreach (var proposal in proposals)
