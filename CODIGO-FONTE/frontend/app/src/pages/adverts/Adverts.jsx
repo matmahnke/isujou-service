@@ -74,7 +74,8 @@ export default class Adverts extends React.Component {
                           </thead>
                           <tbody>
                             {data.data.map((adverd, index) => {
-                              const { id, property, date, active } = adverd
+                              const { id, title, date, active } = adverd
+                              console.log(data)
                               return (
                                 <tr key={id}>
                                   <td>
@@ -83,8 +84,8 @@ export default class Adverts extends React.Component {
                                     ><i className="fa fa-pencil"></i></Button>
                                     <Button color="danger" size="sm" title="Excluir" onClick={() => this.excluir(id)}><i className="fa fa-minus"></i></Button>
                                   </td>
-                                  <td>{property.title}</td>
-                                  <td>{Utils.formatarData(new Date(date))}</td>
+                                  <td>{title}</td>
+                                  <td>{date}</td>
                                   <td>
                                     <div className="custom-control custom-checkbox">
                                       <input

@@ -49,7 +49,7 @@ export default class Portfolio extends React.Component {
         if (data) {
           for (var i = 0; i < data.length; i++) {
             const current = data[i]
-            adverts.push({ id: current.id, title: current.property.title, date: new Date(current.date), location: current.property.city + ', ' + Resources.GetBrazilianStates()[current.property.state - 1].description, photoUrl: '' })
+            adverts.push({ id: current.id, title: current.title, date: current.date, location: current.city + ', ' + Resources.GetBrazilianStates()[current.state - 1].description, photoUrl: '' })
           }
         }
       })
@@ -137,7 +137,7 @@ export default class Portfolio extends React.Component {
                         <CardHeader>{advert.title}</CardHeader>
                         <CardBody>
                           <p>
-                            {Utils.formatarData(advert.date)}, em {advert.location}
+                            {advert.date}, em {advert.location}
                           </p>
                           <Button
                             color="primary"
