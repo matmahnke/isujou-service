@@ -127,8 +127,8 @@ export default class Profile extends Component {
                         <span className="description">{'Anúncio' + (this.state.amountAdverts !== 1 ? 's' : '')}</span>
                       </div>
                       <div>
-                        <span className="heading">{this.state.achievements.length}</span>
-                        <span className="description">{'Conquista' + (this.state.achievements.length !== 1 ? 's' : '')}</span>
+                        <span className="heading">{this.state.achievements?.length ?? 0}</span>
+                        <span className="description">{'Conquista' + (this.state.achievements?.length !== 1 ? 's' : '')}</span>
                       </div>
                       <div>
                         <span className="heading">{this.state.amountAssessments}</span>
@@ -143,14 +143,14 @@ export default class Profile extends Component {
                       </p>
                     </Col>
                   </Row>
-                  <Row className="justify-content-center" hidden={this.state.achievements?.length === 0}>
+                  <Row className="justify-content-center" hidden={this.state.achievements?.length ?? 0 === 0}>
                     <Col lg="9" className="border-top py-5">
                       <h4>
                         Conquistas
                         </h4>
                       <Table responsive>
                         <tbody>
-                          {this.state.achievements.map(achievement =>
+                          {this.state.achievements?.map(achievement =>
                             <tr>
                               <td className="table-row"><img width={50} alt={Achievements.GetAll()[achievement.id - 1]?.description} src={Achievements.GetAll()[achievement.id - 1]?.icon} /></td>
                               <td className="table-row">{Achievements.GetAll()[achievement.id - 1]?.description}</td>
