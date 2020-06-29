@@ -10,7 +10,8 @@ const Logout = () => {
          console.log(ex)
        })
        .finally(() => {
-         localStorage.removeItem('Authorization');
+        localStorage.removeItem('Authorization');
+        localStorage.removeItem('currentUserId');
          window.location.href = '/home'
        })
   }

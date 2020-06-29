@@ -75,6 +75,7 @@ export default class Settings extends Component {
 
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section section-shaped section-lg">

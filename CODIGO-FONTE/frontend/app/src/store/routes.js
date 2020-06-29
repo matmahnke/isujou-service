@@ -11,6 +11,7 @@ import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
 import Settings from './../pages/settings/Settings'
 import Rules from '../pages/rules/Rules'
+import FeedBack from './../pages/feedback/FeedBack'
 
 // Anúncios
 import Portfolio from './../pages/adverts/portfolio/Portfolio'
@@ -59,6 +60,7 @@ const Routes = () => (
             <PrivateRoute exact path='/property/edit/:id' component={props => <Property type="edit" {...props} />} />
             <PrivateRoute exact path='/proposal/new/:id' component={props => <Proposal {...props} />} />
             <PrivateRoute exact path='/proposals/mine' component={Proposals} />
+            <PrivateRoute exact path='/feedback/:id' component={props => <FeedBack {...props} />} />
             <Route component={NotFound} />
         </Switch>
     </BrowserRouter>
