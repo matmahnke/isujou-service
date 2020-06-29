@@ -160,6 +160,7 @@ namespace iSujou.Api.Controllers
                 created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                 expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                 accessToken = token,
+                currentUserId = (_userManager.FindByNameAsync(username)).Result?.UserInfoId,
                 message = "OK"
             });
         }
