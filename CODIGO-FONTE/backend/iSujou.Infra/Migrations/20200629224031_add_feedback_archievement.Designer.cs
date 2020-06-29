@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iSujou.Infra;
 
 namespace iSujou.Infra.Migrations
 {
     [DbContext(typeof(iSujouContext))]
-    partial class iSujouContextModelSnapshot : ModelSnapshot
+    [Migration("20200629224031_add_feedback_archievement")]
+    partial class add_feedback_archievement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +253,9 @@ namespace iSujou.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Archievement");
                 });
@@ -627,8 +631,8 @@ namespace iSujou.Infra.Migrations
             modelBuilder.Entity("iSujou.Domain.Entities.Archievement", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithOne()
+                        .HasForeignKey("iSujou.Domain.Entities.Archievement", "UserId");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>

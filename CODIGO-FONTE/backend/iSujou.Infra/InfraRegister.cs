@@ -15,6 +15,8 @@ namespace iSujou.Infra
             service.AddScoped<IPropertyRepository, PropertyRepository>();
             service.AddScoped<IProposalRepository, ProposalRepository>();
             service.AddScoped<IUserInfoRepository, UserInfoRepository>();
+            service.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            service.AddScoped<IArchievementRepository, ArchievementRepository>();
             return service;
         }
     }

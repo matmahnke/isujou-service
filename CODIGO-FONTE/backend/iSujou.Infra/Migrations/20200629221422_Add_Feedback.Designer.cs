@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iSujou.Infra;
 
 namespace iSujou.Infra.Migrations
 {
     [DbContext(typeof(iSujouContext))]
-    partial class iSujouContextModelSnapshot : ModelSnapshot
+    [Migration("20200629221422_Add_Feedback")]
+    partial class Add_Feedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,29 +235,6 @@ namespace iSujou.Infra.Migrations
                     b.ToTable("AdvertTask");
                 });
 
-            modelBuilder.Entity("iSujou.Domain.Entities.Archievement", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Archievement");
-                });
-
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>
                 {
                     b.Property<long>("Id")
@@ -320,31 +299,6 @@ namespace iSujou.Infra.Migrations
                         .HasFilter("[ProposalId] IS NOT NULL");
 
                     b.ToTable("Contract");
-                });
-
-            modelBuilder.Entity("iSujou.Domain.Entities.Feedback", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.ToTable("Feedback");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.Property", b =>
@@ -624,13 +578,6 @@ namespace iSujou.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("iSujou.Domain.Entities.Archievement", b =>
-                {
-                    b.HasOne("iSujou.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
@@ -653,17 +600,6 @@ namespace iSujou.Infra.Migrations
                         .WithOne()
                         .HasForeignKey("iSujou.Domain.Entities.Contract", "ProposalId")
                         .OnDelete(DeleteBehavior.SetNull);
-                });
-
-            modelBuilder.Entity("iSujou.Domain.Entities.Feedback", b =>
-                {
-                    b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
-
-                    b.HasOne("iSujou.Domain.Entities.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.Property", b =>
