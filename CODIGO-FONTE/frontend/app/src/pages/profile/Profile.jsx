@@ -11,7 +11,7 @@ import {
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
-import Resources from '../../store/Resources'
+import Achievements from '../../store/Achievements'
 import Loading from '../../components/Loading/Loading'
 
 import './Profile.css';
@@ -146,12 +146,13 @@ export default class Profile extends Component {
                       <h4>
                         Conquistas
                         </h4>
-                      <Table responsive borderless striped>
+                      <Table responsive>
                         <tbody>
                           {this.state.achievements.map(achievement =>
                             <tr>
-                              <td>{achievement.description}</td>
-                              <td className="text-right">{achievement.points} <i className="fa fa-star text-yellow"></i></td>
+                              <td className="table-row"><img width={50} src={Achievements.GetAll()[achievement.id - 1]?.icon}/></td>
+                              <td className="table-row">{Achievements.GetAll()[achievement.id - 1]?.description}</td>
+                              <td className="table-row text-right">{achievement.points} <i className="fa fa-star text-yellow"></i></td>
                             </tr>)}
                         </tbody>
                       </Table>
