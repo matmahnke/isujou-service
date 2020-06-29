@@ -1,4 +1,5 @@
-﻿using iSujou.Api.Application.Dto;
+﻿using iSujou.Api.Application.Commands;
+using iSujou.Api.Application.Dto;
 using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
