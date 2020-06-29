@@ -19,6 +19,7 @@ namespace iSujou.Api.Application.Dto
         public int AmountAdverts { get; set; }
         public int AmountArchevements { get; set; }
         public int AmountAssessments { get; set; }
-        public object[] achievements { get; set; }
+        public Archievements Achievement { get; set; }
+        public int Points { get; set; }
     }
 }

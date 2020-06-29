@@ -42,7 +42,7 @@ namespace iSujou.Api.Controllers
 
                 return Ok(new ProfileDto
                 {
-                    achievements = new object[0],
+                    Achievement = userInfo.Archievement,
                     AmountAdverts = userInfo.User.Adverts.Count,
                     AmountArchevements = 0,
                     AmountAssessments = 0,
@@ -54,6 +54,29 @@ namespace iSujou.Api.Controllers
                     LastName = userInfo.LastName,
                     Name = userInfo.Name
                 });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPut()]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(long id, [FromBody] ProfileCommand command)
+        {
+            try
+            {
+                var userInfo = await _userInfo.GetUserProfileById(id);
+
+                userInfo.BirthDate = command.BirthDate;
+                userInfo.Cpf = command.Cpf;
+                userInfo.Gender = command.Gender;
+                userInfo.LastName = command.LastName;
+                userInfo.Name = command.Name;
+
+                await _unitOfWork.Commit();
+                return Ok();
             }
             catch (Exception ex)
             {
