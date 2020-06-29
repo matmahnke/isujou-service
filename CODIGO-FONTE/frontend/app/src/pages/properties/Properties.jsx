@@ -10,37 +10,52 @@ import {
 import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
+import Error from '../../components/Error/Error'
+import Loading from '../../components/Loading/Loading'
 import api from '../../services/api'
 import Async from 'react-async'
 import Resources from '../../store/Resources'
 
 export default class Properties extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loading: false,
+      error: null
+    }
+  }
+
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
   }
 
   getProperties = () =>
-  api.get('/property')
+    api.get('/property')
+      .catch((error) => {
+        this.setState({ error })
+      })
 
   excluir(id) {
+    this.setState({ loading: true })
     api.delete('/property/' + id)
       .then(resp => {
-        const { data } = resp;
-        if (data) {
-          console.log('excluído')
-        }
-
         window.location.reload();
       })
-      .catch((ex) => {
-        console.log(ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.')
+      .catch((error) => {
+        this.setState({ error })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
       })
   }
 
   render() {
     return (
       <>
+        <Error error={this.state.error} />
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">
@@ -69,9 +84,9 @@ export default class Properties extends React.Component {
                   {({ data, err, isLoading }) => {
                     if (isLoading) return "Carregando..."
                     if (err) return useToasts().addToast(err.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.', {
-                                                          appearance: 'error',
-                                                          autoDismiss: true,
-                                                        })
+                      appearance: 'error',
+                      autoDismiss: true,
+                    })
                     if (data)
                       return (
                         <Table responsive>

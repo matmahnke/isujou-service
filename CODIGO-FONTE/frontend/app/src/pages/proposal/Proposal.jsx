@@ -15,8 +15,9 @@ import {
 
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
-import api from '../../services/api'
+import Error from '../../components/Error/Error'
 import Loading from '../../components/Loading/Loading'
+import api from '../../services/api'
 
 import CurrencyInput from '../../components/Inputs/CurrencyInput'
 
@@ -27,15 +28,16 @@ export default class Proposal extends React.Component {
     this.state = {
       advertId: 0,
       amount: null,
-      loading: false
+      loading: false,
+      error: null
     }
 
     this.onChange = this.onChange.bind(this)
   }
 
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
     if (this.props.match.params?.id)
       this.setState({ advertId: this.props.match.params.id })
   }
@@ -44,15 +46,15 @@ export default class Proposal extends React.Component {
 
   save() {
     this.setState({ loading: true })
-    api.post('/proposal', { 
+    api.post('/proposal', {
       advertId: this.state.advertId,
       value: this.state.amount.toString().replace("R$", "").replace(",", "")
     })
       .then(resp => {
         window.location.href = '/proposals/mine'
       })
-      .catch((ex) => {
-        console.log(ex)
+      .catch((error) => {
+        this.setState({ error })
       })
       .finally(() => {
         this.setState({ loading: false })
@@ -64,6 +66,7 @@ export default class Proposal extends React.Component {
 
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
@@ -91,7 +94,7 @@ export default class Proposal extends React.Component {
                       <FormGroup>
                         <Label for="advertProperty">Quanto deseja oferecer?</Label>
                         <InputGroup>
-                          <CurrencyInput placeholder="R$0,00" type="text" value={amount} onChange={this.onChange} name="amount"/>
+                          <CurrencyInput placeholder="R$0,00" type="text" value={amount} onChange={this.onChange} name="amount" />
                         </InputGroup>
                       </FormGroup>
                     </Col>

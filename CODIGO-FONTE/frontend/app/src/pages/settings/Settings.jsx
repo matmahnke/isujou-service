@@ -23,7 +23,7 @@ import classnames from 'classnames'
 
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
-
+import Error from '../../components/Error/Error'
 import Loading from '../../components/Loading/Loading'
 import api from '../../services/api'
 import Resources from '../../store/Resources'
@@ -44,7 +44,8 @@ export default class Settings extends Component {
       feedbacks: [],
       achievements: [],
       photo: null,
-      loading: false
+      loading: false,
+      error: null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -52,8 +53,32 @@ export default class Settings extends Component {
 
   componentDidMount() {
     this.setState({ loading: true })
-    // faz o get pelo id do user logado
-    this.setState({ loading: false })
+    let id = localStorage.getItem('currentUserId');
+
+    api.get('/profile/' + id)
+      .then(resp => {
+        const { data } = resp;
+
+        var model = {
+          userId: id,
+          name: data.name,
+          lastName: data.lastName,
+          description: data.description,
+          birthDate: data.birthDate.substring(0, 10),
+          cpf: data.cpf,
+          gender: data.gender,
+          feedbacks: [],
+          achievements: data.achievements
+        }
+
+        this.setState(model)
+      })
+      .catch((error) => {
+        this.setState({ error })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
   }
 
   setActiveTab(activeTab) {
@@ -75,6 +100,7 @@ export default class Settings extends Component {
 
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
@@ -141,7 +167,7 @@ export default class Settings extends Component {
                           </Col>
                           <Col lg="6">
                             <FormGroup>
-                              <Label for="lastName">Sobrenome <i className="fa fa-info-circle" title="Esta informação não é visível aos demais usuários."/></Label>
+                              <Label for="lastName">Sobrenome <i className="fa fa-info-circle" title="Esta informação não é visível aos demais usuários." /></Label>
                               <InputGroup>
                                 <Input
                                   type="text"

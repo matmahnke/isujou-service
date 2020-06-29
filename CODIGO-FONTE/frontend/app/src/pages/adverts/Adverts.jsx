@@ -11,7 +11,7 @@ import { useToasts } from 'react-toast-notifications'
 import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
-import Utils from '../../store/Utils'
+import Error from '../../components/Error/Error'
 import Async from 'react-async'
 
 export default class Adverts extends React.Component {
@@ -19,7 +19,8 @@ export default class Adverts extends React.Component {
     super(props)
 
     this.state = {
-      loading: false
+      loading: false,
+      error: null
     }
   }
 
@@ -35,10 +36,9 @@ export default class Adverts extends React.Component {
     this.setState({ loading: true })
     api.post('/advert/suspend/' + id)
       .then(resp => {
-        console.log('Sucesso')
       })
-      .catch((ex) => {
-        console.log(ex)
+      .catch((error) => {
+        this.setState({ error })
       })
       .finally(() => {
         this.setState({ loading: false })
@@ -48,6 +48,7 @@ export default class Adverts extends React.Component {
   render() {
     return (
       <>
+        <Error error={this.state.error} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-minimum section-shaped my-0">

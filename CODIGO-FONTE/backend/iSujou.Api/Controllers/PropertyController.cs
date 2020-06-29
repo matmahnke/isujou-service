@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace iSujou.Api.Controllers
@@ -45,13 +44,13 @@ namespace iSujou.Api.Controllers
                 var property = await _repository.GetByIdAsync(id);
 
                 if (property == null)
-                    throw new Exception("Registro não encontrado.");
+                    return NotFound("Imóvel não encontrado.");
 
                 return Ok(property);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -70,7 +69,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -102,12 +101,12 @@ namespace iSujou.Api.Controllers
                 }
                 else
                 {
-                    throw new Exception("Registro não encontrado.");
+                    return NotFound("Imóvel não encontrado.");
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -124,7 +123,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -38,7 +38,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -52,7 +52,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -65,13 +65,13 @@ namespace iSujou.Api.Controllers
                 var advert = await _repository.GetAdvert(id);
 
                 if (advert == null)
-                    throw new Exception("Registro não encontrado.");
+                    return NotFound("Anúncio não encontrado.");
 
                 return Ok(new AdvertViewModel(advert));
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -97,10 +97,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    message = ex.Message
-                });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -127,7 +124,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -141,7 +138,7 @@ namespace iSujou.Api.Controllers
                 var advert = await _repository.GetAdvert(id);
 
                 if (advert == null)
-                    throw new Exception("Registro não encontrado.");
+                    return NotFound("Anúncio não encontrado.");
 
                 advert.Active = false;
                 advert.EditorId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
@@ -152,7 +149,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
     }

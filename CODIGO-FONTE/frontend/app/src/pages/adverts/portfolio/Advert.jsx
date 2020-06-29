@@ -16,7 +16,7 @@ import GlobalNavbar from '../../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../../components/Footers/SimpleFooter'
 import Loading from '../../../components/Loading/Loading'
 import api from '../../../services/api'
-import Utils from '../../../store/Utils'
+import Error from '../../../components/Error/Error'
 import Resources from '../../../store/Resources'
 
 import './Advert.css';
@@ -35,7 +35,8 @@ class Advert extends React.Component {
       ownerId: null,
       ownerName: '',
       ownerPhotoUrl: '',
-      loading: false
+      loading: false,
+      error: null
     }
   }
 
@@ -48,7 +49,7 @@ class Advert extends React.Component {
       let isValidId = !isNaN(id);
 
       if (!isValidId) {
-        console.log('Mostrar o erro que o id passado é inválido')
+        this.setState({ error: { response: { data: "Registro não encontrado.", status: 404 } } })
       }
       else {
         this.setState({ loading: true })
@@ -70,8 +71,8 @@ class Advert extends React.Component {
               this.setState(model)
             }
           })
-          .catch((ex) => {
-            console.log(ex)
+          .catch((error) => {
+            this.setState({ error })
           })
           .finally(() => {
             this.setState({ loading: false })
@@ -96,7 +97,8 @@ class Advert extends React.Component {
   render() {
     return (
       <>
-        <Loading hidden={!this.state.loading}/>
+        <Error error={this.state.error} />
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section-profile-cover section-shaped my-0">
@@ -175,7 +177,7 @@ class Advert extends React.Component {
                     <Button
                       color="default"
                       href={"/proposal/new/" + this.state.id}
-                      hidden={this.state.ownerId !== localStorage.getItem('currentUserId')}
+                      hidden={this.state.ownerId === Number(localStorage.getItem('currentUserId'))}
                     >
                       Fazer proposta
                     </Button>

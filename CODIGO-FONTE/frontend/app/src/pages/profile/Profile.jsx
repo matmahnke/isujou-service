@@ -13,6 +13,7 @@ import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
 import Achievements from '../../store/Achievements'
 import Loading from '../../components/Loading/Loading'
+import Error from '../../components/Error/Error'
 
 import './Profile.css';
 
@@ -28,17 +29,17 @@ export default class Profile extends Component {
       amountAssessments: 0,
       description: 'Descição',
       achievements: [],
-      loading: false
+      loading: false,
+      error: null
     }
   }
 
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
 
     this.setState({ loading: true })
 
-    // Faz a requisição
     if (this.props.match.params?.id) {
       const id = this.props.match.params.id;
 
@@ -57,8 +58,8 @@ export default class Profile extends Component {
 
           this.setState(model)
         })
-        .catch((ex) => {
-          console.log(ex)
+        .catch((error) => {
+          this.setState({ error })
         })
         .finally(() => {
           this.setState({ loading: false })
@@ -71,6 +72,7 @@ export default class Profile extends Component {
   render() {
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main className="profile-page" ref="main">
@@ -108,7 +110,7 @@ export default class Profile extends Component {
                 <Col md={12} className="px-4">
                   <Row className="justify-content-center mb-4 profile-image">
                     <img
-                      alt="..."
+                      alt="Foto do usuário."
                       className="rounded-circle shadow shadow-lg--hover"
                       src={this.state.photoUrl ?? require("../../assets/img/icons/no-image.png")}
                     />
@@ -150,7 +152,7 @@ export default class Profile extends Component {
                         <tbody>
                           {this.state.achievements.map(achievement =>
                             <tr>
-                              <td className="table-row"><img width={50} src={Achievements.GetAll()[achievement.id - 1]?.icon}/></td>
+                              <td className="table-row"><img width={50} alt={Achievements.GetAll()[achievement.id - 1]?.description} src={Achievements.GetAll()[achievement.id - 1]?.icon} /></td>
                               <td className="table-row">{Achievements.GetAll()[achievement.id - 1]?.description}</td>
                               <td className="table-row text-right">{achievement.points} <i className="fa fa-star text-yellow"></i></td>
                             </tr>)}

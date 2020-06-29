@@ -4,7 +4,7 @@ import GlobalNavbar from '../../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../../components/Footers/SimpleFooter'
 import api from '../../../services/api'
 import Resources from '../../../store/Resources'
-import Utils from '../../../store/Utils'
+import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
 
 import {
@@ -28,7 +28,8 @@ export default class Portfolio extends React.Component {
 
     this.state = {
       adverts: [],
-      loading: false
+      loading: false,
+      error: null
     }
   }
 
@@ -49,12 +50,17 @@ export default class Portfolio extends React.Component {
         if (data) {
           for (var i = 0; i < data.length; i++) {
             const current = data[i]
-            adverts.push({ id: current.id, title: current.title, date: current.formatedDate, location: current.city + ', ' + Resources.GetBrazilianStates()[current.state - 1].description, photoUrl: '' })
+            adverts.push({
+              id: current.id,
+              title: current.title,
+              date: current.formatedDate,
+              location: current.city + ', ' + Resources.GetBrazilianStates()[current.state - 1].description, photoUrl: ''
+            })
           }
         }
       })
-      .catch((ex) => {
-        this.setState({ loading: false })
+      .catch((error) => {
+        this.setState({ error })
       })
       .finally(() => {
         this.setState({ adverts, loading: false })
@@ -64,7 +70,8 @@ export default class Portfolio extends React.Component {
   render() {
     return (
       <>
-      <Loading hidden={!this.state.loading}/>
+        <Error error={this.state.error} />
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <div className="position-relative">

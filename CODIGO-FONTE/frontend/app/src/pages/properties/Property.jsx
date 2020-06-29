@@ -18,6 +18,7 @@ import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
 import Loading from '../../components/Loading/Loading'
 import api from '../../services/api'
+import Error from '../../components/Error/Error'
 import Resources from '../../store/Resources'
 import ErrorAlert from '../../components/Alerts/ErrorAlert'
 
@@ -38,13 +39,13 @@ export default class Property extends React.Component {
       number: '',
       cep: '',
       complement: '',
-      mostrarForm: true,
-      loading: false
+      loading: false,
+      error: null
     }
 
     this.onChange = this.onChange.bind(this)
   }
-  
+
   onChange = e => {
     let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
 
@@ -52,8 +53,8 @@ export default class Property extends React.Component {
   }
 
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
 
     if (this.isCreating()) {
       this.setState({ active: true });
@@ -67,7 +68,7 @@ export default class Property extends React.Component {
 
   trazerDados(id) {
     if (isNaN(id))
-      this.setState({ validationErrors: ["O parametro informado não foi encontrado (" + id + ")"], mostrarForm: false })
+      this.setState({ error: { response: { data: "Registro não encontrado.", status: 404 } } })
     else {
       this.setState({ loading: true })
       api.get('/property/' + id)
@@ -77,8 +78,8 @@ export default class Property extends React.Component {
             this.setState(data)
           }
         })
-        .catch((ex) => {
-          this.setState({ validationErrors: [ex.response?.data.message ?? 'Não foi possível detectar o erro, entre em contato com o suporte.'], mostrarForm: false })
+        .catch((error) => {
+          this.setState({ error })
         })
         .finally(() => {
           this.setState({ loading: false })
@@ -144,6 +145,7 @@ export default class Property extends React.Component {
 
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
@@ -166,7 +168,7 @@ export default class Property extends React.Component {
                 toggle={() => this.setState({ validationErrors: [] })}
                 message={this.montarListaErros()}
               />
-              <Card className="shadow border-0" hidden={!this.state.mostrarForm}>
+              <Card className="shadow border-0">
                 <CardHeader>
                   <h2>{this.obterTitulo()}</h2>
                 </CardHeader>
