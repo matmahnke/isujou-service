@@ -16,7 +16,7 @@ namespace iSujou.Api.ViewModel
             State = advert.Property.State;
             Items = advert.Items;
             Photos = new string[] { };
-            OwnerId = advert.Creator.UserInfo.Id;
+            OwnerId = advert.Creator.UserInfoId.GetValueOrDefault();
             OwnerName = advert.Creator.UserInfo.Name;
             OwnerPhotoUrl = "";
             Active = advert.Active;

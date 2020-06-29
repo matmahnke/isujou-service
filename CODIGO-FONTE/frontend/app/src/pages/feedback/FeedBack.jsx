@@ -5,7 +5,6 @@ import {
   Container,
   Col,
   Row,
-  FormGroup,
   InputGroup,
   Input,
   Card,
@@ -17,6 +16,7 @@ import GlobalNavbar from '../../components/Navbars/GlobalNavbar'
 import SimpleFooter from '../../components/Footers/SimpleFooter'
 import Achievements from '../../store/Achievements'
 import Loading from '../../components/Loading/Loading'
+import Error from '../../components/Error/Error'
 import api from '../../services/api'
 import $ from 'jquery'
 
@@ -31,7 +31,8 @@ export default class FeedBack extends React.Component {
       userName: '',
       description: '',
       achievement: null,
-      loading: false
+      loading: false,
+      error: null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -47,8 +48,8 @@ export default class FeedBack extends React.Component {
 
           this.setState({ userName: data.name })
         })
-        .catch((ex) => {
-          console.log(ex)
+        .catch((error) => {
+          this.setState({ error })
         })
         .finally(() => {
           this.setState({ loading: false })
@@ -83,6 +84,7 @@ export default class FeedBack extends React.Component {
 
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
@@ -132,7 +134,7 @@ export default class FeedBack extends React.Component {
                     </Row>
                     <Row>
                       <ul className="feedbackAchievements">
-                        {Achievements.GetAll().map(achievement => <li className={"achievement rounded-circle"} key={achievement.id} data-id={achievement.id} onClick={() => this.setAchievement(achievement.id)}><img title={achievement.description} src={achievement.icon} /></li>)}
+                        {Achievements.GetAll().map(achievement => <li className={"achievement rounded-circle"} key={achievement.id} data-id={achievement.id} onClick={() => this.setAchievement(achievement.id)}><img title={achievement.description} alt={achievement.description} src={achievement.icon} /></li>)}
                       </ul>
                     </Row>
                     <Row hidden={!this.state.achievement}>

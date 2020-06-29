@@ -13,7 +13,7 @@ import SimpleFooter from '../../components/Footers/SimpleFooter'
 import api from '../../services/api'
 import Async from 'react-async'
 import Resources from '../../store/Resources'
-import Utils from '../../store/Utils'
+import Error from '../../components/Error/Error'
 import Loading from '../../components/Loading/Loading'
 
 export default class Proposals extends React.Component {
@@ -21,7 +21,8 @@ export default class Proposals extends React.Component {
     super(props)
 
     this.state = {
-      loading: false
+      loading: false,
+      error: null
     }
   }
 
@@ -32,80 +33,33 @@ export default class Proposals extends React.Component {
 
   getProposals = () =>
     api.get('/proposal')
-
-  approve(id) {
-    this.setState({ loading: true })
-    api.post('/proposal/approve/' + id)
-      .then(resp => {
-        console.log('Sucesso')
+      .catch((error) => {
+        this.setState({ error })
       })
-      .catch((ex) => {
-        console.log(ex)
+
+  approve = id => this.changeStatus('approve', id)
+  refuse = id => this.changeStatus('refuse', id)
+  suspend = id => this.changeStatus('suspend', id)
+  start = id => this.changeStatus('start', id)
+  concluir = id => this.changeStatus('complete', id)
+
+  changeStatus(status, id) {
+    this.setState({ loading: true })
+    api.post('/proposal/' + status + '/' + id)
+      .catch((error) => {
+        this.setState({ error })
       })
       .finally(() => {
         this.setState({ loading: false })
       })
-  }
 
-  refuse(id) {
-    this.setState({ loading: true })
-    api.post('/proposal/refuse/' + id)
-      .then(resp => {
-        console.log('Sucesso')
-      })
-      .catch((ex) => {
-        console.log(ex)
-      })
-      .finally(() => {
-        this.setState({ loading: false })
-      })
-  }
-
-  suspend(id) {
-    this.setState({ loading: true })
-    api.post('/proposal/suspend/' + id)
-      .then(resp => {
-        console.log('Sucesso')
-      })
-      .catch((ex) => {
-        console.log(ex)
-      })
-      .finally(() => {
-        this.setState({ loading: false })
-      })
-  }
-
-  iniciar(id) {
-    this.setState({ loading: true })
-    api.post('/proposal/start/' + id)
-      .then(resp => {
-        console.log('Sucesso')
-      })
-      .catch((ex) => {
-        console.log(ex)
-      })
-      .finally(() => {
-        this.setState({ loading: false })
-      })
-  }
-
-  concluir(id) {
-    this.setState({ loading: true })
-    api.post('/proposal/complete/' + id)
-      .then(resp => {
-        console.log('Sucesso')
-      })
-      .catch((ex) => {
-        console.log(ex)
-      })
-      .finally(() => {
-        this.setState({ loading: false })
-      })
+      window.location.reload();
   }
 
   render() {
     return (
       <>
+        <Error error={this.state.error} />
         <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
@@ -154,10 +108,10 @@ export default class Proposals extends React.Component {
                               return (
                                 <tr key={id}>
                                   <td>
-                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine || !canApprove}  onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
+                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine || !canApprove} onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
                                     <Button color="danger" size="sm" title="Recusar" hidden={!isMine || !canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
                                     <Button color="danger" size="sm" title="Suspender" hidden={isMine || !canSuspend} onClick={() => this.suspend(id)}><i className="fa fa-ban"></i></Button>
-                                    <Button color="warning" size="sm" title="Iniciar" hidden={!isMine || !canStart} onClick={() => this.iniciar(id)}><i className="fa fa-play"></i></Button>
+                                    <Button color="warning" size="sm" title="Iniciar" hidden={!isMine || !canStart} onClick={() => this.start(id)}><i className="fa fa-play"></i></Button>
                                     <Button color="default" size="sm" title="Concluir" hidden={!isMine || !canComplete} onClick={() => this.concluir(id)}><i className="fa fa-stop"></i></Button>
                                     <Button color="info" size="sm" title="Avaliar" hidden={!canWriteFeedBack} href={"/feedback/" + feedbackProfileId}><i className="fa fa-pencil"></i></Button>
                                   </td>

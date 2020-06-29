@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using iSujou.Api.Application.Commands;
+﻿using iSujou.Api.Application.Commands;
 using iSujou.Api.Application.Dto;
 using iSujou.CrossCutting.Data.Interfaces;
-using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace iSujou.Api.Controllers
 {
@@ -38,7 +33,7 @@ namespace iSujou.Api.Controllers
                 var userInfo = await _userInfo.GetUserProfileById(id);
 
                 if (userInfo == null)
-                    throw new Exception("Registro não encontrado.");
+                   return NotFound("Usuário não encontrado.");
 
                 return Ok(new ProfileDto
                 {
@@ -57,7 +52,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
