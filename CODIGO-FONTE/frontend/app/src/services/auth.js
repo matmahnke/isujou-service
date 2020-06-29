@@ -10,7 +10,7 @@ export const isAuthenticated = () => {
       if (data === false && token !== null) window.location.href = '/logout'
     })
     .catch((ex) => {
-      console.log(ex)
+      window.location.href = '/logout'
     })
 
     return token !== null
