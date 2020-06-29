@@ -124,6 +124,10 @@ namespace iSujou.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("is-authenticated")]
+        public IActionResult IsAuthenticated()
+            => Ok(User.Identity.Name != null);
+
         private IActionResult CreateToken(string username)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
