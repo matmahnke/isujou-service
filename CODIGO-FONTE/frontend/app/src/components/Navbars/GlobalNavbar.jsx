@@ -114,7 +114,7 @@ class GlobalNavbar extends React.Component {
                       Minha Conta
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem href="/profile/1">
+                      <DropdownItem href={"/profile/" + localStorage.getItem('currentUserId')}>
                         Meu perfil
                       </DropdownItem>
                       <DropdownItem href="/settings">

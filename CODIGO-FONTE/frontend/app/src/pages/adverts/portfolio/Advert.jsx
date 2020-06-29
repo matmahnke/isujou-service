@@ -175,6 +175,7 @@ class Advert extends React.Component {
                     <Button
                       color="default"
                       href={"/proposal/new/" + this.state.id}
+                      hidden={this.state.ownerId !== localStorage.getItem('currentUserId')}
                     >
                       Fazer proposta
                     </Button>

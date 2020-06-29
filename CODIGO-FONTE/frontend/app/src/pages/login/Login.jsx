@@ -40,6 +40,8 @@ const Login = (props) => {
             autoDismiss: true,
           })
 
+          localStorage.setItem('currentUserId', data.currentUserId)
+
           window.location.href = props?.history?.location?.state?.from?.pathname ?? '/'
         }
       })

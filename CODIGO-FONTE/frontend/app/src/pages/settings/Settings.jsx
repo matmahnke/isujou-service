@@ -75,6 +75,7 @@ export default class Settings extends Component {
 
     return (
       <>
+        <Loading hidden={!this.state.loading} />
         <GlobalNavbar />
         <main ref="main">
           <section className="section section-shaped section-lg">
@@ -125,7 +126,7 @@ export default class Settings extends Component {
                         <Row>
                           <Col lg="6">
                             <FormGroup>
-                              <Label for="name">Nome</Label>
+                              <Label for="name">Nome <span className="text-danger">*</span></Label>
                               <InputGroup>
                                 <Input
                                   type="text"
@@ -140,7 +141,7 @@ export default class Settings extends Component {
                           </Col>
                           <Col lg="6">
                             <FormGroup>
-                              <Label for="lastName">Sobrenome</Label>
+                              <Label for="lastName">Sobrenome <i className="fa fa-info-circle" title="Esta informação não é visível aos demais usuários."/></Label>
                               <InputGroup>
                                 <Input
                                   type="text"
@@ -157,7 +158,7 @@ export default class Settings extends Component {
                         <Row>
                           <Col lg="12">
                             <FormGroup>
-                              <Label for="description">Descrição</Label>
+                              <Label for="description">Descrição <span className="text-danger">*</span></Label>
                               <InputGroup>
                                 <Input
                                   type="textarea"
@@ -226,7 +227,7 @@ export default class Settings extends Component {
                         <Row>
                           <Col lg="6">
                             <FormGroup>
-                              <Label for="gender">Gênero</Label>
+                              <Label for="gender">Gênero <span className="text-danger">*</span></Label>
                               <InputGroup>
                                 <Input
                                   type="select"
