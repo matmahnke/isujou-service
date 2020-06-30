@@ -45,6 +45,7 @@ namespace iSujou.Api.Controllers
                     CreatorId = user.Id,
                     ReceiverId = receiver.Id,
                     Description = command.Description,
+                    CreationDate = DateTime.Now
                 });
 
                 if (command.Achievement != null)
