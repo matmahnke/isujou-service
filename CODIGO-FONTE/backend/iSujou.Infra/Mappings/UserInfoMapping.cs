@@ -22,6 +22,9 @@ namespace iSujou.Infra.Mappings
 
             builder.Property(x => x.Gender)
                 .IsRequired();
+
+            builder.HasOne(x => x.User)
+                .WithOne(x => x.UserInfo);
         }
     }
 }

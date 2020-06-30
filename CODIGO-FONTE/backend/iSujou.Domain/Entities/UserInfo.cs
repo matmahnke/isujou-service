@@ -10,7 +10,11 @@ namespace iSujou.Domain.Entities
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Cpf { get; set; }
+        public string Description { get; set; }
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
+        public User User { get; set; }
+        public int Points { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }

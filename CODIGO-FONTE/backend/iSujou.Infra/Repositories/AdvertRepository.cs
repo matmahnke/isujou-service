@@ -9,7 +9,7 @@ namespace iSujou.Infra.Repositories
 {
     public class AdvertRepository : Repository<Advert>, IAdvertRepository
     {
-        public AdvertRepository(DbContext context) 
+        public AdvertRepository(DbContext context)
             : base(context)
         {
         }
@@ -19,21 +19,14 @@ namespace iSujou.Infra.Repositories
             return await _set
                 .Include(x => x.Items)
                 .Include(advert => advert.Property)
+                .Include(advert => advert.Creator).ThenInclude(creator => creator.UserInfo)
+                .Include(advert => advert.Editor).ThenInclude(creator => creator.UserInfo)
                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public Advert GetByIdWithDetails(long id)
-        {
-            return _set.Where(advert => advert.Id == id)
-                       .Include(advert => advert.Property)
-                       .Include(advert => advert.Creator).ThenInclude(creator => creator.UserInfo)
-                       .Include(advert => advert.Editor).ThenInclude(creator => creator.UserInfo)
-                       .FirstOrDefault();
         }
 
         public Task<List<Advert>> GetPortfolioAsync()
         {
-            return _set.Include(advert => advert.Property).ToListAsync();
+            return _set.Include(advert => advert.Property).Include(x => x.Creator).ThenInclude(x => x.UserInfo).ToListAsync();
         }
     }
 }

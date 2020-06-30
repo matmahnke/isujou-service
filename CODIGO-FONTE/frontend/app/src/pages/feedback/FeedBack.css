@@ -1,0 +1,36 @@
+.feedbackAchievements {
+    display: inline-block;
+    overflow: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    max-width: 100%;
+
+    white-space: nowrap;
+}
+
+.feedbackAchievements li {
+    background-color: #F9F9F9;
+    margin: 0 10px;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: top;
+    border: 5px solid #cccccc;
+}
+
+.feedbackAchievements li:hover {
+    background-color: #eeeeee;
+    margin: 0 10px;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+.feedbackAchievements .selected {
+    border-color: #172b4d;
+    background-color: #eeeeee;
+}
+
+.feedbackAchievements li img {
+    width: 70px;
+}

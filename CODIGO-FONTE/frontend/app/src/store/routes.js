@@ -1,15 +1,17 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import { isAuthenticated } from './../services/auth.js'
+import { isAuthenticated } from './../services/auth'
 import NotFound from './../components/NotFound/NotFound'
 
-import Auth from '../pages/auth/auth.js'
+import Auth from '../pages/auth/auth'
 import Home from './../pages/home/Home'
 import Login from './../pages/login/Login'
 import Logout from './../pages/logout/Logout'
 import Register from './../pages/register/Register'
 import Profile from './../pages/profile/Profile'
-import Rules from '../pages/rules/Rules.js'
+import Settings from './../pages/settings/Settings'
+import Rules from '../pages/rules/Rules'
+import FeedBack from './../pages/feedback/FeedBack'
 
 // Anúncios
 import Portfolio from './../pages/adverts/portfolio/Portfolio'
@@ -49,6 +51,7 @@ const Routes = () => (
             <Route exact path='/profile/:id' component={props => <Profile {...props} />} />
             <Route exact path='/adverts' component={Portfolio} />
             <Route exact path='/advert/view/:id' component={props => <PortfolioAdvert {...props} />} />
+            <PrivateRoute exact path='/settings' component={Settings} />
             <PrivateRoute exact path='/adverts/mine' component={Adverts} />
             <PrivateRoute exact path='/advert/new' component={() => <Advert type="new" />} />
             <PrivateRoute exact path='/advert/edit/:id' component={props => <Advert type="edit" {...props} />} />
@@ -57,6 +60,7 @@ const Routes = () => (
             <PrivateRoute exact path='/property/edit/:id' component={props => <Property type="edit" {...props} />} />
             <PrivateRoute exact path='/proposal/new/:id' component={props => <Proposal {...props} />} />
             <PrivateRoute exact path='/proposals/mine' component={Proposals} />
+            <PrivateRoute exact path='/feedback/:proposal/:id' component={props => <FeedBack {...props} />} />
             <Route component={NotFound} />
         </Switch>
     </BrowserRouter>

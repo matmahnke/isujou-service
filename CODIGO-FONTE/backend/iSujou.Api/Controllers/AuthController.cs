@@ -3,9 +3,7 @@ using iSujou.Api.Application.Configurations;
 using iSujou.Api.Application.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Enums;
-using iSujou.Infra.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -74,7 +72,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -112,7 +110,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -123,6 +121,10 @@ namespace iSujou.Api.Controllers
 
             return Ok();
         }
+
+        [HttpGet("is-authenticated")]
+        public IActionResult IsAuthenticated()
+            => Ok(User.Identity.Name != null);
 
         private IActionResult CreateToken(string username)
         {
@@ -156,6 +158,7 @@ namespace iSujou.Api.Controllers
                 created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                 expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                 accessToken = token,
+                currentUserId = (_userManager.FindByNameAsync(username)).Result?.UserInfoId,
                 message = "OK"
             });
         }

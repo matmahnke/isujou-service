@@ -54,8 +54,10 @@ export default class Resources {
     return [
       { id: 1, description: "Pendente" },
       { id: 2, description: "Recusada" },
-      { id: 3, description: "Aceita" },
-      { id: 4, description: "Cancelada" }
+      { id: 3, description: "Aceita", subdescription: "aguardando iniciar" },
+      { id: 4, description: "Cancelada" },
+      { id: 5, description: "Ativa", subdescription: "aguardando ser concluída" },
+      { id: 6, description: "Concluída" }
     ]
   }
 }

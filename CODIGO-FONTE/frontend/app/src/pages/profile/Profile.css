@@ -1,0 +1,8 @@
+.profile-image img {
+    width: 200px;
+    margin-top: -100px;
+}
+
+.table-row {
+    vertical-align: middle !important;
+}
