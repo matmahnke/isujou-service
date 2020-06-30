@@ -63,11 +63,11 @@ export default class Settings extends Component {
           userId: id,
           name: data.name,
           lastName: data.lastName,
-          description: data.description,
+          description: data.description ?? '',
           birthDate: data.birthDate.substring(0, 10),
           cpf: data.cpf,
           gender: data.gender,
-          feedbacks: [],
+          feedBacks: data.feedBacks,
           achievements: data.achievements
         }
 
@@ -92,20 +92,20 @@ export default class Settings extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
 
   save = () => {
-    // chama o salvar
+    console.log(this.state)
   }
 
-  readFile(){
+  readFile() {
     if (this.files && this.files[0]) {
-    
-      var FR= new FileReader();
-      
-      FR.addEventListener("load", function(e) {
-        document.getElementById("img").src       = e.target.result;
-        this.setState({photo: e.target.result})
-      }); 
-      
-      FR.readAsDataURL( this.files[0] );
+
+      var FR = new FileReader();
+
+      FR.addEventListener("load", function (e) {
+        document.getElementById("img").src = e.target.result;
+        this.setState({ photo: e.target.result })
+      });
+
+      FR.readAsDataURL(this.files[0]);
     }
   }
 
@@ -146,13 +146,6 @@ export default class Settings extends Component {
                       className={classnames({ active: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}>
                       Avaliações
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ active: this.state.activeTab === '3' })}
-                      onClick={() => { this.toggle('3'); }}>
-                      Conquistas
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -224,10 +217,13 @@ export default class Settings extends Component {
                           />
                         </Row>
                         <Row className="justify-content-center mt-4">
-                          <input id="inp" type='file' onChange={this.readFile()}/>
-                          <Button size="sm" color="secondary">
-                            Alterar foto
-                          </Button>
+                          <Input
+                            bsSize="sm"
+                            id="img"
+                            color="secondary"
+                            type='file'
+                            onChange={this.readFile()} >
+                          </Input>
                         </Row>
                       </Col>
                       <Col lg="8">
@@ -297,38 +293,16 @@ export default class Settings extends Component {
                   </TabPane>
                   <TabPane tabId="2" className="p-2">
                     <Row>
-                      <Col sm="6">
-                        <Card body>
-                          <CardTitle>Special Title Treatment</CardTitle>
-                          <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                          <Button>Go somewhere</Button>
-                        </Card>
-                      </Col>
-                      <Col sm="6">
-                        <Card body>
-                          <CardTitle>Special Title Treatment</CardTitle>
-                          <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                          <Button>Go somewhere</Button>
-                        </Card>
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tabId="3" className="p-2">
-                    <Row>
-                      <Col sm="6">
-                        <Card body>
-                          <CardTitle>Special Title Treatment</CardTitle>
-                          <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                          <Button>Go somewhere</Button>
-                        </Card>
-                      </Col>
-                      <Col sm="6">
-                        <Card body>
-                          <CardTitle>Special Title Treatment</CardTitle>
-                          <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                          <Button>Go somewhere</Button>
-                        </Card>
-                      </Col>
+                      {this.state.feedBacks?.map(fb => {
+                        return (
+                          <Col sm="6 my-3" key={fb.Id}>
+                            <Card body>
+                              <CardTitle><b>{fb.description}</b></CardTitle>
+                              <CardText>{fb.date}</CardText>
+                            </Card>
+                          </Col>
+                        )
+                      })}
                     </Row>
                   </TabPane>
                 </TabContent>

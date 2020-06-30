@@ -1,4 +1,5 @@
 ﻿using iSujou.Api.Application.Commands;
+using iSujou.Api.ViewModel;
 using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Entities;
 using iSujou.Domain.Repositories;
@@ -83,7 +84,7 @@ namespace iSujou.Api.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var feedbacks = _repository.GetAll().Where(x => x.ReceiverId == user.Id);
+                var feedbacks = _repository.GetAll().Where(x => x.ReceiverId == user.Id).Select(fb => new FeedBackViewModel(fb.Id, fb.Description, fb.CreationDate));
                 return Ok(feedbacks);
             }
             catch (Exception ex)

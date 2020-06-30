@@ -14,6 +14,8 @@ const Error = (props) => {
     if (data) {
       if (typeof data === 'string')
         msg = data
+      else if (data.message)
+        msg = data.message
       else
         console.log(data)
     }

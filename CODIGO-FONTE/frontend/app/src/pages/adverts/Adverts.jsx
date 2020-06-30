@@ -95,7 +95,6 @@ export default class Adverts extends React.Component {
                           <tbody>
                             {data.data.map((adverd, index) => {
                               const { id, title, formatedDate, hourForComponent, active } = adverd
-                              console.log(data)
                               return (
                                 <tr key={id}>
                                   <td>

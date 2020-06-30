@@ -17,6 +17,7 @@ import SimpleFooter from '../../components/Footers/SimpleFooter'
 import Achievements from '../../store/Achievements'
 import Loading from '../../components/Loading/Loading'
 import Error from '../../components/Error/Error'
+import ErrorAlert from '../../components/Alerts/ErrorAlert'
 import api from '../../services/api'
 import $ from 'jquery'
 
@@ -33,7 +34,8 @@ export default class FeedBack extends React.Component {
       description: '',
       achievement: null,
       loading: false,
-      error: null
+      error: null,
+      validationErrors: null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -76,12 +78,19 @@ export default class FeedBack extends React.Component {
   }
 
   enviar() {
-    this.setState({ loading: true })
-    api.post('/feedback', { 
-      receiverId: this.state.userId, 
-      description: this.state.description, 
+    var data = {
+      receiverId: this.state.userId,
+      description: this.state.description,
       proposalId: this.state.proposalId,
-      achievement: this.state.achievement })
+      achievement: this.state.achievement
+    }
+
+    if (!this.validate(data))
+      return
+
+    this.setState({ loading: true })
+
+    api.post('/feedback', data)
       .then(resp => {
         window.location.href = '/proposals/mine'
       })
@@ -91,6 +100,13 @@ export default class FeedBack extends React.Component {
       .finally(() => {
         this.setState({ loading: false })
       })
+  }
+
+  validate(model) {
+    if (!model.description)
+      this.setState({ validationErrors: 'A mensagem da avaliação deve ser preenchida.' })
+
+      return model.description
   }
 
   render() {
@@ -117,6 +133,11 @@ export default class FeedBack extends React.Component {
 
           <section className="section mt--3">
             <Container>
+              <ErrorAlert
+                isOpen={this.state.validationErrors !== null}
+                toggle={() => this.setState({ validationErrors: null })}
+                message={this.state.validationErrors}
+              />
               <Card className="shadow border-0">
                 <CardHeader>
                   <h2>O que você achou de {this.state.userName}?</h2>

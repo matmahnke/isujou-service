@@ -20,6 +20,7 @@ namespace iSujou.Api.Application.Dto
         public int AmountAdverts { get; set; }
         public int AmountAssessments { get; set; }
         public List<AchievementViewModel> Achievements { get; set; }
+        public List<FeedBackViewModel> FeedBacks { get; set; }
         public int Points { get; set; }
     }
 }

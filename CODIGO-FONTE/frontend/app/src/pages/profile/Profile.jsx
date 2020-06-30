@@ -136,7 +136,7 @@ export default class Profile extends Component {
                       </div>
                     </div>
                   </Row>
-                  <Row className="mt-5 justify-content-center" hidden={this.state.description?.length === 0}>
+                  <Row className="mt-5 justify-content-center" hidden={(this.state.description?.length ?? 0) === 0}>
                     <Col lg="9" className="border-top py-5 text-center">
                       <p>
                         {this.state.description}

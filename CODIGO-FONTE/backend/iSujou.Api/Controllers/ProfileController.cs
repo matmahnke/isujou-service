@@ -41,17 +41,20 @@ namespace iSujou.Api.Controllers
                 if (userInfo == null)
                    return NotFound("Usuário não encontrado.");
 
+                var feedBacks = (await _feedbacks.GetAllAsync());
+
                 return Ok(new ProfileDto
                 {
                     Achievements = (await _achievements.GetAllAsync()).Where(ach => ach.UserId == userInfo.User.Id).Select(ach => new AchievementViewModel((int)ach.Code, ach.Points)).ToList(),
                     AmountAdverts = userInfo.User.Adverts.Count,
-                    AmountAssessments = (await _feedbacks.GetAllAsync()).Count(fb => fb.ReceiverId == userInfo.User.Id),
+                    AmountAssessments = feedBacks.Count(fb => fb.ReceiverId == userInfo.User.Id),
                     BirthDate = userInfo.BirthDate,
                     Cpf = userInfo.Cpf,
                     Description = userInfo.Description,
                     PhotoUrl = userInfo.PhotoUrl,
                     Gender = userInfo.Gender,
                     LastName = userInfo.LastName,
+                    FeedBacks = feedBacks.Where(x => x.ReceiverId == userInfo.User.Id).Select(fb => new FeedBackViewModel(fb.Id, fb.Description, fb.CreationDate)).ToList(),
                     Name = userInfo.Name
                 });
             }
