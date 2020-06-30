@@ -101,9 +101,14 @@ namespace iSujou.Api.Controllers
             try
             {
                 var proposal = await _repository.GetByIdAsync(id);
+                proposal.Status = ProposalStatus.Accepted;
+
                 var advert = await _adverRepository.GetByIdAsync(proposal.AdvertId.GetValueOrDefault());
                 advert.Active = false;
-                proposal.Status = ProposalStatus.Accepted;
+
+                foreach (var anotherProposal in (await _repository.GetAllAsync()).Where(prop => prop.AdvertId == advert.Id && prop.Id != proposal.Id && prop.Status == ProposalStatus.Pending))
+                    anotherProposal.Status = ProposalStatus.Canceled;
+
                 await _unitOfWork.Commit();
 
                 return Ok();

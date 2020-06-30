@@ -51,9 +51,8 @@ export default class Proposals extends React.Component {
       })
       .finally(() => {
         this.setState({ loading: false })
+        window.location.reload();
       })
-
-      window.location.reload();
   }
 
   render() {
@@ -105,21 +104,22 @@ export default class Proposals extends React.Component {
                           <tbody>
                             {data.data.map((proposal, index) => {
                               const { id, advert, status, value, isMine, canRefuse, canApprove, canSuspend, canStart, canComplete, canWriteFeedBack, feedbackProfileId } = proposal
+                              var proposalStatus = Resources.GetProposalStatus()[status - 1]
                               return (
                                 <tr key={id}>
                                   <td>
-                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine || !canApprove} onClick={() => this.approve(id)}><i className="fa fa-check"></i></Button>
-                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine || !canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-times"></i></Button>
+                                    <Button color="success" size="sm" title="Aprovar" hidden={!isMine || !canApprove} onClick={() => this.approve(id)}><i className="fa fa-thumbs-up"></i></Button>
+                                    <Button color="danger" size="sm" title="Recusar" hidden={!isMine || !canRefuse} onClick={() => this.refuse(id)}><i className="fa fa-thumbs-down"></i></Button>
                                     <Button color="danger" size="sm" title="Suspender" hidden={isMine || !canSuspend} onClick={() => this.suspend(id)}><i className="fa fa-ban"></i></Button>
                                     <Button color="warning" size="sm" title="Iniciar" hidden={!isMine || !canStart} onClick={() => this.start(id)}><i className="fa fa-play"></i></Button>
-                                    <Button color="default" size="sm" title="Concluir" hidden={!isMine || !canComplete} onClick={() => this.concluir(id)}><i className="fa fa-stop"></i></Button>
+                                    <Button color="default" size="sm" title="Concluir" hidden={!isMine || !canComplete} onClick={() => this.concluir(id)}><i className="fa fa-check"></i></Button>
                                     <Button color="info" size="sm" title="Avaliar" hidden={!canWriteFeedBack} href={"/feedback/" + feedbackProfileId}><i className="fa fa-pencil"></i></Button>
                                   </td>
                                   <td>{id}</td>
                                   <td>{advert.title}</td>
                                   <td>{advert.formatedDate}</td>
                                   <td title={value}>R$ --,--</td>
-                                  <td>{Resources.GetProposalStatus()[status - 1]?.description}</td>
+                                  <td>{proposalStatus?.description + (proposalStatus?.subdescription ? ", " + proposalStatus?.subdescription : "")}</td>
                                 </tr>
                               )
                             })}
