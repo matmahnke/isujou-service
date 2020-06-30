@@ -18,25 +18,28 @@ namespace iSujou.Api.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IAchievementRepository _achievements;
+        private readonly IUserInfoRepository _userInfo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFeedbackRepository _repository;
 
-        public FeedbackController(UserManager<User> userManager, IFeedbackRepository repository, IAchievementRepository achievementRepository, IUnitOfWork unitOfWork)
+        public FeedbackController(UserManager<User> userManager, IFeedbackRepository repository, IAchievementRepository achievementRepository, IUnitOfWork unitOfWork, IUserInfoRepository userInfo)
         {
             _userManager = userManager;
             _achievements = achievementRepository;
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _userInfo = userInfo;
         }
 
         [HttpPost]
         [Authorize("Bearer")]
-        public async Task<IActionResult> Post([FromBody]FeedbackCommand command)
+        public async Task<IActionResult> Post([FromBody] FeedbackCommand command)
         {
             try
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var receiver = await _userManager.FindByIdAsync(command.ReceiverId);
+                var receiver = (await _userInfo.GetUserProfileById(command.ReceiverId)).User;
+
                 await _repository.AddAsync(new Feedback
                 {
                     CreatorId = user.Id,
@@ -44,20 +47,23 @@ namespace iSujou.Api.Controllers
                     Description = command.Description,
                 });
 
-                var achievement = _achievements.GetAll().Where(x => x.UserId == command.ReceiverId && x.Status == command.Achievement).FirstOrDefault();
-
-                if (achievement == null)
+                if (command.Achievement != null)
                 {
-                    await _achievements.AddAsync(new Achievement
+                    var achievement = _achievements.GetAll().Where(x => x.User.UserInfoId == command.ReceiverId && x.Status == command.Achievement).FirstOrDefault();
+
+                    if (achievement == null)
                     {
-                        Points = 1,
-                        Status = command.Achievement,
-                        UserId = receiver.Id
-                    });
+                        await _achievements.AddAsync(new Achievement
+                        {
+                            Points = 1,
+                            Status = command.Achievement.GetValueOrDefault(),
+                            UserId = receiver.Id
+                        });
+                    }
+                    else
+                        achievement.Points++;
                 }
-                else
-                    achievement.Points++;
-                
+
                 await _unitOfWork.Commit();
 
                 return Ok();

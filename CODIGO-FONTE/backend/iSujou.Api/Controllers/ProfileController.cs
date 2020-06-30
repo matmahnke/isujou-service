@@ -1,10 +1,12 @@
 ﻿using iSujou.Api.Application.Commands;
 using iSujou.Api.Application.Dto;
+using iSujou.Api.ViewModel;
 using iSujou.CrossCutting.Data.Interfaces;
 using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace iSujou.Api.Controllers
@@ -17,11 +19,15 @@ namespace iSujou.Api.Controllers
     {
         private readonly IUserInfoRepository _userInfo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAchievementRepository _achievements;
+        private readonly IFeedbackRepository _feedbacks;
 
-        public ProfileController(IUserInfoRepository userInfo, IUnitOfWork unitOfWork)
+        public ProfileController(IUserInfoRepository userInfo, IUnitOfWork unitOfWork, IAchievementRepository achievements, IFeedbackRepository feedbacks)
         {
             _userInfo = userInfo;
             _unitOfWork = unitOfWork;
+            _achievements = achievements;
+            _feedbacks = feedbacks;
         }
 
         [HttpGet()]
@@ -37,13 +43,12 @@ namespace iSujou.Api.Controllers
 
                 return Ok(new ProfileDto
                 {
-                    Achievement = userInfo.Achievement,
+                    Achievements = (await _achievements.GetAllAsync()).Where(ach => ach.UserId == userInfo.User.Id).Select(ach => new AchievementViewModel(ach.Id, ach.Points)).ToList(),
                     AmountAdverts = userInfo.User.Adverts.Count,
-                    AmountAchievements = 0,
-                    AmountAssessments = 0,
+                    AmountAssessments = (await _feedbacks.GetAllAsync()).Count(fb => fb.ReceiverId == userInfo.User.Id),
                     BirthDate = userInfo.BirthDate,
                     Cpf = userInfo.Cpf,
-                    Description = "",
+                    Description = userInfo.Description,
                     FotoUrl = "",
                     Gender = userInfo.Gender,
                     LastName = userInfo.LastName,

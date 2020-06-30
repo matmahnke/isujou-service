@@ -1,4 +1,5 @@
-﻿using iSujou.Domain.Enums;
+﻿using iSujou.Api.ViewModel;
+using iSujou.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,8 @@ namespace iSujou.Api.Application.Dto
         public string Description { get; set; }
         public string FotoUrl { get; set; }
         public int AmountAdverts { get; set; }
-        public int AmountAchievements { get; set; }
         public int AmountAssessments { get; set; }
-        public Achievements Achievement { get; set; }
+        public List<AchievementViewModel> Achievements { get; set; }
         public int Points { get; set; }
     }
 }
