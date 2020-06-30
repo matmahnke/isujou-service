@@ -9,7 +9,7 @@ const Error = (props) => {
   const montarMensagemErro = (error) => {
     let msg = 'Aconteceu um problema.'
 
-    var data = error?.response.data
+    var data = error?.response?.data
 
     if (data) {
       if (typeof data === 'string')
@@ -29,7 +29,7 @@ const Error = (props) => {
         <div>
           <Row className="no-flex">
             <span className="circle rounded-circle">
-              <h1 className="text-dar-red">{error?.response.status ?? "):"}</h1>
+              <h1 className="text-dar-red">{error?.response?.status ?? "(T_T)"}</h1>
             </span>
           </Row>
           <Row className="no-flex my-5">
@@ -39,7 +39,7 @@ const Error = (props) => {
             <Button color="light" type="button" href="/">
               Início
           </Button>
-            <Button color="danger" type="button" onClick={realizarLogout} href="/login" hidden={error?.response.status !== 401}>
+            <Button color="danger" type="button" onClick={realizarLogout} href="/login" hidden={error?.response?.status !== 401}>
               Realizar login
           </Button>
           </Row>
