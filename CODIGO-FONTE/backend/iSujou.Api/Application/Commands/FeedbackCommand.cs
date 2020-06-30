@@ -6,6 +6,7 @@ namespace iSujou.Api.Application.Commands
     {
         public long ReceiverId { get; set; }
         public string Description { get; set; }
+        public long ProposalId { get; set; }
         public Achievements? Achievement { get; set; }
     }
 }

@@ -45,6 +45,7 @@ namespace iSujou.Api.Controllers
                     CreatorId = user.Id,
                     ReceiverId = receiver.Id,
                     Description = command.Description,
+                    ProposalId = command.ProposalId,
                     CreationDate = DateTime.Now
                 });
 

@@ -73,7 +73,7 @@ namespace iSujou.Api.Controllers
                     bool isMine = user.Id == proposal.Advert.CreatorId,
                          showInitialButtons = proposal.Status == ProposalStatus.Pending;
                     User feedBackProfileUser = isMine ? proposal.Candidate : proposal.Advert.Creator;
-                    bool canWriteFeedBack = proposal.Status == ProposalStatus.Completed && !(await UserWroteFeedBack(user.Id, feedBackProfileUser.Id));
+                    bool canWriteFeedBack = proposal.Status == ProposalStatus.Completed && !(await UserWroteFeedBack(user.Id, proposal.Id));
                     result.Add(new
                     {
                         id = proposal.Id,
@@ -100,8 +100,8 @@ namespace iSujou.Api.Controllers
         }
 
         // filtrar pela proposta
-        private async Task<bool> UserWroteFeedBack(string writer, string receiver)
-            => (await _feedbacks.GetAllAsync()).Any(fb => fb.CreatorId == writer && fb.ReceiverId == receiver);
+        private async Task<bool> UserWroteFeedBack(string writer, long proposalId)
+            => (await _feedbacks.GetAllAsync()).Any(fb => fb.CreatorId == writer && fb.ProposalId == proposalId);
 
         [HttpPost]
         [Route("approve/{id}")]

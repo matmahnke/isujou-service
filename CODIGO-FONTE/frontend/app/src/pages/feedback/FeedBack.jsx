@@ -28,6 +28,7 @@ export default class FeedBack extends React.Component {
 
     this.state = {
       userId: null,
+      proposalId: null,
       userName: '',
       description: '',
       achievement: null,
@@ -39,10 +40,11 @@ export default class FeedBack extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params?.id) {
-      const id = this.props.match.params.id;
+    if (this.props.match.params) {
+      const userId = this.props.match.params.id;
+      const proposalId = this.props.match.params.proposal;
 
-      api.get('/profile/' + id)
+      api.get('/profile/' + userId)
         .then(resp => {
           const { data } = resp;
 
@@ -52,7 +54,7 @@ export default class FeedBack extends React.Component {
           this.setState({ error })
         })
         .finally(() => {
-          this.setState({ loading: false, userId: id })
+          this.setState({ loading: false, userId, proposalId })
         })
     }
   }
@@ -75,7 +77,11 @@ export default class FeedBack extends React.Component {
 
   enviar() {
     this.setState({ loading: true })
-    api.post('/feedback', { receiverId: this.state.userId, description: this.state.description, achievement: this.state.achievement })
+    api.post('/feedback', { 
+      receiverId: this.state.userId, 
+      description: this.state.description, 
+      proposalId: this.state.proposalId,
+      achievement: this.state.achievement })
       .then(resp => {
         window.location.href = '/proposals/mine'
       })

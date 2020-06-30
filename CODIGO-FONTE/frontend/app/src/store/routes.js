@@ -60,7 +60,7 @@ const Routes = () => (
             <PrivateRoute exact path='/property/edit/:id' component={props => <Property type="edit" {...props} />} />
             <PrivateRoute exact path='/proposal/new/:id' component={props => <Proposal {...props} />} />
             <PrivateRoute exact path='/proposals/mine' component={Proposals} />
-            <PrivateRoute exact path='/feedback/:id' component={props => <FeedBack {...props} />} />
+            <PrivateRoute exact path='/feedback/:proposal/:id' component={props => <FeedBack {...props} />} />
             <Route component={NotFound} />
         </Switch>
     </BrowserRouter>
