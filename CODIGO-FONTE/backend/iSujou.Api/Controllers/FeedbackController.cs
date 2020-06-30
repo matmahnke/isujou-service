@@ -17,14 +17,14 @@ namespace iSujou.Api.Controllers
     public class FeedbackController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IArchievementRepository _archievementRepository;
+        private readonly IAchievementRepository _achievements;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFeedbackRepository _repository;
 
-        public FeedbackController(UserManager<User> userManager, IFeedbackRepository repository, IArchievementRepository archievementRepository, IUnitOfWork unitOfWork)
+        public FeedbackController(UserManager<User> userManager, IFeedbackRepository repository, IAchievementRepository achievementRepository, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
-            _archievementRepository = archievementRepository;
+            _achievements = achievementRepository;
             _unitOfWork = unitOfWork;
             _repository = repository;
         }
@@ -36,34 +36,35 @@ namespace iSujou.Api.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var receiver = await _userManager.FindByIdAsync(command.ReceiverId);
                 await _repository.AddAsync(new Feedback
                 {
                     CreatorId = user.Id,
-                    ReceiverId = command.ReceiverId,
+                    ReceiverId = receiver.Id,
                     Description = command.Description,
                 });
 
-                var receiver = _archievementRepository.GetAll().Where(x => x.UserId == command.ReceiverId && x.Status == command.Archievement).FirstOrDefault();
+                var achievement = _achievements.GetAll().Where(x => x.UserId == command.ReceiverId && x.Status == command.Achievement).FirstOrDefault();
 
-                if (receiver == null)
+                if (achievement == null)
                 {
-                    await _archievementRepository.AddAsync(new Archievement
+                    await _achievements.AddAsync(new Achievement
                     {
                         Points = 1,
-                        Status = command.Archievement,
-                        UserId = command.ReceiverId
+                        Status = command.Achievement,
+                        UserId = receiver.Id
                     });
                 }
                 else
-                {
-                    receiver.Points++;
-                }
+                    achievement.Points++;
+                
                 await _unitOfWork.Commit();
+
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -79,7 +80,7 @@ namespace iSujou.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
     }

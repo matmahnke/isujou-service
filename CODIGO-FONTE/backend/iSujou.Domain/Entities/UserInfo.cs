@@ -14,6 +14,6 @@ namespace iSujou.Domain.Entities
         public Gender Gender { get; set; }
         public User User { get; set; }
         public int Points { get; set; }
-        public Archievements Archievement { get; set; }
+        public Achievements Achievement { get; set; }
     }
 }

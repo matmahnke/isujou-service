@@ -17,9 +17,9 @@ namespace iSujou.Api.Application.Dto
         public string Description { get; set; }
         public string FotoUrl { get; set; }
         public int AmountAdverts { get; set; }
-        public int AmountArchevements { get; set; }
+        public int AmountAchievements { get; set; }
         public int AmountAssessments { get; set; }
-        public Archievements Achievement { get; set; }
+        public Achievements Achievement { get; set; }
         public int Points { get; set; }
     }
 }

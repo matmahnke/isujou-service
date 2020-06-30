@@ -37,9 +37,9 @@ namespace iSujou.Api.Controllers
 
                 return Ok(new ProfileDto
                 {
-                    Achievement = userInfo.Archievement,
+                    Achievement = userInfo.Achievement,
                     AmountAdverts = userInfo.User.Adverts.Count,
-                    AmountArchevements = 0,
+                    AmountAchievements = 0,
                     AmountAssessments = 0,
                     BirthDate = userInfo.BirthDate,
                     Cpf = userInfo.Cpf,

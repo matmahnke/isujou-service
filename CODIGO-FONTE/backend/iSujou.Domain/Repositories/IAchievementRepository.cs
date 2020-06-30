@@ -2,7 +2,7 @@
 
 namespace iSujou.Domain.Repositories
 {
-    public interface IArchievementRepository : IRepository<Archievement>
+    public interface IAchievementRepository : IRepository<Achievement>
     {
     }
 }

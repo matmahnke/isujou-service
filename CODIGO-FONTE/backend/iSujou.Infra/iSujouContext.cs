@@ -26,7 +26,7 @@ namespace iSujou.Infra
             .ApplyConfiguration(new ContractMapping())
             .ApplyConfiguration(new AdvertMapping())
             .ApplyConfiguration(new AdvertTaskMapping())
-            .ApplyConfiguration(new ArchievementMapping())
+            .ApplyConfiguration(new AchievementMapping())
             .ApplyConfiguration(new FeedbackMapping());
             base.OnModelCreating(modelBuilder);
         }
