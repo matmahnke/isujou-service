@@ -13,5 +13,6 @@ namespace iSujou.Api.Application.Commands
         public string Cpf { get; set; }
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }

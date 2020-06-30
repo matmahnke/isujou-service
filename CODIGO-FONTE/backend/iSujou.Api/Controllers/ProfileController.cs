@@ -44,7 +44,7 @@ namespace iSujou.Api.Controllers
                     BirthDate = userInfo.BirthDate,
                     Cpf = userInfo.Cpf,
                     Description = "",
-                    FotoUrl = "",
+                    PhotoUrl = userInfo.PhotoUrl,
                     Gender = userInfo.Gender,
                     LastName = userInfo.LastName,
                     Name = userInfo.Name
@@ -69,6 +69,7 @@ namespace iSujou.Api.Controllers
                 userInfo.Gender = command.Gender;
                 userInfo.LastName = command.LastName;
                 userInfo.Name = command.Name;
+                userInfo.PhotoUrl = command.PhotoUrl;
 
                 await _unitOfWork.Commit();
                 return Ok();

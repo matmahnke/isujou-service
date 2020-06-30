@@ -15,7 +15,7 @@ namespace iSujou.Api.Application.Dto
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
         public string Description { get; set; }
-        public string FotoUrl { get; set; }
+        public string PhotoUrl { get; set; }
         public int AmountAdverts { get; set; }
         public int AmountArchevements { get; set; }
         public int AmountAssessments { get; set; }

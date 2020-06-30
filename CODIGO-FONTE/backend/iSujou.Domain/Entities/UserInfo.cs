@@ -15,5 +15,6 @@ namespace iSujou.Domain.Entities
         public User User { get; set; }
         public int Points { get; set; }
         public Archievements Archievement { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }
