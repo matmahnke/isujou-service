@@ -150,6 +150,29 @@ namespace iSujou.Infra.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("iSujou.Domain.Entities.Achievement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Achievement");
+                });
+
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
                     b.Property<long>("Id")
@@ -297,6 +320,40 @@ namespace iSujou.Infra.Migrations
                         .HasFilter("[ProposalId] IS NOT NULL");
 
                     b.ToTable("Contract");
+                });
+
+            modelBuilder.Entity("iSujou.Domain.Entities.Feedback", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ProposalId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("ProposalId")
+                        .IsUnique();
+
+                    b.HasIndex("ReceiverId");
+
+                    b.ToTable("Feedback");
                 });
 
             modelBuilder.Entity("iSujou.Domain.Entities.Property", b =>
@@ -447,7 +504,9 @@ namespace iSujou.Infra.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("UserInfoId")
+                        .IsUnique()
+                        .HasFilter("[UserInfoId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -466,6 +525,9 @@ namespace iSujou.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
@@ -476,6 +538,12 @@ namespace iSujou.Infra.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -533,10 +601,17 @@ namespace iSujou.Infra.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("iSujou.Domain.Entities.Achievement", b =>
+                {
+                    b.HasOne("iSujou.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
-                        .WithMany()
+                        .WithMany("Adverts")
                         .HasForeignKey("CreatorId");
 
                     b.HasOne("iSujou.Domain.Entities.User", "Editor")
@@ -592,6 +667,23 @@ namespace iSujou.Infra.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
+            modelBuilder.Entity("iSujou.Domain.Entities.Feedback", b =>
+                {
+                    b.HasOne("iSujou.Domain.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("iSujou.Domain.Entities.Proposal", "Proposal")
+                        .WithOne()
+                        .HasForeignKey("iSujou.Domain.Entities.Feedback", "ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("iSujou.Domain.Entities.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId");
+                });
+
             modelBuilder.Entity("iSujou.Domain.Entities.Property", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Owner")
@@ -616,8 +708,8 @@ namespace iSujou.Infra.Migrations
             modelBuilder.Entity("iSujou.Domain.Entities.User", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.UserInfo", "UserInfo")
-                        .WithMany()
-                        .HasForeignKey("UserInfoId");
+                        .WithOne("User")
+                        .HasForeignKey("iSujou.Domain.Entities.User", "UserInfoId");
                 });
 #pragma warning restore 612, 618
         }
