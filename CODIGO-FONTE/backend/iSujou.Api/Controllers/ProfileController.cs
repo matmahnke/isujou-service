@@ -43,7 +43,7 @@ namespace iSujou.Api.Controllers
 
                 return Ok(new ProfileDto
                 {
-                    Achievements = (await _achievements.GetAllAsync()).Where(ach => ach.UserId == userInfo.User.Id).Select(ach => new AchievementViewModel(ach.Id, ach.Points)).ToList(),
+                    Achievements = (await _achievements.GetAllAsync()).Where(ach => ach.UserId == userInfo.User.Id).Select(ach => new AchievementViewModel((int)ach.Code, ach.Points)).ToList(),
                     AmountAdverts = userInfo.User.Adverts.Count,
                     AmountAssessments = (await _feedbacks.GetAllAsync()).Count(fb => fb.ReceiverId == userInfo.User.Id),
                     BirthDate = userInfo.BirthDate,

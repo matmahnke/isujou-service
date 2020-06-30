@@ -50,14 +50,14 @@ namespace iSujou.Api.Controllers
 
                 if (command.Achievement != null)
                 {
-                    var achievement = _achievements.GetAll().Where(x => x.User.UserInfoId == command.ReceiverId && x.Status == command.Achievement).FirstOrDefault();
+                    var achievement = _achievements.GetAll().Where(x => x.User.UserInfoId == command.ReceiverId && x.Code == command.Achievement).FirstOrDefault();
 
                     if (achievement == null)
                     {
                         await _achievements.AddAsync(new Achievement
                         {
                             Points = 1,
-                            Status = command.Achievement.GetValueOrDefault(),
+                            Code = command.Achievement.GetValueOrDefault(),
                             UserId = receiver.Id
                         });
                     }
