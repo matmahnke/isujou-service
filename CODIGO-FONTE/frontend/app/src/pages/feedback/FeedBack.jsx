@@ -52,10 +52,8 @@ export default class FeedBack extends React.Component {
           this.setState({ error })
         })
         .finally(() => {
-          this.setState({ loading: false })
+          this.setState({ loading: false, userId: id })
         })
-
-      this.setState({ id })
     }
   }
 
@@ -76,7 +74,17 @@ export default class FeedBack extends React.Component {
   }
 
   enviar() {
-    console.log(this.state)
+    this.setState({ loading: true })
+    api.post('/feedback', { receiverId: this.state.userId, description: this.state.description, achievement: this.state.achievement })
+      .then(resp => {
+        window.location.href = '/proposals/mine'
+      })
+      .catch((error) => {
+        this.setState({ error })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
+      })
   }
 
   render() {

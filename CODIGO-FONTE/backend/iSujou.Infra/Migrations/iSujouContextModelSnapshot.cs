@@ -150,6 +150,29 @@ namespace iSujou.Infra.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("iSujou.Domain.Entities.Achievement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Achievement");
+                });
+
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
                     b.Property<long>("Id")
@@ -233,29 +256,6 @@ namespace iSujou.Infra.Migrations
                     b.ToTable("AdvertTask");
                 });
 
-            modelBuilder.Entity("iSujou.Domain.Entities.Archievement", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Archievement");
-                });
-
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>
                 {
                     b.Property<long>("Id")
@@ -329,11 +329,17 @@ namespace iSujou.Infra.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ProposalId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ReceiverId")
                         .HasColumnType("nvarchar(450)");
@@ -341,6 +347,9 @@ namespace iSujou.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("ProposalId")
+                        .IsUnique();
 
                     b.HasIndex("ReceiverId");
 
@@ -509,14 +518,14 @@ namespace iSujou.Infra.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Archievement")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gender")
@@ -592,6 +601,13 @@ namespace iSujou.Infra.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("iSujou.Domain.Entities.Achievement", b =>
+                {
+                    b.HasOne("iSujou.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("iSujou.Domain.Entities.Advert", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
@@ -627,13 +643,6 @@ namespace iSujou.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("iSujou.Domain.Entities.Archievement", b =>
-                {
-                    b.HasOne("iSujou.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("iSujou.Domain.Entities.Contract", b =>
                 {
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
@@ -663,6 +672,12 @@ namespace iSujou.Infra.Migrations
                     b.HasOne("iSujou.Domain.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId");
+
+                    b.HasOne("iSujou.Domain.Entities.Proposal", "Proposal")
+                        .WithOne()
+                        .HasForeignKey("iSujou.Domain.Entities.Feedback", "ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("iSujou.Domain.Entities.User", "Receiver")
                         .WithMany()

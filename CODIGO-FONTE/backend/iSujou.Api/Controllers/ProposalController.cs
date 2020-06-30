@@ -7,6 +7,7 @@ using iSujou.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +25,15 @@ namespace iSujou.Api.Controllers
         private readonly IAdvertRepository _adverRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<User> _userManager;
+        private readonly IFeedbackRepository _feedbacks;
 
-        public ProposalController(IProposalRepository repository, IUnitOfWork unitOfWork, UserManager<User> userManager, IAdvertRepository adverRepository)
+        public ProposalController(IProposalRepository repository, IUnitOfWork unitOfWork, UserManager<User> userManager, IAdvertRepository adverRepository, IFeedbackRepository feedbacks)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _adverRepository = adverRepository;
+            _feedbacks = feedbacks;
         }
 
         [HttpPost]
@@ -69,6 +72,8 @@ namespace iSujou.Api.Controllers
                 {
                     bool isMine = user.Id == proposal.Advert.CreatorId,
                          showInitialButtons = proposal.Status == ProposalStatus.Pending;
+                    User feedBackProfileUser = isMine ? proposal.Candidate : proposal.Advert.Creator;
+                    bool canWriteFeedBack = proposal.Status == ProposalStatus.Completed && !(await UserWroteFeedBack(user.Id, feedBackProfileUser.Id));
                     result.Add(new
                     {
                         id = proposal.Id,
@@ -81,8 +86,8 @@ namespace iSujou.Api.Controllers
                         canSuspend = showInitialButtons,
                         canStart = proposal.Status == ProposalStatus.Accepted,
                         canComplete = proposal.Status == ProposalStatus.Active,
-                        canWriteFeedBack = proposal.Status == ProposalStatus.Completed,
-                        feedbackProfileId = isMine ? proposal.Candidate.UserInfoId : proposal.Advert.Creator.UserInfoId
+                        canWriteFeedBack,
+                        feedbackProfileId = feedBackProfileUser.UserInfoId
                     });
                 }
 
@@ -94,6 +99,10 @@ namespace iSujou.Api.Controllers
             }
         }
 
+        // filtrar pela proposta
+        private async Task<bool> UserWroteFeedBack(string writer, string receiver)
+            => (await _feedbacks.GetAllAsync()).Any(fb => fb.CreatorId == writer && fb.ReceiverId == receiver);
+
         [HttpPost]
         [Route("approve/{id}")]
         public async Task<IActionResult> Approve(long id)
@@ -101,9 +110,14 @@ namespace iSujou.Api.Controllers
             try
             {
                 var proposal = await _repository.GetByIdAsync(id);
+                proposal.Status = ProposalStatus.Accepted;
+
                 var advert = await _adverRepository.GetByIdAsync(proposal.AdvertId.GetValueOrDefault());
                 advert.Active = false;
-                proposal.Status = ProposalStatus.Accepted;
+
+                foreach (var anotherProposal in (await _repository.GetAllAsync()).Where(prop => prop.AdvertId == advert.Id && prop.Id != proposal.Id && prop.Status == ProposalStatus.Pending))
+                    anotherProposal.Status = ProposalStatus.Canceled;
+
                 await _unitOfWork.Commit();
 
                 return Ok();

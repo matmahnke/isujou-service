@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iSujou.Infra.Repositories
 {
-    public class ArchievementRepository : Repository<Archievement>, IArchievementRepository
+    public class AchievementRepository : Repository<Achievement>, IAchievementRepository
     {
-        public ArchievementRepository(DbContext context) : base(context)
+        public AchievementRepository(DbContext context) : base(context)
         {
         }
     }

@@ -95,6 +95,20 @@ export default class Settings extends Component {
     // chama o salvar
   }
 
+  readFile(){
+    if (this.files && this.files[0]) {
+    
+      var FR= new FileReader();
+      
+      FR.addEventListener("load", function(e) {
+        document.getElementById("img").src       = e.target.result;
+        this.setState({photo: e.target.result})
+      }); 
+      
+      FR.readAsDataURL( this.files[0] );
+    }
+  }
+
   render() {
     const { name, lastName, description, birthDate, cpf, gender, photo } = this.state
 
@@ -202,6 +216,7 @@ export default class Settings extends Component {
                       <Col lg="4">
                         <Row className="justify-content-center">
                           <img
+                            id="img"
                             alt="..."
                             width="150px"
                             className="rounded-circle"
@@ -209,6 +224,7 @@ export default class Settings extends Component {
                           />
                         </Row>
                         <Row className="justify-content-center mt-4">
+                          <input id="inp" type='file' onChange={this.readFile()}/>
                           <Button size="sm" color="secondary">
                             Alterar foto
                           </Button>

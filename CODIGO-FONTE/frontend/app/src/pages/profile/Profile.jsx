@@ -143,7 +143,7 @@ export default class Profile extends Component {
                       </p>
                     </Col>
                   </Row>
-                  <Row className="justify-content-center" hidden={this.state.achievements?.length ?? 0 === 0}>
+                  <Row className="justify-content-center" hidden={(this.state.achievements?.length ?? 0) === 0}>
                     <Col lg="9" className="border-top py-5">
                       <h4>
                         Conquistas

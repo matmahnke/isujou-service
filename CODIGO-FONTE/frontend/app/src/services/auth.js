@@ -1,17 +1,18 @@
 import api from '../services/api'
 
 export const isAuthenticated = () => {
-  var token = localStorage.getItem('Authorization')
+  var possuiToken = localStorage.getItem('Authorization') !== null;
 
   api.get('auth/is-authenticated')
     .then(resp => {
       const { data } = resp
 
-      if (data === false && token !== null) window.location.href = '/logout'
+      if (data === false && possuiToken) window.location.href = '/logout'
     })
     .catch((ex) => {
-      window.location.href = '/logout'
+      if (possuiToken)
+        window.location.href = '/logout'
     })
 
-    return token !== null
+    return possuiToken
 };

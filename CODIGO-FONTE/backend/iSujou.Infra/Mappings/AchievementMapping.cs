@@ -7,9 +7,9 @@ using System.Text;
 
 namespace iSujou.Infra.Mappings
 {
-    public class ArchievementMapping : IEntityTypeConfiguration<Archievement>
+    public class AchievementMapping : IEntityTypeConfiguration<Achievement>
     {
-        public void Configure(EntityTypeBuilder<Archievement> builder)
+        public void Configure(EntityTypeBuilder<Achievement> builder)
         {
             builder.HasOne(x => x.User)
                 .WithMany();

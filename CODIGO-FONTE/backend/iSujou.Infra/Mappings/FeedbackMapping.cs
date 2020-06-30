@@ -18,6 +18,9 @@ namespace iSujou.Infra.Mappings
             builder.HasOne(x => x.Receiver)
                 .WithMany()
                 .HasForeignKey(x => x.ReceiverId);
+
+            builder.HasOne(x => x.Proposal)
+                .WithOne();
         }
     }
 }

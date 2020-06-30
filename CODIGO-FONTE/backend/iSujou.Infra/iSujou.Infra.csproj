@@ -149,6 +149,22 @@
     <Compile Remove="Migrations\20200615105820_edit_profile_mapping.Designer.cs" />
     <Compile Remove="Migrations\20200629223413_add_feedback_archievement.cs" />
     <Compile Remove="Migrations\20200629223413_add_feedback_archievement.Designer.cs" />
+    <Compile Remove="Migrations\20200630004826_edit_userinfo.cs" />
+    <Compile Remove="Migrations\20200630004826_edit_userinfo.Designer.cs" />
+    <Compile Remove="Migrations\20200630012548_ajuste_nome_coluna.cs" />
+    <Compile Remove="Migrations\20200630012548_ajuste_nome_coluna.Designer.cs" />
+    <Compile Remove="Migrations\20200630014412_description_profile.cs" />
+    <Compile Remove="Migrations\20200630014412_description_profile.Designer.cs" />
+    <Compile Remove="Migrations\20200630021809_edit_feedback_.cs" />
+    <Compile Remove="Migrations\20200630021809_edit_feedback_.Designer.cs" />
+    <Compile Remove="Migrations\20200630021938_edit_feedback_mapping.cs" />
+    <Compile Remove="Migrations\20200630021938_edit_feedback_mapping.Designer.cs" />
+    <Compile Remove="Migrations\20200630022436_edit_userinfo_mapping.cs" />
+    <Compile Remove="Migrations\20200630022436_edit_userinfo_mapping.Designer.cs" />
+    <Compile Remove="Migrations\20200630023908_edit_feedback_mapping.cs" />
+    <Compile Remove="Migrations\20200630023908_edit_feedback_mapping.Designer.cs" />
+    <Compile Remove="Migrations\20200630024716_edit_feedback_fks.cs" />
+    <Compile Remove="Migrations\20200630024716_edit_feedback_fks.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

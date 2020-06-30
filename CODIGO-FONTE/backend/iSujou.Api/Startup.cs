@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace iSujou.Api
@@ -25,9 +23,12 @@ namespace iSujou.Api
 
         readonly string policy = "iSujouPolicy";
         public IConfiguration Configuration { get; }
+        private IServiceCollection _services { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            _services = services;
+
             //services.AddCors(options =>
             //{
             //    options.AddPolicy(name: specificOriginsKey,
@@ -78,20 +79,6 @@ namespace iSujou.Api
                 p.AssumeDefaultVersionWhenUnspecified = true;
                 p.ApiVersionParameterSource = new UrlSegmentApiVersionReader();
             });
-
-            var loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder
-                    .AddFilter("Microsoft", LogLevel.Warning)
-                    .AddFilter("System", LogLevel.Warning)
-                    .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug)
-                    .AddConsole()
-                    .AddEventLog();
-            });
-
-            ILogger logger = loggerFactory.CreateLogger<Program>();
-
-            InitializeSeeds(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -99,13 +86,9 @@ namespace iSujou.Api
             app.UseCors(policy);
 
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseHsts();
-            }
 
             app.UseApiVersioning();
 
@@ -119,6 +102,8 @@ namespace iSujou.Api
                 .UseAuthorizationServices()
                 .UseSwaggerServices();
 
+            InitializeSeeds().Wait();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
@@ -126,10 +111,10 @@ namespace iSujou.Api
             });
         }
 
-        private static async Task InitializeSeeds(IServiceCollection services)
+        private async Task InitializeSeeds()
         {
-            var um = services.BuildServiceProvider().GetService<UserManager<User>>();
-            var rm = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
+            var um = _services.BuildServiceProvider().GetService<UserManager<User>>();
+            var rm = _services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
             await new IdentityInitializer(um, rm).Initialize();
         }
     }
