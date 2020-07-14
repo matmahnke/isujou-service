@@ -103,7 +103,7 @@ export default class Proposals extends React.Component {
                           </thead>
                           <tbody>
                             {data.data.map((proposal, index) => {
-                              const { id, advert, status, value, isMine, canRefuse, canApprove, canSuspend, canStart, canComplete, canWriteFeedBack, feedbackProfileId } = proposal
+                              const { id, advert, status, value, isMine, canRefuse, canApprove, canSuspend, canStart, canComplete, canWriteFeedBack, feedbackProfileId, canShowDetails } = proposal
                               var proposalStatus = Resources.GetProposalStatus()[status - 1]
                               return (
                                 <tr key={id}>
@@ -114,6 +114,7 @@ export default class Proposals extends React.Component {
                                     <Button color="warning" size="sm" title="Iniciar" hidden={!isMine || !canStart} onClick={() => this.start(id)}><i className="fa fa-play"></i></Button>
                                     <Button color="default" size="sm" title="Concluir" hidden={!isMine || !canComplete} onClick={() => this.concluir(id)}><i className="fa fa-check"></i></Button>
                                     <Button color="info" size="sm" title="Avaliar" hidden={!canWriteFeedBack} href={"/feedback/" + id + "/" + feedbackProfileId}><i className="fa fa-pencil"></i></Button>
+                                    <Button size="sm" title="Detalhes" href={"/proposal/detail/" + id} hidden={!canShowDetails}><i className="fa fa-eye"></i></Button>
                                   </td>
                                   <td>{id}</td>
                                   <td>{advert.title}</td>

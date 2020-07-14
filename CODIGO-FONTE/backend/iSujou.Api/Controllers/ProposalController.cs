@@ -70,28 +70,38 @@ namespace iSujou.Api.Controllers
 
                 foreach (var proposal in proposals)
                 {
-                    bool isMine = user.Id == proposal.Advert.CreatorId,
-                         showInitialButtons = proposal.Status == ProposalStatus.Pending;
+                    bool isMine = user.Id == proposal.Advert.CreatorId;
                     User feedBackProfileUser = isMine ? proposal.Candidate : proposal.Advert.Creator;
                     bool canWriteFeedBack = proposal.Status == ProposalStatus.Completed && !(await UserWroteFeedBack(user.Id, proposal.Id));
-                    result.Add(new
-                    {
-                        id = proposal.Id,
-                        value = proposal.Value.ToString("N2"),
-                        advert = new AdvertViewModel(proposal.Advert),
-                        status = proposal.Status == 0 ? ProposalStatus.Pending : proposal.Status,
-                        isMine,
-                        canApprove = showInitialButtons,
-                        canRefuse = showInitialButtons,
-                        canSuspend = showInitialButtons,
-                        canStart = proposal.Status == ProposalStatus.Accepted,
-                        canComplete = proposal.Status == ProposalStatus.Active,
-                        canWriteFeedBack,
-                        feedbackProfileId = feedBackProfileUser.UserInfoId
-                    });
+                    result.Add(new ProposalViewModel(proposal, isMine, canWriteFeedBack, feedBackProfileUser.UserInfoId));
                 }
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDetails(long id)
+        {
+            try
+            {
+                var proposal = (await _repository.GetProposals()).FirstOrDefault(x => x.Id == id);
+
+                if (proposal == null)
+                    return NotFound("Registro não encontrado.");
+
+                var username = User?.Identity?.Name;
+                var user = (await _userManager.FindByNameAsync(username));
+
+                bool isMine = user.Id == proposal.Advert.CreatorId;
+                User feedBackProfileUser = isMine ? proposal.Candidate : proposal.Advert.Creator;
+                bool canWriteFeedBack = proposal.Status == ProposalStatus.Completed && !(await UserWroteFeedBack(user.Id, proposal.Id));
+                
+                return Ok(new ProposalViewModel(proposal, isMine, canWriteFeedBack, feedBackProfileUser.UserInfoId));
             }
             catch (Exception ex)
             {
