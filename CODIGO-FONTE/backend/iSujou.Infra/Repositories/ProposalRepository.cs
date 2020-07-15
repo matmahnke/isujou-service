@@ -16,6 +16,7 @@ namespace iSujou.Infra.Repositories
         {
             return _set.Include(p => p.Advert).ThenInclude(a => a.Property)
                        .Include(x => x.Candidate).ThenInclude(x => x.UserInfo)
+                       .Include(x => x.Advert).ThenInclude(x => x.Property)
                        .Include(x => x.Advert).ThenInclude(x => x.Creator).ThenInclude(x => x.UserInfo).ToListAsync();
         }
     }

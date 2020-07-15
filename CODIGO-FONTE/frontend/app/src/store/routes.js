@@ -26,6 +26,7 @@ import Property from './../pages/properties/Property'
 // Propostas
 import Proposal from './../pages/proposal/Proposal'
 import Proposals from './../pages/proposal/Proposals'
+import Details from './../pages/proposal/Details'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest}
@@ -60,6 +61,7 @@ const Routes = () => (
             <PrivateRoute exact path='/property/edit/:id' component={props => <Property type="edit" {...props} />} />
             <PrivateRoute exact path='/proposal/new/:id' component={props => <Proposal {...props} />} />
             <PrivateRoute exact path='/proposals/mine' component={Proposals} />
+            <PrivateRoute exact path='/proposal/detail/:id' component={props => <Details {...props} />} />
             <PrivateRoute exact path='/feedback/:proposal/:id' component={props => <FeedBack {...props} />} />
             <Route component={NotFound} />
         </Switch>
